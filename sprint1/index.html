@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Hello World.</title>
+  </head>
+  <body class="body">
+    <header class="header" id="top">
+      <div class="header__container container">
+        <img
+          src="all images/ishigami-senku.png"
+          alt="Ishigami Senku from anime Dr. Stone"
+          class="img container__img"
+        />
+        <h1 class="container__title">Explore with Genius</h1>
+      </div>
+
+      <nav class="navbar">
+        <ul class="navbar__list">
+          <li class="list__item">
+            <a href="#data-types" class="item__link">Basic Data Types</a>
+          </li>
+
+          <li class="list__item">
+            <a href="#arithmetic-operators" class="item__link"
+              >Arithmetic operators</a
+            >
+          </li>
+
+          <li class="list__item">
+            <a href="#greetings" class="item__link">Greetings</a>
+          </li>
+
+          <li class="list__item">
+            <a href="#operation_history" class="item__link">Operation History</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main">
+      <section class="section section-types" id="data-types">
+        <div class="types-container container">
+          <h2 class="types-container__title">Examples of various data types</h2>
+          <img
+            src="all images/section-types-data.png"
+            alt="data types"
+            class="img types-container__img"
+          />
+        </div>
+
+        <ul class="types-list">
+          <li class="types-list-item">
+            <p class="list-item__paragraph">
+              This is <span class="paragraph-span">52</span>
+              <a href="https://en.wikipedia.org/wiki/Data_type#Numeric_types" class="type-link"
+                ><strong>number</strong></a
+              >
+              data type
+            </p>
+
+            <p class="list-item__paragraph">
+              It can also look like this
+              <span class="paragraph-span">52.55</span>
+            </p>
+
+            <p class="list-item__paragraph">
+              So we have integer and decimal variant(<strong
+                >also known as floating-point</strong
+              >)
+            </p>
+          </li>
+
+          <li class="types-list-item">
+            <p class="list-item__paragraph">
+              This is <span class="paragraph-span">'Hello'</span>
+              <a
+                href="https://en.wikipedia.org/wiki/Data_type#String_and_text_types" class="type-link"
+                ><strong>string</strong></a
+              >
+              data type
+            </p>
+
+            <p class="list-item__paragraph">
+              It can also look like this
+              <span class="paragraph-span">"Hello"</span>
+            </p>
+
+            <p class="list-item__paragraph">
+              In some programming languages we also have
+              <span class="paragraph-span">`Hello`</span> this variant
+            </p>
+          </li>
+
+          <li class="types-list-item">
+            <p class="list-item__paragraph">
+              Our last basic data type is
+              <a href="https://en.wikipedia.org/wiki/Data_type#Boolean_type" class="type-link"
+                ><strong>boolean</strong></a
+              >
+            </p>
+
+            <p class="list-item__paragraph">
+              It can only store two answers -
+              <span class="paragraph-span">true(also known as 1)</span> and
+              <span class="paragraph-span">false(also known as 0)</span>
+            </p>
+
+            <p class="list-item__paragraph">
+              Also, everything that is not 1 -
+              <span class="paragraph-span">true</span>
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section section-arithmetic" id="arithmetic-operators">
+        <div class="arithmetic-container container">
+          <h2 class="arithmetic-container__title">
+            Examples of usage of arithmetic operators
+          </h2>
+          <img
+            src="all images/Basic_arithmetic_operators.svg.png"
+            alt="basic arithmetic operations"
+            class="img arithmetic-container__img"
+          />
+        </div>
+
+        <ul class="arithmetic-list">
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Addition</h3>
+              <p class="info-paragraph">
+                The addition of two whole numbers results in the total amount or
+                sum of those values combined
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label for="first-number" class="container-label"
+                >Enter two numbers in input fields:
+              </label>
+              <input
+                type="number"
+                id="first-input-addition"
+                class="container-input"
+              />
+              <p class="container-paragraph"><strong>+</strong></p>
+              <input
+                type="number"
+                id="second-input-addition"
+                class="container-input"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                class="container-input-result"
+                id="result-input-addition"
+                disabled
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-addition"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Subtraction</h3>
+              <p class="info-paragraph">
+                Subtraction is an operation that represents removal of objects
+                from a collection.
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label for="first-input-subtraction" class="container-label"
+                >Enter two numbers in input fields:</label
+              >
+              <input
+                type="number"
+                id="first-input-subtraction"
+                class="container-input"
+              />
+              <p class="container-paragraph"><strong>-</strong></p>
+              <input
+                type="number"
+                id="second-input-subtraction"
+                class="container-input"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                id="result-input-subtraction"
+                class="container-input-result"
+                disabled
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-subtraction"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Multiplication</h3>
+              <p class="info-paragraph">
+                The multiplication of whole numbers may be thought of as
+                repeated addition; that is, the multiplication of two numbers is
+                equivalent to adding as many copies of one of them, the
+                multiplicand, as the quantity of the other one, the multiplier;
+                both numbers can be referred to as factors.
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label class="container-label" for="first-input-multiplication"
+                >Enter two numbers in input fields:</label
+              >
+              <input
+                type="number"
+                class="container-input"
+                id="first-input-multiplication"
+              />
+              <p class="container-paragraph"><strong>*</strong></p>
+              <input
+                type="number"
+                class="container-input"
+                id="second-input-multiplication"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                disabled
+                class="container-input-result"
+                id="result-input-multiplication"
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-multiplication"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Exponentiation</h3>
+              <p class="info-paragraph">
+                In mathematics, exponentiation, denoted bn, is an operation
+                involving two numbers: the base, b, and the exponent or power,
+                n. When n is a positive integer, exponentiation corresponds to
+                repeated multiplication of the base: that is, bn is the product
+                of multiplying n bases
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label class="container-label" for="first-input-exponentiation"
+                >Enter two numbers in input fields:</label
+              >
+              <input
+                type="number"
+                class="container-input"
+                id="first-input-exponentiation"
+              />
+              <p class="container-paragraph"><strong>**</strong></p>
+              <input
+                type="number"
+                class="container-input"
+                id="second-input-exponentiation"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                disabled
+                class="container-input-result"
+                id="result-input-exponentiation"
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-exponentiation"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Division</h3>
+              <p class="info-paragraph">
+                At an elementary level the division of two natural numbers is,
+                among other possible interpretations, the process of calculating
+                the number of times one number is contained within another.
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label class="container-label" for="first-input-division"
+                >Enter two numbers in input fields:</label
+              >
+              <input
+                type="number"
+                class="container-input"
+                id="first-input-division"
+              />
+              <p class="container-paragraph"><strong>/</strong></p>
+              <input
+                type="number"
+                class="container-input"
+                id="second-input-division"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                disabled
+                class="container-input-result"
+                id="result-input-division"
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-division"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+
+          <li class="arithmetic-list-item">
+            <div class="list-item-info">
+              <h3 class="info-title">Remainder(Modulus)</h3>
+              <p class="info-paragraph">
+                In arithmetic, the remainder is the integer "left over" after
+                dividing one integer by another to produce an integer quotient
+                (integer division). In algebra of polynomials, the remainder is
+                the polynomial "left over" after dividing one polynomial by
+                another.
+              </p>
+            </div>
+
+            <div class="list-item__container">
+              <label class="container-label" for="first-input-remainder"
+                >Enter two numbers in input fields:</label
+              >
+              <input
+                type="number"
+                class="container-input"
+                id="first-input-remainder"
+              />
+              <p class="container-paragraph"><strong>%</strong></p>
+              <input
+                type="number"
+                class="container-input"
+                id="second-input-remainder"
+              />
+              <p class="container-paragraph"><strong>=</strong></p>
+              <input
+                type="number"
+                disabled
+                class="container-input-result"
+                id="result-input-remainder"
+              />
+              <button
+                type="button"
+                class="button button-calculate"
+                id="button-remainder"
+              >
+                Calculate
+              </button>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section section-greetings" id="greetings">
+        <div class="greetings-container container">
+          <h2 class="greetings-container__title">
+            Let`s communicate<span
+              class="title-span"
+              id="user-input-name"
+            ></span
+            >!
+          </h2>
+          <img
+            src="all images/section-greetings-nigga.png"
+            alt="nigger thumb-up"
+            class="img greetings-container__img"
+          />
+        </div>
+
+        <form action="form" class="form greetings-form" id="formEl">
+          <fieldset class="fieldset fieldset-basic-info">
+            <legend class="legend">Basic information</legend>
+
+            <label for="form-name-input" class="form-label">Your name:</label>
+            <input
+              type="name"
+              class="form-input input-disabled"
+              id="form-name-input"
+              disabled
+            />
+
+            <label for="form-email-input" class="form-label">Your email:</label>
+            <input
+              type="email"
+              class="form-input"
+              id="form-email-input"
+              placeholder="yourname@gmail.com"
+            />
+
+            <label for="form-tel-input" class="form-label">Your tel:</label>
+            <input
+              type="tel"
+              class="form-input"
+              id="form-tel-input"
+              placeholder="380-000-000-000"
+            />
+            <div id="tel-error"></div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Preferences</legend>
+
+            <div class="fieldset-container">
+              <div class="checkbox-container">
+                <input type="checkbox" class="form-checkbox" id="checkbox-email"
+                value="email-letter>
+                <label for="checkbox-email" class="form-label"
+                  >Get news about updates</label
+                >
+              </div>
+
+              <div class="checkbox-container">
+                <input type="checkbox" class="form-checkbox" id="checkbox-donate"
+                value="number>
+                <label for="checkbox-number" class="form-label"
+                  >Get news to your number</label
+                >
+              </div>
+
+              <div class="checkbox-container">
+                <input type="checkbox" class="form-checkbox" id="checkbox-donate"
+                value="africa-donation" checked>
+                <label for="checkbox-donate" class="form-label"
+                  >Donate to Africa</label
+                >
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Leave your feedback</legend>
+
+            <textarea class="textarea" id="form-textarea"></textarea>
+          </fieldset>
+
+          <button type="submit" class="button button-submit" id="submit-btn">Submit</button>
+        </form>
+      </section>
+
+      <section class="section history-operations" id="operation_history">
+        <div class="history-container container">
+          <h2 class="history-container__title">Operation History of the Site</h2>
+          <img
+            src="all images/history.png"
+            alt="history of interactions"
+            class="img history-container__img"
+          />
+        </div>
+
+        <div class="history-user-interactions" id="history-interactions"></div>
+      </section>
+
+      <a href="#top" class="to-the-top">&#8593</a>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
