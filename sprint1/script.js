@@ -133,6 +133,7 @@ document.body.addEventListener("click", (event) => {
       "You interacted with: LINK at " + `${hours}:${minutes}:${seconds}`
     );
     para.appendChild(node);
+    para.classList.add("history-paragraph");
     document.getElementById("history-interactions").appendChild(para);
   }
 });
