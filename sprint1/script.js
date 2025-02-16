@@ -17,24 +17,30 @@ function CalcExpression(operation, input1, input2, result) {
       switch (operation) {
         case "addition":
           result.value = Number(input1.value) + Number(input2.value);
+          console.log(`Hello! The sum is ${result.value}`);
           break;
         case "subtraction":
           result.value = Number(input1.value) - Number(input2.value);
+          console.log(`Hello! The subtraction is ${result.value}`);
           break;
         case "multiplication":
           result.value = Number(input1.value) * Number(input2.value);
+          console.log(`Hello! The multiplication is ${result.value}`);
           break;
         case "exponentiation":
           result.value = Number(input1.value) ** Number(input2.value);
+          console.log(`Hello! The exponentiation is ${result.value}`);
           break;
         case "division":
           if (Number(input2.value) === 0) {
             throw new Error("Cannot divide by zero!");
           }
           result.value = Number(input1.value) / Number(input2.value);
+          console.log(`Hello! The division is ${result.value}`);
           break;
         case "remainder":
           result.value = Number(input1.value) % Number(input2.value);
+          console.log(`Hello! The remainder is ${result.value}`);
           break;
         default:
           throw new Error("Invalid operation!");
