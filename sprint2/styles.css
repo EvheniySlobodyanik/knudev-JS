@@ -8,17 +8,27 @@
   background-color: linear-gradient(to bottom, #fdf6e3, #e0f7fa);
 }
 
+.button {
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  padding: 0.313rem;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .header {
   background: linear-gradient(90deg, #26c6da, #00acc1);
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .header__container {
-    display: flex;
-    align-items: center;
-  }
 
   .container__img {
     width: 3.125rem;
@@ -57,7 +67,6 @@
   }
 
   .item-link:hover {
-    color: #0288d1;
     text-decoration: underline;
   }
 
@@ -81,9 +90,7 @@
   }
 
   .guess-container {
-    display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 0.5rem;
   }
 
@@ -110,10 +117,11 @@
     font-size: 1.5em;
   }
 
-  .guess-game__container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  .guess-game__label {
+    font-size: 1.125em;
+    font-weight: 500;
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   }
 
   .guess-game__input {
@@ -134,12 +142,7 @@
   }
 
   .button-guess {
-    padding: 0.313rem;
-    border-radius: 6px;
-    border: none;
     background-color: #26c6da;
-    color: white;
-    cursor: pointer;
   }
 
   .button-guess:hover {
@@ -164,13 +167,7 @@
   }
 
   .button-reset {
-    padding: 0.313rem;
-    border-radius: 6px;
-    border: none;
     background-color: #26c6da;
-    color: #fff;
-    font-size: 1em;
-    cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.2s;
     display: none;
