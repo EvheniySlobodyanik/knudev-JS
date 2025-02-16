@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Guess the Number Game</title>
+  </head>
+  <body class="body">
+    <header class="header">
+      <div class="header__container">
+        <img
+          src="all-images/ishigami-senku.png"
+          alt="Ishigami Senku from anime Dr. Stone"
+          class="container__img"
+        />
+        <h1 class="container__title">Explore with Genius</h1>
+      </div>
+
+      <nav class="navbar">
+        <ul class="navbar__list">
+          <li class="list-item">
+            <a href="#guess-game" class="item-link">Guess Game</a>
+          </li>
+          <li class="list-item"><a class="item-link">Example</a></li>
+          <li class="list-item"><a class="item-link">Example</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main">
+      <section class="section section-guess" id="guess-game">
+        <div class="guess-container">
+          <h2 class="guess-container__title">Guess The Number Game</h2>
+          <p class="guess-container__paragraph">
+            You need to guess the number from 1 to 100. U have 10 tries
+          </p>
+        </div>
+
+        <div class="guess-game">
+          <p class="guess-game-counter" id="number-guess-counter">sdf</p>
+
+          <div class="guess-game__container">
+            <label class="guess-game__label" for="number-guess-input"
+              >Guess the number:</label
+            >
+            <input
+              type="number"
+              class="guess-game__input"
+              id="number-guess-input"
+              autofocus
+            />
+            <button
+              type="button"
+              class="button button-guess"
+              id="number-guess-button"
+            >
+              Guess
+            </button>
+          </div>
+
+          <p class="guess-game__paragraph" id="number-guess-paragraph">
+            asdasd
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
