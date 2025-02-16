@@ -33,12 +33,13 @@
         <div class="guess-container">
           <h2 class="guess-container__title">Guess The Number Game</h2>
           <p class="guess-container__paragraph">
-            You need to guess the number from 1 to 100. U have 10 tries
+            The computer guesses a random number from 1 to 100. You have 10
+            attempts to guess it. Good luck!
           </p>
         </div>
 
         <div class="guess-game">
-          <p class="guess-game-counter" id="number-guess-counter">sdf</p>
+          <p class="guess-game-counter" id="number-guess-counter"></p>
 
           <div class="guess-game__container">
             <label class="guess-game__label" for="number-guess-input"
@@ -59,9 +60,14 @@
             </button>
           </div>
 
-          <p class="guess-game__paragraph" id="number-guess-paragraph">
-            asdasd
-          </p>
+          <p class="guess-game__paragraph" id="number-guess-paragraph"></p>
+          <button
+            type="button"
+            class="button button-reset"
+            id="number-guess-reset"
+          >
+            Reset
+          </button>
         </div>
       </section>
     </main>

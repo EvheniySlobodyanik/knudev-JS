@@ -162,4 +162,32 @@
     font-size: 1.5em;
     color: rebeccapurple;
   }
+
+  .button-reset {
+    padding: 0.313rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #26c6da;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    display: none;
+  }
+
+  .button-reset:hover {
+    background-color: #00acc1;
+    transform: translateY(-2px);
+  }
+
+  .button-reset:focus {
+    outline: 2px solid #00acc1;
+    outline-offset: 4px;
+  }
+
+  .button-reset:active {
+    background-color: #00838f;
+    transform: translateY(0);
+  }
 }
