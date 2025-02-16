@@ -51,9 +51,6 @@ document.getElementById("number-guess-button").addEventListener("click", () => {
       countPara.style.backgroundColor = "#a5d6a7";
       guessCount++;
     } else {
-      countPara.textContent = "You are out of attempts!";
-      countPara.style.color = "#c62828";
-      countPara.style.backgroundColor = "#ef9a9a";
       resetGame();
     }
   } catch (error) {
@@ -71,8 +68,10 @@ function resetGame() {
   countPara.textContent = "";
   para.textContent = "Press button below to start new round";
   document.getElementById("number-guess-button").disabled = true;
+  document.getElementById("number-guess-button").style.cursor = "no-drop";
   document.getElementById("number-guess-input").disabled = true;
   document.getElementById("number-guess-input").value = "";
+  document.getElementById("number-guess-input").style.cursor = "no-drop";
   resetBtn.style.display = "block";
   resetBtn.addEventListener("click", endGame);
 }
