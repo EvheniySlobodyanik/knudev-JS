@@ -33,63 +33,23 @@ function CalcExpression(operation, input1, input2, result) {
   }
 }
 
-document.getElementById("button-addition").addEventListener("click", () => {
-  CalcExpression(
-    "addition",
-    document.getElementById("first-input-addition"),
-    document.getElementById("second-input-addition"),
-    document.getElementById("result-input-addition")
-  );
-});
-
-document.getElementById("button-subtraction").addEventListener("click", () => {
-  CalcExpression(
-    "subtraction",
-    document.getElementById("first-input-subtraction"),
-    document.getElementById("second-input-subtraction"),
-    document.getElementById("result-input-subtraction")
-  );
-});
-
-document
-  .getElementById("button-multiplication")
-  .addEventListener("click", () => {
+function HandleEvents(name) {
+  document.getElementById(`button-${name}`).addEventListener("click", () => {
     CalcExpression(
-      "multiplication",
-      document.getElementById("first-input-multiplication"),
-      document.getElementById("second-input-multiplication"),
-      document.getElementById("result-input-multiplication")
+      name,
+      document.getElementById(`first-input-${name}`),
+      document.getElementById(`second-input-${name}`),
+      document.getElementById(`result-input-${name}`)
     );
   });
+}
 
-document
-  .getElementById("button-exponentiation")
-  .addEventListener("click", () => {
-    CalcExpression(
-      "exponentiation",
-      document.getElementById("first-input-exponentiation"),
-      document.getElementById("second-input-exponentiation"),
-      document.getElementById("result-input-exponentiation")
-    );
-  });
-
-document.getElementById("button-division").addEventListener("click", () => {
-  CalcExpression(
-    "division",
-    document.getElementById("first-input-division"),
-    document.getElementById("second-input-division"),
-    document.getElementById("result-input-division")
-  );
-});
-
-document.getElementById("button-remainder").addEventListener("click", () => {
-  CalcExpression(
-    "remainder",
-    document.getElementById("first-input-remainder"),
-    document.getElementById("second-input-remainder"),
-    document.getElementById("result-input-remainder")
-  );
-});
+HandleEvents("addition");
+HandleEvents("subtraction");
+HandleEvents("multiplication");
+HandleEvents("exponentiation");
+HandleEvents("division");
+HandleEvents("remainder");
 
 document.getElementById("form-name-input").value = askName;
 
