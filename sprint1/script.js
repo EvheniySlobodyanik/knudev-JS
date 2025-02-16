@@ -1,35 +1,50 @@
 const userName = document.getElementById("user-input-name");
-let askName = prompt("Enter your name: ");
-
-while (askName === "" || askName === null) {
+let askName;
+try {
   askName = prompt("Enter your name: ");
+  while (askName === "" || askName === null) {
+    askName = prompt("Enter your name: ");
+  }
+  userName.textContent = ", " + askName;
+} catch (error) {
+  console.error("An error occurred while getting the user's name:", error);
+  alert("Something went wrong while entering your name.");
 }
-userName.textContent = ", " + askName;
 
 function CalcExpression(operation, input1, input2, result) {
-  if (input1.value !== "" || input2.value !== "") {
-    switch (operation) {
-      case "addition":
-        result.value = Number(input1.value) + Number(input2.value);
-        break;
-      case "subtraction":
-        result.value = Number(input1.value) - Number(input2.value);
-        break;
-      case "multiplication":
-        result.value = Number(input1.value) * Number(input2.value);
-        break;
-      case "exponentiation":
-        result.value = Number(input1.value) ** Number(input2.value);
-        break;
-      case "division":
-        result.value = Number(input1.value) / Number(input2.value);
-        break;
-      case "remainder":
-        result.value = Number(input1.value) % Number(input2.value);
-        break;
+  try {
+    if (input1.value !== "" || input2.value !== "") {
+      switch (operation) {
+        case "addition":
+          result.value = Number(input1.value) + Number(input2.value);
+          break;
+        case "subtraction":
+          result.value = Number(input1.value) - Number(input2.value);
+          break;
+        case "multiplication":
+          result.value = Number(input1.value) * Number(input2.value);
+          break;
+        case "exponentiation":
+          result.value = Number(input1.value) ** Number(input2.value);
+          break;
+        case "division":
+          if (Number(input2.value) === 0) {
+            throw new Error("Cannot divide by zero!");
+          }
+          result.value = Number(input1.value) / Number(input2.value);
+          break;
+        case "remainder":
+          result.value = Number(input1.value) % Number(input2.value);
+          break;
+        default:
+          throw new Error("Invalid operation!");
+      }
+    } else {
+      result.value = "";
     }
-  } else {
-    result.value = "";
+  } catch (error) {
+    console.error("Error in CalcExpression", error);
+    alert(error.message);
   }
 }
 
@@ -56,17 +71,23 @@ document.getElementById("form-name-input").value = askName;
 document.getElementById("formEl").addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const telInput = document.getElementById("form-tel-input").value;
-  const tellError = document.getElementById("tel-error");
+  try {
+    const telInput = document.getElementById("form-tel-input").value;
+    const tellError = document.getElementById("tel-error");
 
-  if (/[^0-9]/.test(telInput)) {
-    tellError.innerHTML = "'Your tel' input must contain ONLY NUMBERS!";
+    if (/[^0-9]/.test(telInput)) {
+      tellError.innerHTML = "'Your tel' input must contain ONLY NUMBERS!";
+      tellError.classList.add("error-message");
+    } else {
+      document.getElementById("formEl").reset();
+      document.getElementById("form-name-input").value = askName;
+      tellError.innerHTML = "";
+      tellError.classList.remove("error-message");
+    }
+  } catch (error) {
+    console.error("Form submission error: ", error);
+    tellError.innerHTML = error.message;
     tellError.classList.add("error-message");
-  } else {
-    document.getElementById("formEl").reset();
-    document.getElementById("form-name-input").value = askName;
-    tellError.innerHTML = "";
-    tellError.classList.remove("error-message");
   }
 });
 
