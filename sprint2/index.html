@@ -22,8 +22,14 @@
           <li class="list-item">
             <a href="#guess-game" class="item-link">Guess Game</a>
           </li>
-          <li class="list-item"><a class="item-link">Example</a></li>
-          <li class="list-item"><a class="item-link">Example</a></li>
+          <li class="list-item">
+            <a href="#performance-statistics" class="item-link"
+              >Performance Statistics</a
+            >
+          </li>
+          <li class="list-item">
+            <a href="#scoring-system" class="item-link">Scoring system</a>
+          </li>
         </ul>
       </nav>
     </header>
@@ -31,15 +37,25 @@
     <main class="main">
       <section class="section section-guess" id="guess-game">
         <div class="guess-container container">
-          <h2 class="guess-container__title">Guess The Number Game</h2>
-          <p class="guess-container__paragraph">
+          <h2 class="container__title">Guess The Number Game</h2>
+          <p class="container__paragraph">
             The computer guesses a random number from 1 to 100. You have 10
             attempts to guess it. Good luck!
           </p>
         </div>
 
         <div class="guess-game">
-          <p class="guess-game-counter" id="number-guess-counter"></p>
+          <div class="guess-game-statistics" id="number-guess-statistics">
+            <p class="guess-game-counter" id="number-guess-counter"></p>
+            <p class="guess-game-timer" id="number-guess-timer"></p>
+          </div>
+
+          <div class="difficulty-container container">
+            <p class="guess-game-difficulty-title">Difficulty:</p>
+            <p class="guess-game-difficulty" id="number-guess-difficulty">
+              Easy
+            </p>
+          </div>
 
           <div class="guess-game__container container">
             <label class="guess-game__label" for="number-guess-input"
@@ -61,6 +77,12 @@
           </div>
 
           <p class="guess-game__paragraph" id="number-guess-paragraph"></p>
+
+          <p
+            class="guess-game__paragraph-reset"
+            id="number-guess-paragraph-reset"
+          ></p>
+
           <button
             type="button"
             class="button button-reset"
@@ -68,7 +90,82 @@
           >
             Reset
           </button>
+
+          <button
+            type="button"
+            class="button button-next-round"
+            id="number-guess-next"
+          >
+            Next round
+          </button>
         </div>
+      </section>
+
+      <section
+        class="section section-performance-statistics"
+        id="performance-statistics"
+      >
+        <div class="performance-container container">
+          <h2 class="container__title">Performance statistics</h2>
+          <p class="container__paragraph">Look at your results!</p>
+        </div>
+
+        <table class="table">
+          <tr class="table-row">
+            <th colspan="" class="table-head">Statistics</th>
+            <th colspan="" class="table-head">Results</th>
+          </tr>
+
+          <tr class="table-row">
+            <td class="table-data">Time spent(seconds)</td>
+            <td class="table-data" id="table-seconds">0</td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Tries spent</td>
+            <td class="table-data" id="table-attempts">0</td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Your guesses</td>
+            <td class="table-data" id="table-guesses"></td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Mystery number</td>
+            <td class="table-data" id="table-mystery">0</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section section-scoring-system" id="scoring-system">
+        <div class="scoring-system-container container">
+          <h2 class="container__title">Scoring system</h2>
+          <p class="container__paragraph">
+            Here u can see your overall statistics
+          </p>
+        </div>
+
+        <table class="table">
+          <tr class="table-row">
+            <th class="table-head">Achievement</th>
+            <th class="table-head">Score</th>
+          </tr>
+
+          <tr class="table-row">
+            <td class="table-data">Total points(right guesses)</td>
+            <td class="table-data" id="total-points">0</td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Overall tries</td>
+            <td class="table-data" id="total-tries">0</td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Reset points</td>
+            <td class="table-data" id="total-resets">0</td>
+          </tr>
+          <tr class="table-row">
+            <td class="table-data">Round points</td>
+            <td class="table-data" id="total-rounds">0</td>
+          </tr>
+        </table>
       </section>
     </main>
 

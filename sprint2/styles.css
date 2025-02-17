@@ -23,6 +23,38 @@
   gap: 1rem;
 }
 
+.container__title {
+  color: #ab47bc;
+  font-size: 2em;
+}
+
+.container__paragraph {
+  color: #f9a825;
+  font-size: 1.5em;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 30rem;
+}
+
+.table-head,
+.table-row,
+.table-data {
+  border: 1px solid black;
+  padding: 0.313rem;
+}
+
+.table-head {
+  background-color: #26c6da;
+}
+
 .header {
   background: linear-gradient(90deg, #26c6da, #00acc1);
   color: #fff;
@@ -83,108 +115,196 @@
   gap: 3.75rem;
 
   .section-guess {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+
+    .guess-container {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .guess-game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .guess-game-statistics {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .guess-game-counter {
+      background-color: #a5d6a7;
+      color: #2e7d32;
+      font-size: 1.5em;
+    }
+
+    .guess-game-timer {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #26c6da;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .difficulty-container {
+      gap: 0.5rem;
+    }
+
+    .guess-game-difficulty-title {
+      font-size: 1.125em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .guess-game-difficulty {
+      font-size: 1.125em;
+      font-weight: bold;
+      color: white;
+      background-color: #ff0000;
+      padding: 0.313rem 0.625rem;
+      border-radius: 5px;
+    }
+
+    .guess-game__label {
+      font-size: 1.125em;
+      font-weight: 500;
+      color: #333;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .guess-game__input {
+      padding: 0.313rem;
+      border: 1px solid #bdc3c7;
+      color: #34495e;
+      background-color: #ecf0f1;
+    }
+
+    .guess-game__input:hover {
+      background-color: #d5dbdb;
+      border-color: #64b5f6;
+    }
+
+    .guess-game__input:focus {
+      border: 2px solid #1976d2;
+      background-color: #e3f2fd;
+    }
+
+    .button-guess {
+      background-color: #26c6da;
+    }
+
+    .button-guess:hover {
+      transform: scale(1.1);
+      transition: 0.3 ease;
+      background-color: #00acc1;
+    }
+
+    .button-guess:focus {
+      outline: 2px solid #0288d1;
+      background-color: #e0f7fa;
+    }
+
+    .button-guess:active {
+      background-color: #732d91;
+    }
+
+    .guess-game__paragraph {
+      background-color: #ff5722;
+      font-size: 1.5em;
+      color: rebeccapurple;
+    }
+
+    .guess-game__paragraph-reset {
+      font-size: 1.5em;
+      color: white;
+      background-color: #ff6600;
+    }
+
+    .button-reset {
+      background-color: #26c6da;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, transform 0.2s;
+      display: none;
+      width: 25.5rem;
+    }
+
+    .button-reset:hover {
+      background-color: #00acc1;
+      transform: translateY(-2px);
+    }
+
+    .button-reset:focus {
+      outline: 2px solid #00acc1;
+      outline-offset: 4px;
+    }
+
+    .button-reset:active {
+      background-color: #00838f;
+      transform: translateY(0);
+    }
+
+    .button-next-round {
+      width: 25.5rem;
+      background-color: #e53935;
+      transition: background-color 0.3s, transform 0.2s;
+      display: none;
+    }
+
+    .button-next-round:hover {
+      background-color: #d32f2f;
+      transform: scale(1.05);
+    }
+
+    .button-next-round:focus {
+      outline: 3px solid #ff8a80;
+      outline-offset: 2px;
+    }
+
+    .button-next-round:active {
+      background-color: #b71c1c;
+      transform: scale(0.98);
+    }
   }
 
-  .guess-container {
+  .section-performance-statistics {
     flex-direction: column;
-    gap: 0.5rem;
+
+    .performance-container {
+      flex-direction: column;
+    }
   }
 
-  .guess-container__title {
-    color: #ab47bc;
-    font-size: 2em;
-  }
-
-  .guess-container__paragraph {
-    color: #f9a825;
-    font-size: 1.5em;
-  }
-
-  .guess-game {
-    display: flex;
+  .section-scoring-system {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
 
-  .guess-game-counter {
-    background-color: #28a745;
-    color: black;
-    font-size: 1.5em;
-  }
+    .scoring-system-container {
+      flex-direction: column;
+    }
 
-  .guess-game__label {
-    font-size: 1.125em;
-    font-weight: 500;
-    color: #333;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  }
+    .table {
+      width: 30rem;
+    }
 
-  .guess-game__input {
-    padding: 0.313rem;
-    border: 1px solid #bdc3c7;
-    color: #34495e;
-    background-color: #ecf0f1;
-  }
-
-  .guess-game__input:hover {
-    background-color: #d5dbdb;
-    border-color: #64b5f6;
-  }
-
-  .guess-game__input:focus {
-    border: 2px solid #1976d2;
-    background-color: #e3f2fd;
-  }
-
-  .button-guess {
-    background-color: #26c6da;
-  }
-
-  .button-guess:hover {
-    transform: scale(1.1);
-    transition: 0.3 ease;
-    background-color: #00acc1;
-  }
-
-  .button-guess:focus {
-    outline: 2px solid #0288d1;
-    background-color: #e0f7fa;
-  }
-
-  .button-guess:active {
-    background-color: #732d91;
-  }
-
-  .guess-game__paragraph {
-    background-color: #ff5722;
-    font-size: 1.5em;
-    color: rebeccapurple;
-  }
-
-  .button-reset {
-    background-color: #26c6da;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.2s;
-    display: none;
-  }
-
-  .button-reset:hover {
-    background-color: #00acc1;
-    transform: translateY(-2px);
-  }
-
-  .button-reset:focus {
-    outline: 2px solid #00acc1;
-    outline-offset: 4px;
-  }
-
-  .button-reset:active {
-    background-color: #00838f;
-    transform: translateY(0);
+    .table-head {
+      background-color: #732d91;
+    }
   }
 }
