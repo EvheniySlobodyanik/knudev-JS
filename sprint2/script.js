@@ -75,6 +75,7 @@ function stopTimer() {
 
 resetBtn.addEventListener("click", () => {
   nullPerformanceStatistics();
+  maxAttempts = 10;
   totalResets++;
   stopTimer();
   scoreBoard();
