@@ -268,27 +268,29 @@ function guessGame() {
 function guessGameCheck(inputValue) {
   try {
     if (inputValue < 1 || inputValue > 100) {
-      para.textContent = "Your guess must be in range from 1 to 100!";
-      para.style.color = "#c62828";
-      para.style.backgroundColor = "#ef9a9a";
+      changeTextContext(para, "Your guess must be in range from 1 to 100!");
+      setColors(para, "#ef9a9a", "#c62828");
     } else if (inputValue === mysteryNumber) {
       totalPoints++;
-      para.textContent = "Congratulations! U guessed the number correctly!";
-      para.style.color = "#2e7d32";
-      para.style.backgroundColor = "#a5d6a7";
-      guessBtn.disabled = true;
-      guessInput.disabled = true;
+
+      changeTextContext(
+        para,
+        "Congratulations! U guessed the number correctly!"
+      );
+      setColors(para, "#a5d6a7", "#2e7d32");
+      switchDisability(guessBtn, true);
+      switchDisability(guessInput, true);
+
       performanceStatistics();
+
       resetGame();
       nextRound();
     } else if (inputValue < mysteryNumber) {
-      para.textContent = "Your guess is too low! Try higher!";
-      para.style.color = "#c62828";
-      para.style.backgroundColor = "#ef9a9a";
+      changeTextContext(para, "Your guess is too low! Try higher!");
+      setColors(para, "#ef9a9a", "#c62828");
     } else if (inputValue > mysteryNumber) {
-      para.textContent = "Your guess is too high! Try lower!";
-      para.style.color = "#c62828";
-      para.style.backgroundColor = "#ef9a9a";
+      changeTextContext(para, "Your guess is too high! Try lower!");
+      setColors(para, "#ef9a9a", "#c62828");
     }
   } catch (error) {
     console.error("An error occurred while value processed: ", error);
