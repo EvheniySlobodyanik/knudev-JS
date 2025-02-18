@@ -19,6 +19,7 @@ let guesses = [];
 
 let timerInterval;
 let sec = 0;
+let minutes = 0;
 
 let totalPoints = 0;
 let totalTries = 0;
@@ -27,17 +28,17 @@ let totalRounds = 0;
 
 startTimer();
 
-try {
-  askName = prompt("Enter the name that will be displayed in the leaderboard:");
-  while (askName === "" || askName === null) {
-    askName = prompt(
-      "Enter the name that will be displayed in the leaderboard:"
-    );
-  }
-} catch (error) {
-  console.error("Error occurred while entering name: ", error);
-  alert(error.message);
-}
+// try {
+//   askName = prompt("Enter the name that will be displayed in the leaderboard:");
+//   while (askName === "" || askName === null) {
+//     askName = prompt(
+//       "Enter the name that will be displayed in the leaderboard:"
+//     );
+//   }
+// } catch (error) {
+//   console.error("Error occurred while entering name: ", error);
+//   alert(error.message);
+// }
 
 document.getElementById(
   "ask-name-place"
@@ -49,13 +50,16 @@ function getNumber() {
 
 function startTimer() {
   sec = 0;
+  minutes = 0;
   timerInterval = setInterval(function () {
     try {
-      if (sec < 10) {
-        document.getElementById("number-guess-timer").innerHTML = "00:0" + sec;
-      } else if (sec >= 10) {
-        document.getElementById("number-guess-timer").innerHTML = "00:" + sec;
-      }
+      minutes = Math.floor(sec / 60);
+      let displaySec = sec % 60 < 10 ? `0${sec % 60}` : sec % 60;
+      let displayMin = minutes < 10 ? `0${minutes}` : minutes;
+
+      document.getElementById(
+        "number-guess-timer"
+      ).innerHTML = `${displayMin}:${displaySec}`;
       sec++;
     } catch (error) {
       console.error("Error in timer function: ", error);
