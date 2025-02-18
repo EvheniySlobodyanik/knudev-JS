@@ -39,6 +39,10 @@ try {
   alert(error.message);
 }
 
+document.getElementById(
+  "ask-name-place"
+).textContent = `Look at your results, ${askName}!`;
+
 function getNumber() {
   return Math.floor(Math.random() * 100) + 1;
 }
