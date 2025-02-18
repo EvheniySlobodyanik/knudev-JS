@@ -156,12 +156,23 @@ function startDifficulty() {
 
 //sets difficulty if user interacts with next round button
 function setDifficulty() {
-  const difficulties = ["Easy", "Normal", "Hard", "Extreme", "Nightmare", "?"];
-  const difficultyNow = difficulty.textContent.trim();
-  const indexNow = difficulties.indexOf(difficultyNow);
+  try {
+    const difficulties = [
+      "Easy",
+      "Normal",
+      "Hard",
+      "Extreme",
+      "Nightmare",
+      "?",
+    ];
+    const difficultyNow = difficulty.textContent.trim();
+    const indexNow = difficulties.indexOf(difficultyNow);
 
-  difficulty.textContent = difficulties[indexNow + 1];
-  handleDifficulty();
+    difficulty.textContent = difficulties[indexNow + 1];
+    handleDifficulty();
+  } catch (error) {
+    console.error("Error while setting difficulty: ", error);
+  }
 }
 
 //handles situation when user beats all existing difficulties
