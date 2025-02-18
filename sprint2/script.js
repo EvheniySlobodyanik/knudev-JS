@@ -6,6 +6,9 @@ console.log(mysteryNumber);
 const para = document.getElementById("number-guess-paragraph");
 const resetPara = document.getElementById("number-guess-paragraph-reset");
 
+const guessBtn = document.getElementById("number-guess-button");
+const guessInput = document.getElementById("number-guess-input");
+
 let maxAttempts = 10;
 let guessCount = 0;
 const countPara = document.getElementById("number-guess-counter");
@@ -74,6 +77,10 @@ function stopTimer() {
 }
 
 resetBtn.addEventListener("click", () => {
+  countPara.style.backgroundColor = "#a5d6a7";
+  countPara.style.color = "#2e7d32";
+  guessBtn.disabled = false;
+  guessInput.disabled = false;
   nullPerformanceStatistics();
   maxAttempts = 10;
   totalResets++;
@@ -82,6 +89,10 @@ resetBtn.addEventListener("click", () => {
 });
 
 nextBtn.addEventListener("click", () => {
+  countPara.backgroundColor = "#a5d6a7";
+  countPara.color = "#2e7d32";
+  guessBtn.disabled = false;
+  guessInput.disabled = false;
   nullPerformanceStatistics();
   totalRounds++;
   scoreBoard();
@@ -107,6 +118,8 @@ function guessGame() {
       para.textContent = "Congratulations! U guessed the number correctly!";
       para.style.color = "#2e7d32";
       para.style.backgroundColor = "#a5d6a7";
+      guessBtn.disabled = true;
+      guessInput.disabled = true;
       performanceStatistics();
       resetGame();
       nextRound();
@@ -133,11 +146,19 @@ function startDifficulty() {
 
 document.getElementById("number-guess-button").addEventListener("click", () => {
   try {
-    if (guessCount < 10) {
+    if (guessCount < maxAttempts) {
       guessCount++;
       countPara.textContent = `Attempts left: ${maxAttempts - guessCount}`;
+      countPara.backgroundColor = "#a5d6a7";
+      countPara.color = "#2e7d32";
       guessGame();
     } else {
+      countPara.textContent = "You are out of attempts!";
+      countPara.style.backgroundColor = "#ef9a9a";
+      countPara.style.color = "#c62828";
+      para.textContent = "";
+      guessBtn.disabled = true;
+      guessInput.disabled = true;
       resetGame();
     }
   } catch (error) {
@@ -172,7 +193,6 @@ function endGame() {
   document.getElementById("number-guess-input").value = "";
   document.getElementById("number-guess-input").focus();
   countPara.textContent = `Your attempts: ${maxAttempts - guessCount}`;
-
   mysteryNumber = getNumber();
   console.log(mysteryNumber);
 
