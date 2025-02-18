@@ -74,12 +74,14 @@ function stopTimer() {
 }
 
 resetBtn.addEventListener("click", () => {
+  nullPerformanceStatistics();
   totalResets++;
   stopTimer();
   scoreBoard();
 });
 
 nextBtn.addEventListener("click", () => {
+  nullPerformanceStatistics();
   totalRounds++;
   scoreBoard();
 });
@@ -218,6 +220,14 @@ function performanceStatistics() {
   document.getElementById("table-mystery").textContent = mysteryNumber;
 
   scoreBoard();
+}
+
+function nullPerformanceStatistics() {
+  guesses = [];
+  document.getElementById("table-seconds").textContent = "";
+  document.getElementById("table-attempts").textContent = "";
+  document.getElementById("table-guesses").textContent = "";
+  document.getElementById("table-mystery").textContent = "";
 }
 
 function scoreBoard() {
