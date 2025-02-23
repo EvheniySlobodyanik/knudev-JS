@@ -46,12 +46,18 @@
     border-radius: 10px;
     font-size: 2em;
     color: #fff;
-    direction: rtl;
     padding: 0.5rem;
+    caret-color: transparent;
+    text-align: right;
   }
 
   .user-input:hover {
     background-color: #2e313b;
+  }
+
+  .user-input::-webkit-outer-spin-button,
+  .user-input::-webkit-inner-spin-button {
+    appearance: none;
   }
 
   .grid-container {
@@ -70,6 +76,7 @@
     color: #fff;
     border-radius: 10px;
     border: none;
+    cursor: pointer;
   }
 
   .grid-item:hover,

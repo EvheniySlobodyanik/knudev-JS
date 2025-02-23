@@ -33,6 +33,8 @@ const calcInput = document.getElementById("calc-input");
 
 const calcHistory = document.getElementById("calc-history");
 
+const calcZone = document.getElementById("calculator-zone");
+
 const calc = new Calculator();
 
 const sendMessage = function () {
@@ -59,3 +61,98 @@ console.log(
 console.log(`Result of exponentiation = ${calc.exponentiation(2).getResult()}`);
 
 console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
+
+addEventListener("load", calcInput.focus());
+
+calculating();
+
+function calculating() {
+  calcInput.addEventListener(
+    "keypress",
+    () => {
+      calcInput.value = "";
+    },
+    { once: true }
+  );
+
+  deleteOneSymbol.addEventListener("click", () => {
+    calcInput.value = calcInput.value.slice(0, -1);
+  });
+
+  clear.addEventListener("click", () => {
+    calcInput.value = "0";
+  });
+
+  zero.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+
+    if (!(calcInput.value === "0")) {
+      calcInput.value += zero.value;
+    }
+  });
+
+  one.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += one.value;
+  });
+
+  two.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += two.value;
+  });
+
+  three.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += three.value;
+  });
+
+  four.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += four.value;
+  });
+
+  five.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += five.value;
+  });
+
+  six.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += six.value;
+  });
+
+  seven.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += seven.value;
+  });
+
+  eight.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += eight.value;
+  });
+
+  nine.addEventListener("click", () => {
+    if (calcInput.value.startsWith("0")) {
+      calcInput.value = calcInput.value.replace(/^0+/, "");
+    }
+    calcInput.value += nine.value;
+  });
+}
