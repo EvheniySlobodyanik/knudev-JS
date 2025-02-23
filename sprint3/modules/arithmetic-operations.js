@@ -1,28 +1,35 @@
-function arithmeticOperations(operation, x, y) {
-  try {
-    switch (operation) {
-      case "addition":
-        return "Your addition equals = " + (x + y);
-      case "subtraction":
-        return "Your subtraction equals = " + (x - y);
-      case "multiplication":
-        return "Your multiplication equals = " + x * y;
-      case "division":
-        if (y === 0) {
-          throw new Error("Cannot divide by zero!");
-        }
-        return "Your division equals = " + x / y;
-      default:
-        console.log("Wrong operation!");
-        break;
-    }
-  } catch (error) {
-    console.error(
-      "Error occurred while working with arithmetic operations: ",
-      error
-    );
-    alert(error.message);
-  }
+function Calculator(value = 0) {
+  let _value = value;
+
+  return {
+    addition(n) {
+      _value += n;
+      return this;
+    },
+
+    subtraction(n) {
+      _value -= n;
+      return this;
+    },
+
+    multiplication(n) {
+      _value *= n;
+      return this;
+    },
+
+    division(n) {
+      if (n !== 0) {
+        _value /= n;
+      } else {
+        console.log("Division by zero!");
+      }
+      return this;
+    },
+
+    getResult() {
+      return _value;
+    },
+  };
 }
 
-export { arithmeticOperations };
+export { Calculator };

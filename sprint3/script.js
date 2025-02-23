@@ -1,12 +1,24 @@
-import { arithmeticOperations } from "./modules/arithmetic-operations.js";
+import { Calculator } from "./modules/arithmetic-operations.js";
 
-let sendMessage = function () {
-  console.log("We are doing simple arithmetic operations!");
+const sendMessage = function () {
+  console.log("Arithmetic operations are chained together!");
 };
 
 sendMessage();
 
-console.log(arithmeticOperations("addition", 10, 5));
-console.log(arithmeticOperations("subtraction", 10, 5));
-console.log(arithmeticOperations("multiplication", 10, 5));
-console.log(arithmeticOperations("division", 10, 5));
+const calc = new Calculator();
+
+console.log(
+  `Result of addition = ${calc.addition(15).addition(10).getResult()}`
+);
+
+console.log(`Result of subtraction = ${calc.subtraction(-5).getResult()}`);
+
+console.log(`Result of division = ${calc.division(10).getResult()}`);
+
+console.log(
+  `Result of multiplication = ${calc
+    .multiplication(100)
+    .multiplication(1000)
+    .getResult()}`
+);
