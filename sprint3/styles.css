@@ -1,0 +1,89 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.body {
+  background-color: #101218;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  .header__title {
+    color: #ececec;
+    font-size: 2.5em;
+  }
+}
+
+.main {
+  padding: 2rem 15rem;
+
+  .section {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+  }
+
+  .user-input {
+    width: 20.5rem;
+    height: 3.125rem;
+    background-color: #101218;
+    border: 1px solid #2f3033;
+    border-radius: 10px;
+    font-size: 2em;
+    color: #fff;
+    direction: rtl;
+    padding: 0.5rem;
+  }
+
+  .user-input:hover {
+    background-color: #2e313b;
+  }
+
+  .grid-container {
+    width: 20rem;
+    display: grid;
+    grid-template-columns: repeat(4, 0.25fr);
+    grid-template-rows: repeat(6, 0.25fr);
+    gap: 0.125rem;
+  }
+
+  .grid-item {
+    width: 5.25rem;
+    height: 3.125rem;
+    font-size: 1.5em;
+    background-color: #2c2f36;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .grid-item:hover,
+  .grid-item:focus {
+    background-color: #373d4f;
+    transform: scale(1.1);
+  }
+
+  .equals {
+    background-color: #a9c7ff;
+  }
+
+  .equals:hover,
+  .equals:focus {
+    background-color: #4cc2ff;
+  }
+}
