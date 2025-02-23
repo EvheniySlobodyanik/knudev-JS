@@ -14,7 +14,7 @@
     <main class="main">
       <section class="section section-calculator">
         <div class="input-container">
-          <!-- <button class="button" type="button button-history">
+          <!-- <button class="button button-history" type="button" id="calc-history">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -36,14 +36,14 @@
               </g>
             </svg>
           </button> -->
-          <input type="number" value="0" class="user-input" />
+          <input type="number" value="0" class="user-input" id="calc-input" />
         </div>
 
         <div class="grid-container">
-          <button class="grid-item">%</button>
-          <button class="grid-item">C</button>
-          <button class="grid-item">U</button>
-          <button class="grid-item">
+          <button class="grid-item" id="button-remainder">%</button>
+          <button class="grid-item" id="button-clear">C</button>
+          <button class="grid-item" id="button-undo">U</button>
+          <button class="grid-item" id="button-delete-1-symbol">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -57,10 +57,16 @@
             </svg>
           </button>
 
-          <button class="grid-item"><sup>1</sup>/<sub>x</sub></button>
-          <button class="grid-item">x<sup>2</sup></button>
-          <button class="grid-item"><sup>2</sup>&radic;x</button>
-          <button class="grid-item">
+          <button class="grid-item" id="button-1-div-x">
+            <sup>1</sup>/<sub>x</sub>
+          </button>
+          <button class="grid-item" id="button-exponentiation">
+            x<sup>2</sup>
+          </button>
+          <button class="grid-item" id="button-root">
+            <sup>2</sup>&radic;x
+          </button>
+          <button class="grid-item" id="button-divide">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -80,10 +86,10 @@
             </svg>
           </button>
 
-          <button class="grid-item">7</button>
-          <button class="grid-item">8</button>
-          <button class="grid-item">9</button>
-          <button class="grid-item">
+          <button class="grid-item" id="button-seven">7</button>
+          <button class="grid-item" id="button-eight">8</button>
+          <button class="grid-item" id="button-nine">9</button>
+          <button class="grid-item" id="button-multiply">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -103,10 +109,10 @@
             </svg>
           </button>
 
-          <button class="grid-item">4</button>
-          <button class="grid-item">5</button>
-          <button class="grid-item">6</button>
-          <button class="grid-item">
+          <button class="grid-item" id="button-four">4</button>
+          <button class="grid-item" id="button-five">5</button>
+          <button class="grid-item" id="button-six">6</button>
+          <button class="grid-item" id="button-minus">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1rem"
@@ -118,10 +124,10 @@
             </svg>
           </button>
 
-          <button class="grid-item">3</button>
-          <button class="grid-item">2</button>
-          <button class="grid-item">1</button>
-          <button class="grid-item">
+          <button class="grid-item" id="button-three">3</button>
+          <button class="grid-item" id="button-two">2</button>
+          <button class="grid-item" id="button-one">1</button>
+          <button class="grid-item" id="button-plus">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1rem"
@@ -133,10 +139,12 @@
             </svg>
           </button>
 
-          <button class="grid-item"><sup>+</sup>/<sub>-</sub></button>
-          <button class="grid-item">0</button>
-          <button class="grid-item">,</button>
-          <button class="grid-item equals">
+          <button class="grid-item" id="button-plus-minus">
+            <sup>+</sup>/<sub>-</sub>
+          </button>
+          <button class="grid-item" id="button-zero">0</button>
+          <button class="grid-item" id="button-comma">,</button>
+          <button class="grid-item equals" id="button-equals">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1rem"
