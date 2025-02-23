@@ -55,3 +55,7 @@ console.log(
     .multiplication(1000)
     .getResult()}`
 );
+
+console.log(`Result of exponentiation = ${calc.exponentiation(2).getResult()}`);
+
+console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);

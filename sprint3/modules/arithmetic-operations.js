@@ -26,6 +26,20 @@ function Calculator(value = 0) {
       return this;
     },
 
+    remainder(n) {
+      if (n !== 0) {
+        _value %= n;
+      } else {
+        console.log("Division by zero!");
+      }
+      return this;
+    },
+
+    exponentiation(n) {
+      _value **= n;
+      return this;
+    },
+
     getResult() {
       return _value;
     },
