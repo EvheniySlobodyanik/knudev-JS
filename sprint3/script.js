@@ -18,6 +18,13 @@ const plus = document.getElementById("button-plus");
 const reminder = document.getElementById("button-reminder");
 const exponentiation = document.getElementById("button-exponentiation");
 
+const operations = [
+  { button: plus, symbol: "+" },
+  { button: minus, symbol: "-" },
+  { button: divide, symbol: "/" },
+  { button: multiply, symbol: "*" },
+];
+
 const root = document.getElementById("button-root");
 const oneDivX = document.getElementById("button-1-div-x");
 const plusMinus = document.getElementById("button-plus-minus");
@@ -62,11 +69,11 @@ console.log(`Result of exponentiation = ${calc.exponentiation(2).getResult()}`);
 
 console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
 
-addEventListener("load", calcInput.focus());
+addEventListener("load", () => calcInput.focus());
 
-calculating();
+getAccess();
 
-function calculating() {
+function getAccess() {
   calcInput.addEventListener(
     "keypress",
     () => {
@@ -154,5 +161,11 @@ function calculating() {
       calcInput.value = calcInput.value.replace(/^0+/, "");
     }
     calcInput.value += nine.value;
+  });
+
+  operations.forEach(({ button, symbol }) => {
+    button.addEventListener("click", () => {
+      calcInput.value = calcInput.value.replace(/[+\-*/]$/, "") + symbol;
+    });
   });
 }
