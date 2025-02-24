@@ -125,7 +125,9 @@ function getAccess() {
       )
     ) {
       const calculator = new Calculator(Number(calcInput.value));
+      const number1 = Number(calcInput.value);
       calcInput.value = calculator.exponentiation(2).getResult();
+      runningHistory(number1, 2, "**", calculator.getResult());
     }
   });
 
@@ -205,8 +207,37 @@ function calculating() {
         calculator.remainder(number2);
         break;
     }
+
+    runningHistory(
+      Number(numberArray[0]),
+      number2,
+      operator,
+      calculator.getResult()
+    );
   }
 
   calcInput.value = calculator.getResult();
-  console.log(calculator.getResult());
+}
+
+function runningHistory(number1, number2, operation, result) {
+  switch (operation) {
+    case "+":
+      console.log(`${number1} + ${number2} = ${result}`);
+      break;
+    case "-":
+      console.log(`${number1} - ${number2} = ${result}`);
+      break;
+    case "÷":
+      console.log(`${number1} ÷ ${number2} = ${result}`);
+      break;
+    case "×":
+      console.log(`${number1} × ${number2} = ${result}`);
+      break;
+    case "%":
+      console.log(`${number1} % ${number2} = ${result}`);
+      break;
+    case "**":
+      console.log(`${number1} ** ${number2} = ${result}`);
+      break;
+  }
 }
