@@ -11,6 +11,8 @@ const seven = document.getElementById("button-seven");
 const eight = document.getElementById("button-eight");
 const nine = document.getElementById("button-nine");
 
+const numbers = [one, two, three, four, five, six, seven, eight, nine];
+
 const divide = document.getElementById("button-divide");
 const multiply = document.getElementById("button-multiply");
 const minus = document.getElementById("button-minus");
@@ -27,7 +29,6 @@ const operations = [
 
 const root = document.getElementById("button-root");
 const oneDivX = document.getElementById("button-1-div-x");
-const plusMinus = document.getElementById("button-plus-minus");
 
 const equals = document.getElementById("button-equals");
 const comma = document.getElementById("button-comma");
@@ -39,8 +40,6 @@ const deleteOneSymbol = document.getElementById("button-delete-1-symbol");
 const calcInput = document.getElementById("calc-input");
 
 const calcHistory = document.getElementById("calc-history");
-
-const calcZone = document.getElementById("calculator-zone");
 
 const calc = new Calculator();
 
@@ -100,49 +99,11 @@ function getAccess() {
     }
   });
 
-  one.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += one.value;
-  });
-
-  two.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += two.value;
-  });
-
-  three.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += three.value;
-  });
-
-  four.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += four.value;
-  });
-
-  five.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += five.value;
-  });
-
-  six.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += six.value;
-  });
-
-  seven.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += seven.value;
-  });
-
-  eight.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += eight.value;
-  });
-
-  nine.addEventListener("click", () => {
-    if (calcInput.value === "0") calcInput.value = "";
-    calcInput.value += nine.value;
+  numbers.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (calcInput.value === "0") calcInput.value = "";
+      calcInput.value += button.value;
+    });
   });
 
   operations.forEach(({ button, symbol }) => {
