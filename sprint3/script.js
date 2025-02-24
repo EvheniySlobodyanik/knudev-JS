@@ -124,7 +124,8 @@ function getAccess() {
         calcInput.value === "%"
       )
     ) {
-      calcInput.value = Number(calcInput.value ** 2);
+      const calculator = new Calculator(Number(calcInput.value));
+      calcInput.value = calculator.exponentiation(2).getResult();
     }
   });
 
@@ -178,33 +179,34 @@ function calculating() {
   const numberArray = calcInput.value.match(/(\d+)/g);
   const operatorsArray = calcInput.value.match(/(\D)/g);
 
-  let result;
-  let number1 = numberArray[0];
+  let calculator = new Calculator(Number(numberArray[0]));
+
   let number2;
   let operator;
 
-  for (let i = 0; i < numberArray.length; i++) {
+  for (let i = 0; i < operatorsArray.length; i++) {
     operator = operatorsArray[i];
-    number2 = numberArray[i + 1];
-    for (let k = 0; k < operatorsArray.length; k++) {
-      if (operator === "+") {
-        result = number1 + number2;
-      } else if (operator === "-") {
-        result = number1 - number2;
-      } else if (operator === "÷") {
-        result = number1 / number2;
-      } else if (operator === "×") {
-        result = number1 * number2;
-      } else if (operator === "%") {
-        if (number2 === 0) {
-          calcInput.value = "Division by zero!";
-        }
-        result = number1 % number2;
-      }
+    number2 = Number(numberArray[i + 1]);
+
+    switch (operator) {
+      case "+":
+        calculator.addition(number2);
+        break;
+      case "-":
+        calculator.subtraction(number2);
+        break;
+      case "÷":
+        calculator.division(number2);
+        break;
+      case "×":
+        calculator.multiplication(number2);
+        break;
+      case "%":
+        calculator.remainder(number2);
+        break;
     }
-    number1 = result;
   }
 
-  calcInput.value = result;
-  console.log(result);
+  calcInput.value = calculator.getResult();
+  console.log(calculator.getResult());
 }
