@@ -17,7 +17,7 @@ const divide = document.getElementById("button-divide");
 const multiply = document.getElementById("button-multiply");
 const minus = document.getElementById("button-minus");
 const plus = document.getElementById("button-plus");
-const reminder = document.getElementById("button-reminder");
+const remainder = document.getElementById("button-remainder");
 const exponentiation = document.getElementById("button-exponentiation");
 
 const operations = [
@@ -25,6 +25,7 @@ const operations = [
   { button: minus, symbol: "-" },
   { button: divide, symbol: "÷" },
   { button: multiply, symbol: "×" },
+  { button: remainder, symbol: "%" },
 ];
 
 const root = document.getElementById("button-root");
@@ -108,7 +109,49 @@ function getAccess() {
 
   operations.forEach(({ button, symbol }) => {
     button.addEventListener("click", () => {
-      calcInput.value = calcInput.value.replace(/[-+÷×]$/, "") + symbol;
+      calcInput.value = calcInput.value.replace(/[-+÷×%]$/, "") + symbol;
     });
+  });
+
+  exponentiation.addEventListener("click", () => {
+    if (
+      !(
+        calcInput.value === "+" ||
+        calcInput.value === "-" ||
+        calcInput.value === "÷" ||
+        calcInput.value === "×" ||
+        calcInput.value === "%"
+      )
+    ) {
+      calcInput.value = Number(calcInput.value ** 2);
+    }
+  });
+
+  root.addEventListener("click", () => {
+    if (
+      !(
+        calcInput.value === "+" ||
+        calcInput.value === "-" ||
+        calcInput.value === "÷" ||
+        calcInput.value === "×" ||
+        calcInput.value === "%"
+      )
+    ) {
+      calcInput.value = Number(Math.sqrt(calcInput.value));
+    }
+  });
+
+  oneDivX.addEventListener("click", () => {
+    if (
+      !(
+        calcInput.value === "+" ||
+        calcInput.value === "-" ||
+        calcInput.value === "÷" ||
+        calcInput.value === "×" ||
+        calcInput.value === "%"
+      )
+    ) {
+      calcInput.value = Number(1 / calcInput.value);
+    }
   });
 }
