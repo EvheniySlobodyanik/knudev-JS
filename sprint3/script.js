@@ -41,6 +41,10 @@ const deleteOneSymbol = document.getElementById("button-delete-1-symbol");
 const calcInput = document.getElementById("calc-input");
 
 const calcHistory = document.getElementById("calc-history");
+const historySection = document.getElementById("history-section");
+const containerHistory = document.getElementById("history-container");
+const btnClearHistory = document.getElementById("button-clear-history");
+let counter = 0;
 
 const calc = new Calculator();
 
@@ -81,6 +85,19 @@ function getAccess() {
     },
     { once: true }
   );
+
+  calcHistory.addEventListener("click", () => {
+    showHistory();
+
+    if (historySection.style.display === "block" && counter === 2) {
+      hideHistory();
+    }
+    counter++;
+  });
+
+  btnClearHistory.addEventListener("click", () => {
+    deleteHistory();
+  });
 
   deleteOneSymbol.addEventListener("click", () => {
     calcInput.value = calcInput.value.slice(0, -1);
@@ -223,21 +240,47 @@ function runningHistory(number1, number2, operation, result) {
   switch (operation) {
     case "+":
       console.log(`${number1} + ${number2} = ${result}`);
+      displayingHistory(`${number1} + ${number2} = ${result}`);
       break;
     case "-":
       console.log(`${number1} - ${number2} = ${result}`);
+      displayingHistory(`${number1} - ${number2} = ${result}`);
       break;
     case "÷":
       console.log(`${number1} ÷ ${number2} = ${result}`);
+      displayingHistory(`${number1} ÷ ${number2} = ${result}`);
       break;
     case "×":
       console.log(`${number1} × ${number2} = ${result}`);
+      displayingHistory(`${number1} × ${number2} = ${result}`);
       break;
     case "%":
       console.log(`${number1} % ${number2} = ${result}`);
+      displayingHistory(`${number1} % ${number2} = ${result}`);
       break;
     case "**":
       console.log(`${number1} ** ${number2} = ${result}`);
+      displayingHistory(`${number1} ** ${number2} = ${result}`);
       break;
   }
+}
+
+function displayingHistory(context) {
+  const button = document.createElement("button");
+  button.textContent = context;
+  button.classList.add("history-containment");
+  containerHistory.appendChild(button);
+}
+
+function showHistory() {
+  historySection.style.display = "block";
+}
+
+function hideHistory() {
+  historySection.style.display = "none";
+  counter = 0;
+}
+
+function deleteHistory() {
+  containerHistory.innerHTML = "";
 }

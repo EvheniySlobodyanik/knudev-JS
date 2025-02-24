@@ -20,7 +20,7 @@
         <div class="grid-container">
           <button class="grid-item" id="button-remainder">%</button>
           <button class="grid-item" id="button-clear">C</button>
-          <button class="grid-item" id="button-undo">U</button>
+          <button class="grid-item" id="button-clear-history">CH</button>
           <button class="grid-item" id="button-delete-1-symbol">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,6 +154,14 @@
             </svg>
           </button>
         </div>
+      </section>
+
+      <section class="section section-history" id="history-section">
+        <div class="container">
+          <h2 class="history__title">History of Operations</h2>
+          <p class="history__paragraph">Click on operation below to undo it</p>
+        </div>
+        <div class="history__container" id="history-container"></div>
       </section>
     </main>
 
