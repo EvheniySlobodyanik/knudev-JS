@@ -50,24 +50,24 @@ const sendMessage = function () {
 
 sendMessage();
 
-console.log(
-  `Result of addition = ${calc.addition(15).addition(10).getResult()}`
-);
+// console.log(
+//   `Result of addition = ${calc.addition(15).addition(10).getResult()}`
+// );
 
-console.log(`Result of subtraction = ${calc.subtraction(-5).getResult()}`);
+// console.log(`Result of subtraction = ${calc.subtraction(-5).getResult()}`);
 
-console.log(`Result of division = ${calc.division(10).getResult()}`);
+// console.log(`Result of division = ${calc.division(10).getResult()}`);
 
-console.log(
-  `Result of multiplication = ${calc
-    .multiplication(100)
-    .multiplication(1000)
-    .getResult()}`
-);
+// console.log(
+//   `Result of multiplication = ${calc
+//     .multiplication(100)
+//     .multiplication(1000)
+//     .getResult()}`
+// );
 
-console.log(`Result of exponentiation = ${calc.exponentiation(2).getResult()}`);
+// console.log(`Result of exponentiation = ${calc.exponentiation(2).getResult()}`);
 
-console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
+// console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
 
 addEventListener("load", () => calcInput.focus());
 
@@ -109,6 +109,7 @@ function getAccess() {
 
   operations.forEach(({ button, symbol }) => {
     button.addEventListener("click", () => {
+      calcInput.value = calcInput.value.replace(",", "");
       calcInput.value = calcInput.value.replace(/[-+÷×%]$/, "") + symbol;
     });
   });
@@ -154,4 +155,56 @@ function getAccess() {
       calcInput.value = Number(1 / calcInput.value);
     }
   });
+
+  comma.addEventListener("click", () => {
+    if (
+      !(
+        calcInput.value === "+" ||
+        calcInput.value === "-" ||
+        calcInput.value === "÷" ||
+        calcInput.value === "×" ||
+        calcInput.value === "%" ||
+        calcInput.value.endsWith(",")
+      )
+    ) {
+      calcInput.value += comma.value;
+    }
+  });
+
+  equals.addEventListener("click", () => calculating());
+}
+
+function calculating() {
+  const numberArray = calcInput.value.match(/(\d+)/g);
+  const operatorsArray = calcInput.value.match(/(\D)/g);
+
+  let result;
+  let number1 = numberArray[0];
+  let number2;
+  let operator;
+
+  for (let i = 0; i < numberArray.length; i++) {
+    operator = operatorsArray[i];
+    number2 = numberArray[i + 1];
+    for (let k = 0; k < operatorsArray.length; k++) {
+      if (operator === "+") {
+        result = number1 + number2;
+      } else if (operator === "-") {
+        result = number1 - number2;
+      } else if (operator === "÷") {
+        result = number1 / number2;
+      } else if (operator === "×") {
+        result = number1 * number2;
+      } else if (operator === "%") {
+        if (number2 === 0) {
+          calcInput.value = "Division by zero!";
+        }
+        result = number1 % number2;
+      }
+    }
+    number1 = result;
+  }
+
+  calcInput.value = result;
+  console.log(result);
 }
