@@ -35,7 +35,6 @@ const equals = document.getElementById("button-equals");
 const comma = document.getElementById("button-comma");
 
 const clear = document.getElementById("button-clear");
-const undo = document.getElementById("button-undo");
 const deleteOneSymbol = document.getElementById("button-delete-1-symbol");
 
 const calcInput = document.getElementById("calc-input");
@@ -45,6 +44,8 @@ const historySection = document.getElementById("history-section");
 const containerHistory = document.getElementById("history-container");
 const btnClearHistory = document.getElementById("button-clear-history");
 let counter = 0;
+
+const buttonArray = [];
 
 const calc = new Calculator();
 
@@ -78,118 +79,128 @@ addEventListener("load", () => calcInput.focus());
 getAccess();
 
 function getAccess() {
-  calcInput.addEventListener(
-    "keypress",
-    () => {
-      calcInput.value = "";
-    },
-    { once: true }
-  );
+  try {
+    calcInput.addEventListener(
+      "keypress",
+      () => {
+        calcInput.value = "";
+      },
+      { once: true }
+    );
 
-  calcHistory.addEventListener("click", () => {
-    showHistory();
+    calcHistory.addEventListener("click", () => {
+      showHistory();
 
-    if (historySection.style.display === "block" && counter === 2) {
-      hideHistory();
-    }
-    counter++;
-  });
-
-  btnClearHistory.addEventListener("click", () => {
-    deleteHistory();
-  });
-
-  deleteOneSymbol.addEventListener("click", () => {
-    calcInput.value = calcInput.value.slice(0, -1);
-  });
-
-  clear.addEventListener("click", () => {
-    calcInput.value = "0";
-  });
-
-  zero.addEventListener("click", () => {
-    if (calcInput.value.startsWith("0")) {
-      calcInput.value = calcInput.value.replace(/^0+/, "");
-    }
-
-    if (!(calcInput.value === "0")) {
-      calcInput.value += zero.value;
-    }
-  });
-
-  numbers.forEach((button) => {
-    button.addEventListener("click", () => {
-      if (calcInput.value === "0") calcInput.value = "";
-      calcInput.value += button.value;
+      if (historySection.style.display === "block" && counter === 2) {
+        hideHistory();
+      }
+      counter++;
     });
-  });
 
-  operations.forEach(({ button, symbol }) => {
-    button.addEventListener("click", () => {
-      calcInput.value = calcInput.value.replace(",", "");
-      calcInput.value = calcInput.value.replace(/[-+÷×%]$/, "") + symbol;
+    btnClearHistory.addEventListener("click", () => {
+      deleteHistory();
     });
-  });
 
-  exponentiation.addEventListener("click", () => {
-    if (
-      !(
-        calcInput.value === "+" ||
-        calcInput.value === "-" ||
-        calcInput.value === "÷" ||
-        calcInput.value === "×" ||
-        calcInput.value === "%"
-      )
-    ) {
-      const calculator = new Calculator(Number(calcInput.value));
-      const number1 = Number(calcInput.value);
-      calcInput.value = calculator.exponentiation(2).getResult();
-      runningHistory(number1, 2, "**", calculator.getResult());
-    }
-  });
+    deleteOneSymbol.addEventListener("click", () => {
+      calcInput.value = calcInput.value.slice(0, -1);
+    });
 
-  root.addEventListener("click", () => {
-    if (
-      !(
-        calcInput.value === "+" ||
-        calcInput.value === "-" ||
-        calcInput.value === "÷" ||
-        calcInput.value === "×" ||
-        calcInput.value === "%"
-      )
-    ) {
-      calcInput.value = Number(Math.sqrt(calcInput.value));
-    }
-  });
+    clear.addEventListener("click", () => {
+      calcInput.value = "0";
+    });
 
-  oneDivX.addEventListener("click", () => {
-    if (
-      !(
-        calcInput.value === "+" ||
-        calcInput.value === "-" ||
-        calcInput.value === "÷" ||
-        calcInput.value === "×" ||
-        calcInput.value === "%"
-      )
-    ) {
-      calcInput.value = Number(1 / calcInput.value);
-    }
-  });
+    zero.addEventListener("click", () => {
+      if (calcInput.value.startsWith("0")) {
+        calcInput.value = calcInput.value.replace(/^0+/, "");
+      }
 
-  comma.addEventListener("click", () => {
-    if (
-      !(
-        calcInput.value === "+" ||
-        calcInput.value === "-" ||
-        calcInput.value === "÷" ||
-        calcInput.value === "×" ||
-        calcInput.value === "%" ||
-        calcInput.value.endsWith(",")
-      )
-    ) {
-      calcInput.value += comma.value;
+      if (!(calcInput.value === "0")) {
+        calcInput.value += zero.value;
+      }
+    });
+
+    numbers.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (calcInput.value === "0") calcInput.value = "";
+        calcInput.value += button.value;
+      });
+    });
+
+    operations.forEach(({ button, symbol }) => {
+      button.addEventListener("click", () => {
+        calcInput.value = calcInput.value.replace(",", "");
+        calcInput.value = calcInput.value.replace(/[-+÷×%]$/, "") + symbol;
+      });
+    });
+
+    exponentiation.addEventListener("click", () => {
+      if (
+        !(
+          calcInput.value === "+" ||
+          calcInput.value === "-" ||
+          calcInput.value === "÷" ||
+          calcInput.value === "×" ||
+          calcInput.value === "%"
+        )
+      ) {
+        const calculator = new Calculator(Number(calcInput.value));
+        const number1 = Number(calcInput.value);
+        calcInput.value = calculator.exponentiation(2).getResult();
+        runningHistory(number1, 2, "**", calculator.getResult());
+      }
+    });
+
+    root.addEventListener("click", () => {
+      if (
+        !(
+          calcInput.value === "+" ||
+          calcInput.value === "-" ||
+          calcInput.value === "÷" ||
+          calcInput.value === "×" ||
+          calcInput.value === "%"
+        )
+      ) {
+        calcInput.value = Number(Math.sqrt(calcInput.value));
+      }
+    });
+
+    oneDivX.addEventListener("click", () => {
+      if (
+        !(
+          calcInput.value === "+" ||
+          calcInput.value === "-" ||
+          calcInput.value === "÷" ||
+          calcInput.value === "×" ||
+          calcInput.value === "%"
+        )
+      ) {
+        calcInput.value = Number(1 / calcInput.value);
+      }
+    });
+
+    comma.addEventListener("click", () => {
+      if (
+        !(
+          calcInput.value === "+" ||
+          calcInput.value === "-" ||
+          calcInput.value === "÷" ||
+          calcInput.value === "×" ||
+          calcInput.value === "%" ||
+          calcInput.value.endsWith(",")
+        )
+      ) {
+        calcInput.value += comma.value;
+      }
+    });
+  } catch (error) {
+    if (error instanceof ReferenceError) {
+      console.error("Reference Error Occurred: " + error.message);
+    } else if (error instanceof SyntaxError) {
+      console.error("Syntax Error Occurred: " + error.message);
+    } else if (error instanceof TypeError) {
+      console.error("Type Error Occurred: " + error.message);
     }
-  });
+  }
 
   equals.addEventListener("click", () => calculating());
 }
@@ -203,73 +214,92 @@ function calculating() {
   let number2;
   let operator;
 
-  for (let i = 0; i < operatorsArray.length; i++) {
-    operator = operatorsArray[i];
-    number2 = Number(numberArray[i + 1]);
+  try {
+    for (let i = 0; i < operatorsArray.length; i++) {
+      operator = operatorsArray[i];
+      number2 = Number(numberArray[i + 1]);
 
-    switch (operator) {
-      case "+":
-        calculator.addition(number2);
-        break;
-      case "-":
-        calculator.subtraction(number2);
-        break;
-      case "÷":
-        calculator.division(number2);
-        break;
-      case "×":
-        calculator.multiplication(number2);
-        break;
-      case "%":
-        calculator.remainder(number2);
-        break;
+      switch (operator) {
+        case "+":
+          calculator.addition(number2);
+          break;
+        case "-":
+          calculator.subtraction(number2);
+          break;
+        case "÷":
+          calculator.division(number2);
+          break;
+        case "×":
+          calculator.multiplication(number2);
+          break;
+        case "%":
+          calculator.remainder(number2);
+          break;
+      }
+
+      runningHistory(
+        Number(numberArray[0]),
+        number2,
+        operator,
+        calculator.getResult()
+      );
     }
-
-    runningHistory(
-      Number(numberArray[0]),
-      number2,
-      operator,
-      calculator.getResult()
-    );
+  } catch (error) {
+    if (error instanceof RangeError) {
+      console.error("Range Error Occurred: " + error.message);
+    } else if (error instanceof ReferenceError) {
+      console.error("Reference Error Occurred: " + error.message);
+    }
   }
 
   calcInput.value = calculator.getResult();
 }
 
 function runningHistory(number1, number2, operation, result) {
-  switch (operation) {
-    case "+":
-      console.log(`${number1} + ${number2} = ${result}`);
-      displayingHistory(`${number1} + ${number2} = ${result}`);
-      break;
-    case "-":
-      console.log(`${number1} - ${number2} = ${result}`);
-      displayingHistory(`${number1} - ${number2} = ${result}`);
-      break;
-    case "÷":
-      console.log(`${number1} ÷ ${number2} = ${result}`);
-      displayingHistory(`${number1} ÷ ${number2} = ${result}`);
-      break;
-    case "×":
-      console.log(`${number1} × ${number2} = ${result}`);
-      displayingHistory(`${number1} × ${number2} = ${result}`);
-      break;
-    case "%":
-      console.log(`${number1} % ${number2} = ${result}`);
-      displayingHistory(`${number1} % ${number2} = ${result}`);
-      break;
-    case "**":
-      console.log(`${number1} ** ${number2} = ${result}`);
-      displayingHistory(`${number1} ** ${number2} = ${result}`);
-      break;
+  try {
+    switch (operation) {
+      case "+":
+        console.log(`${number1} + ${number2} = ${result}`);
+        displayingHistory(`${number1} + ${number2} = ${result}`);
+        break;
+      case "-":
+        console.log(`${number1} - ${number2} = ${result}`);
+        displayingHistory(`${number1} - ${number2} = ${result}`);
+        break;
+      case "÷":
+        console.log(`${number1} ÷ ${number2} = ${result}`);
+        displayingHistory(`${number1} ÷ ${number2} = ${result}`);
+        break;
+      case "×":
+        console.log(`${number1} × ${number2} = ${result}`);
+        displayingHistory(`${number1} × ${number2} = ${result}`);
+        break;
+      case "%":
+        console.log(`${number1} % ${number2} = ${result}`);
+        displayingHistory(`${number1} % ${number2} = ${result}`);
+        break;
+      case "**":
+        console.log(`${number1} ** ${number2} = ${result}`);
+        displayingHistory(`${number1} ** ${number2} = ${result}`);
+        break;
+    }
+  } catch (error) {
+    if (error instanceof ReferenceError) {
+      console.error("Reference Error Occurred: " + error.message);
+    } else if (error instanceof RangeError) {
+      console.error("Range Error Occurred: " + error.message);
+    }
   }
 }
 
 function displayingHistory(context) {
   const button = document.createElement("button");
   button.textContent = context;
+  button.value = context;
   button.classList.add("history-containment");
+  buttonArray.push(button);
   containerHistory.appendChild(button);
+  undo(buttonArray);
 }
 
 function showHistory() {
@@ -283,4 +313,13 @@ function hideHistory() {
 
 function deleteHistory() {
   containerHistory.innerHTML = "";
+}
+
+function undo(buttonArray) {
+  buttonArray.forEach((button) => {
+    button.addEventListener("click", () => {
+      let result = button.textContent.split("=")[1];
+      calcInput.value = result;
+    });
+  });
 }
