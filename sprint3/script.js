@@ -74,8 +74,6 @@ sendMessage();
 
 // console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
 
-addEventListener("load", () => calcInput.focus());
-
 var f = [];
 
 function calcFactorial(n) {
@@ -210,18 +208,19 @@ function getAccess() {
 }
 
 function calculating() {
-  const numberArray = calcInput.value.match(/(\d+)/g);
-  const operatorsArray = calcInput.value.match(/(\D)/g);
+  let inputExpression = calcInput.value;
+  const numberArray = inputExpression.match(/(\d+)/g);
+  const operatorsArray = inputExpression.match(/[-+÷×%]/g);
 
-  let calculator = new Calculator(Number(numberArray[0]));
+  if (!numberArray || numberArray.length === 0) return;
 
-  let number2;
-  let operator;
+  let firstNumber = Number(numberArray[0]);
+  let calculator = new Calculator(firstNumber);
 
   try {
     for (let i = 0; i < operatorsArray.length; i++) {
-      operator = operatorsArray[i];
-      number2 = Number(numberArray[i + 1]);
+      let operator = operatorsArray[i];
+      let number2 = Number(numberArray[i + 1]);
 
       switch (operator) {
         case "+":
@@ -241,19 +240,11 @@ function calculating() {
           break;
       }
 
-      runningHistory(
-        Number(numberArray[0]),
-        number2,
-        operator,
-        calculator.getResult()
-      );
+      runningHistory(firstNumber, number2, operator, calculator.getResult());
+      firstNumber = calculator.getResult();
     }
   } catch (error) {
-    if (error instanceof RangeError) {
-      console.error("Range Error Occurred: " + error.message);
-    } else if (error instanceof ReferenceError) {
-      console.error("Reference Error Occurred: " + error.message);
-    }
+    console.error("Calculation Error:", error.message);
   }
 
   calcInput.value = calculator.getResult();
