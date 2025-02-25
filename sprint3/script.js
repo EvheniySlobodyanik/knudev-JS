@@ -30,9 +30,9 @@ const operations = [
 
 const root = document.getElementById("button-root");
 const oneDivX = document.getElementById("button-1-div-x");
+const factorial = document.getElementById("button-factorial");
 
 const equals = document.getElementById("button-equals");
-const comma = document.getElementById("button-comma");
 
 const clear = document.getElementById("button-clear");
 const deleteOneSymbol = document.getElementById("button-delete-1-symbol");
@@ -75,6 +75,20 @@ sendMessage();
 // console.log(`Result of remainder = ${calc.remainder(100).getResult()}`);
 
 addEventListener("load", () => calcInput.focus());
+
+var f = [];
+
+function calcFactorial(n) {
+  try {
+    if (n == 0 || n == 1) return 1;
+    if (f[n] > 0) return f[n];
+    return (f[n] = calcFactorial(n - 1) * n);
+  } catch (error) {
+    if (error instanceof RangeError) {
+      console.error("Range Error Occurred: " + error.message);
+    }
+  }
+}
 
 getAccess();
 
@@ -128,7 +142,6 @@ function getAccess() {
 
     operations.forEach(({ button, symbol }) => {
       button.addEventListener("click", () => {
-        calcInput.value = calcInput.value.replace(",", "");
         calcInput.value = calcInput.value.replace(/[-+÷×%]$/, "") + symbol;
       });
     });
@@ -178,18 +191,9 @@ function getAccess() {
       }
     });
 
-    comma.addEventListener("click", () => {
-      if (
-        !(
-          calcInput.value === "+" ||
-          calcInput.value === "-" ||
-          calcInput.value === "÷" ||
-          calcInput.value === "×" ||
-          calcInput.value === "%" ||
-          calcInput.value.endsWith(",")
-        )
-      ) {
-        calcInput.value += comma.value;
+    factorial.addEventListener("click", () => {
+      if (/^[0-9]+$/.test(calcInput.value)) {
+        calcInput.value = calcFactorial(Number(calcInput.value));
       }
     });
   } catch (error) {
