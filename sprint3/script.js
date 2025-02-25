@@ -101,7 +101,7 @@ function calcFactorial(n) {
 //realizes opportunities of special keys buttons
 function specialKeys() {
   performEvent(deleteOneSymbol, "click", () => {
-    calcInput.value = getInputExpression().slice(0, -1);
+    calcInput.value = calcInput.value.slice(0, -1);
   });
 
   performEvent(clear, "click", () => {
@@ -132,7 +132,7 @@ function getNumbersOperations() {
 
   numbers.forEach((button) => {
     performEvent(button, "click", () => {
-      const lastChar = getInputExpression().e.slice(-1);
+      const lastChar = calcInput.value.slice(-1);
 
       if (isCalculated) {
         isCalculated = false;
