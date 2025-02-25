@@ -47,6 +47,11 @@ let counter = 0;
 
 const buttonArray = [];
 
+let lastOperator = null;
+let lastNumber = null;
+
+let isCalculated = false;
+
 const calc = new Calculator();
 
 const sendMessage = function () {
@@ -133,8 +138,13 @@ function getAccess() {
 
     numbers.forEach((button) => {
       button.addEventListener("click", () => {
-        if (calcInput.value === "0") calcInput.value = "";
-        calcInput.value += button.value;
+        if (isCalculated) {
+          calcInput.value = button.value;
+          isCalculated = false;
+        } else {
+          if (calcInput.value === "0") calcInput.value = "";
+          calcInput.value += button.value;
+        }
       });
     });
 
@@ -204,7 +214,12 @@ function getAccess() {
     }
   }
 
-  equals.addEventListener("click", () => calculating());
+  equals.addEventListener("click", () => {
+    if (calcInput.value.length > 1 && /[-+÷×%]/.test(calcInput.value)) {
+      calculating();
+      isCalculated = true;
+    }
+  });
 }
 
 function calculating() {
@@ -218,9 +233,40 @@ function calculating() {
   let calculator = new Calculator(firstNumber);
 
   try {
+    if (numberArray.length === 1 && operatorsArray) {
+      if (lastOperator && lastNumber !== null) {
+        switch (lastOperator) {
+          case "+":
+            calculator.addition(lastNumber);
+            break;
+          case "-":
+            calculator.subtraction(lastNumber);
+            break;
+          case "÷":
+            calculator.division(lastNumber);
+            break;
+          case "×":
+            calculator.multiplication(lastNumber);
+            break;
+          case "%":
+            calculator.remainder(lastNumber);
+            break;
+        }
+
+        runningHistory(
+          firstNumber,
+          lastNumber,
+          lastOperator,
+          calculator.getResult()
+        );
+        calcInput.value = calculator.getResult();
+        return;
+      }
+    }
+
     for (let i = 0; i < operatorsArray.length; i++) {
       let operator = operatorsArray[i];
-      let number2 = Number(numberArray[i + 1]);
+      let number2 = Number(numberArray[i + 1]) || firstNumber;
 
       switch (operator) {
         case "+":
@@ -243,6 +289,9 @@ function calculating() {
       runningHistory(firstNumber, number2, operator, calculator.getResult());
       firstNumber = calculator.getResult();
     }
+
+    lastOperator = operatorsArray[operatorsArray.length - 1] || lastOperator;
+    lastNumber = Number(numberArray[numberArray.length - 1]) || lastNumber;
   } catch (error) {
     console.error("Calculation Error:", error.message);
   }
