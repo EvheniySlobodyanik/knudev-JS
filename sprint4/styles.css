@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  font-family: "Lora", serif;
+  background-color: #606c38;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  .title {
+    font-size: 3em;
+    color: #fefae0;
+  }
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 10rem;
+
+  .section {
+    background-color: #283618;
+    color: #fefae0;
+    padding: 2rem;
+  }
+
+  .section-create-management {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .title {
+      font-size: 1.75em;
+    }
+
+    .container {
+      background-color: #bc6c25;
+      padding: 2rem;
+    }
+  }
+
+  .section-list {
+    .list {
+      list-style: decimal;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .list-item {
+      background-color: #dda15e;
+      padding: 1rem;
+    }
+  }
+}
