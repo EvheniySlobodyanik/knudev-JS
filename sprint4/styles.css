@@ -30,6 +30,28 @@
     background-color: #283618;
     color: #fefae0;
     padding: 2rem;
+
+    .button {
+      padding: 0.75rem;
+      width: 15rem;
+      margin-top: 2rem;
+      border: none;
+      border-radius: 10px;
+      color: #fefae0;
+      background-color: #dda15e;
+      cursor: pointer;
+    }
+
+    .button:hover,
+    .button:focus {
+      background-color: #606c38;
+      transition: background 0.3s ease, transform 0.2s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .button:focus {
+      box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.7);
+    }
   }
 
   .section-create-management {
@@ -38,26 +60,119 @@
     gap: 2rem;
 
     .title {
-      font-size: 1.75em;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .paragraph {
+      font-size: 1.5em;
+      width: 15rem;
+      text-align: center;
+      margin: 0 auto;
+      margin-top: 1rem;
     }
 
     .container {
       background-color: #bc6c25;
       padding: 2rem;
     }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.25rem;
+    }
+
+    .label {
+      color: #faedcd;
+      font-size: 1.5em;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 15rem;
+      height: 1.75rem;
+      cursor: text;
+    }
+
+    .select {
+      cursor: pointer;
+    }
+
+    .textarea {
+      resize: none;
+      height: 5rem;
+    }
+
+    .input:hover,
+    .select:hover,
+    .textarea:hover {
+      border-color: #26c6da;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: #00acc1;
+      box-shadow: 0 0 8px rgba(0, 172, 193, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .container-manage {
+      padding-left: 2.5rem;
+
+      .select-hidden {
+        display: flex;
+        flex-direction: column;
+
+        .button-delete-block {
+          margin-bottom: 1rem;
+          display: none;
+        }
+      }
+
+      .container-hide {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        .button {
+          width: 7rem;
+        }
+      }
+    }
   }
 
   .section-list {
+    width: 40rem;
+
+    .paragraph {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.75em;
+    }
+
     .list {
       list-style: decimal;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      padding: 1rem;
     }
 
     .list-item {
       background-color: #dda15e;
       padding: 1rem;
+      font-size: 1.25em;
     }
   }
 }
