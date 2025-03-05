@@ -10,12 +10,17 @@
 
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
 
   .title {
     font-size: 3em;
+    color: #fefae0;
+  }
+
+  .paragraph {
     color: #fefae0;
   }
 }
@@ -160,7 +165,7 @@
   .section-list {
     width: 40rem;
     position: absolute;
-    top: 10.75rem;
+    top: 12rem;
     right: 6rem;
 
     .paragraph {

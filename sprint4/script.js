@@ -24,10 +24,21 @@ const buttonContainer = document.getElementById("buttons");
 const buttonChange = document.getElementById("button-change");
 const buttonDelete = document.getElementById("button-delete");
 
+//Save a page visited count
+let visitCount = parseInt(localStorage.getItem("visitCount")) || 0;
+visitCount++;
+localStorage.setItem("visitCount", visitCount);
+
+//Display page visited count
+const paraVisit = document.getElementById("para-visit");
+paraVisit.textContent = `You visited this page ${visitCount} times!`;
+
+//handle events
 function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(event, handler, options);
 }
 
+//create object
 function Task(name, description, status, dueDate) {
   this.name = name;
   this.description = description;
@@ -35,19 +46,21 @@ function Task(name, description, status, dueDate) {
   this.dueDate = dueDate;
 }
 
-function createTask(name, description, status, dueDate) {
-  let task = new Task(name, description, status, dueDate);
+//create task on screen
+//using destructuring {] in args so i don`t need to create new Task and then address to it, so directly
+function createTask({ name, description, status, dueDate }) {
   const block = document.createElement("li");
   block.innerHTML = `
-  <p>Name: ${task.name}</p>
-  <p>Description: ${task.description}</p>
-  <p>Status: ${task.status}</p>
-  <p>DueDate: ${task.dueDate}</p>
+  <p>Name: ${name}</p>
+  <p>Description: ${description}</p>
+  <p>Status: ${status}</p>
+  <p>DueDate: ${dueDate}</p>
   `;
   block.classList.add("list-item");
   list.appendChild(block);
 }
 
+//manage form
 attachEvent(formCreate, "submit", (event) => {
   event.preventDefault();
 
@@ -57,13 +70,16 @@ attachEvent(formCreate, "submit", (event) => {
     taskStatus.value !== "" &&
     taskDate.value !== ""
   ) {
-    const name = taskName.value;
-    const description = taskDescription.value;
-    const status = taskStatus.value;
-    const dueDate = taskDate.value;
+    //using destructuring to pass variables to function better
+    const taskData = {
+      name: taskName.value,
+      description: taskDescription.value,
+      status: taskStatus.value,
+      dueDate: taskDate.value,
+    };
 
-    createTask(name, description, status, dueDate);
-    createOptions(name);
+    createTask(taskData);
+    createOptions(taskData.name);
 
     formCreate.reset();
   } else {
@@ -76,6 +92,7 @@ attachEvent(formCreate, "submit", (event) => {
   }
 });
 
+//create option for two selects based on name from task
 function createOptions(nameValue) {
   const option = document.createElement("option");
   option.value = nameValue;
@@ -84,6 +101,7 @@ function createOptions(nameValue) {
   selectDeleteBlock.appendChild(option.cloneNode(true));
 }
 
+//change anything in task
 function changeTask() {
   const items = list.querySelectorAll("li");
 
@@ -99,6 +117,7 @@ function changeTask() {
   }
 }
 
+//delete any task completely
 function deleteTask() {
   const items = list.querySelectorAll("li");
 
@@ -109,11 +128,13 @@ function deleteTask() {
   }
 }
 
+//show UI for deleting task(block)
 attachEvent(buttonChange, "click", () => {
   containerHidden.style.display = "flex";
   buttons.style.display = "none";
 });
 
+//show UI for changing task(block)
 attachEvent(buttonDelete, "click", () => {
   deleteContainer.style.display = "flex";
   buttons.style.display = "none";
