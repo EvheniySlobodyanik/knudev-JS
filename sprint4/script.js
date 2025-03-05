@@ -33,6 +33,51 @@ localStorage.setItem("visitCount", visitCount);
 const paraVisit = document.getElementById("para-visit");
 paraVisit.textContent = `You visited this page ${visitCount} times!`;
 
+window.onload = function () {
+  loadTaskFromLocalStorage();
+};
+
+//persist tasks
+function loadTaskFromLocalStorage() {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  tasks.forEach((task) => {
+    const block = document.createElement("li");
+    block.innerHTML = `
+      <p>Name: ${task.name}</p>
+      <p>Description: ${task.description}</p>
+      <p>Status: ${task.status}</p>
+      <p>DueDate: ${task.dueDate}</p>
+    `;
+    block.classList.add("list-item");
+    list.appendChild(block);
+
+    createOptions(task.name);
+  });
+}
+
+//delete tasks from storage by name
+function deleteTaskFromLocalStorage(taskName) {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  //Filter out the task with the given name
+  tasks = tasks.filter((task) => task.name !== taskName);
+
+  //Save the updated tasks back to localStorage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+//update task in localStorage
+function updateTaskInLocalStorage(oldName, newTaskData) {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  tasks = tasks.map((task) =>
+    task.name === oldName ? { ...task, ...newTaskData } : task
+  );
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 //handle events
 function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(event, handler, options);
@@ -47,8 +92,16 @@ function Task(name, description, status, dueDate) {
 }
 
 //create task on screen
-//using destructuring {] in args so i don`t need to create new Task and then address to it, so directly
+//using destructuring in args to take taskData
 function createTask({ name, description, status, dueDate }) {
+  //using destructuring {] in args so i don`t need to create new Task and then address to it, so directly
+  const task = { name, description, status, dueDate };
+
+  //save tasks to storage
+  let tasks = JSON.parse(localStorage.getItem(`tasks`)) || [];
+  tasks.push(task);
+  localStorage.setItem(`tasks`, JSON.stringify(tasks));
+
   const block = document.createElement("li");
   block.innerHTML = `
   <p>Name: ${name}</p>
@@ -101,18 +154,28 @@ function createOptions(nameValue) {
   selectDeleteBlock.appendChild(option.cloneNode(true));
 }
 
-//change anything in task
+//change anything in task and save changes permanently
 function changeTask() {
+  const selectedTaskName = selectChangeBlock.value;
   const items = list.querySelectorAll("li");
 
   for (let i = items.length - 1; i >= 0; i--) {
-    if (items[i].textContent.includes(selectChangeBlock.value)) {
+    if (items[i].textContent.includes(selectedTaskName)) {
+      //update the UI
       items[i].innerHTML = `
-      <p>Name: ${changeName.value}</p>
-      <p>Description: ${changeDescription.value}</p>
-      <p>Status: ${changeStatus.value}</p>
-      <p>DueDate: ${changeDate.value}</p>
+        <p>Name: ${changeName.value}</p>
+        <p>Description: ${changeDescription.value}</p>
+        <p>Status: ${changeStatus.value}</p>
+        <p>DueDate: ${changeDate.value}</p>
       `;
+
+      //update localStorage
+      updateTaskInLocalStorage(selectedTaskName, {
+        name: changeName.value,
+        description: changeDescription.value,
+        status: changeStatus.value,
+        dueDate: changeDate.value,
+      });
     }
   }
 }
@@ -123,7 +186,8 @@ function deleteTask() {
 
   for (let i = items.length - 1; i >= 0; i--) {
     if (items[i].textContent.includes(selectDeleteBlock.value)) {
-      list.removeChild(items[i]);
+      deleteTaskFromLocalStorage(selectDeleteBlock.value); //remove from localStorage
+      list.removeChild(items[i]); //remove from UI
     }
   }
 }
