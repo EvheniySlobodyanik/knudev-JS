@@ -19,7 +19,7 @@
         <div class="container-create container">
           <h2 class="title">Create</h2>
 
-          <form class="form">
+          <form class="form" id="form-create">
             <label class="label" for="task-name">Name: </label>
             <input type="text" class="input" id="task-name" />
 
@@ -28,18 +28,20 @@
 
             <label class="label" for="task-status">Status: </label>
             <select class="select" id="task-status">
-              <option class="select-option" value="incomplete">
+              <option class="select-option" value="not started yet">
                 Not Started Yet
               </option>
-              <option class="select-option" value="process">In Process</option>
-              <option class="select-option" value="complete">Completed</option>
+              <option class="select-option" value="in process">
+                In Process
+              </option>
+              <option class="select-option" value="completed">Completed</option>
             </select>
 
             <label class="label" for="task-date">DueData: </label>
             <input type="date" class="input" id="task-date" />
 
             <button class="button" id="button-create" type="submit">
-              Submit
+              Create
             </button>
           </form>
         </div>
@@ -49,16 +51,23 @@
           <p class="paragraph">
             You can choose to change something in task or delete task
           </p>
+          <div class="select-hidden" id="delete-container">
+            <label class="label" for="select-delete">Choose task:</label>
+            <select class="select" id="select-delete"></select>
+
+            <button
+              class="button button-delete-block"
+              id="delete-block"
+              type="button"
+              onclick="deleteTask()"
+            >
+              Delete
+            </button>
+          </div>
 
           <div id="container-hidden" class="container-hide">
-            <div class="select-hidden" id="delete-change-container">
-              <label class="label" for="select-block">Choose task:</label>
-              <select class="select" id="select-block"></select>
-
-              <button class="button button-delete-block" id="delete-block">
-                Delete
-              </button>
-            </div>
+            <label class="label" for="select-change">Choose task:</label>
+            <select class="select" id="select-change"></select>
 
             <label class="label" for="change-name">Name: </label>
             <input type="text" class="input" id="change-name" />
@@ -68,26 +77,41 @@
 
             <label class="label" for="change-status">Status:</label>
             <select class="select" id="change-status">
-              <option class="select-option" value="incomplete">
+              <option class="select-option" value="not started yet">
                 Not Started Yet
               </option>
-              <option class="select-option" value="process">In Process</option>
+              <option class="select-option" value="in process">
+                In Process
+              </option>
               <option class="select-option" value="complete">Completed</option>
             </select>
 
             <label class="label" for="change-date">Date:</label>
             <input type="date" class="input" id="change-date" />
+
+            <button
+              class="button button-change-block"
+              id="change-block"
+              type="button"
+              onclick="changeTask()"
+            >
+              Change
+            </button>
           </div>
 
-          <div class="button-container">
-            <button class="button" id="button-change">Change</button>
-            <button class="button" id="button-delete">Delete</button>
+          <div class="button-container" id="buttons">
+            <button class="button" id="button-change" type="button">
+              Change
+            </button>
+            <button class="button" id="button-delete" type="button">
+              Delete
+            </button>
           </div>
         </div>
       </section>
 
       <section class="section section-list">
-        <p class="paragraph">U can delete task with status complete on click</p>
+        <p class="paragraph">Tasks</p>
 
         <ul class="list" id="tasks-list"></ul>
       </section>
