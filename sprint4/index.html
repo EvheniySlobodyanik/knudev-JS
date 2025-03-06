@@ -56,14 +56,24 @@
             <label class="label" for="select-delete">Choose task:</label>
             <select class="select" id="select-delete"></select>
 
-            <button
-              class="button button-delete-block"
-              id="delete-block"
-              type="button"
-              onclick="deleteTask()"
-            >
-              Delete
-            </button>
+            <div class="button-container-delete">
+              <button
+                class="button button-delete-block"
+                id="delete-block"
+                type="button"
+                onclick="deleteTask()"
+              >
+                Delete
+              </button>
+
+              <button
+                class="button button-delete-back"
+                id="button-back-delete"
+                type="button"
+              >
+                Back
+              </button>
+            </div>
           </div>
 
           <div id="container-hidden" class="container-hide">
@@ -90,14 +100,24 @@
             <label class="label" for="change-date">Date:</label>
             <input type="date" class="input" id="change-date" />
 
-            <button
-              class="button button-change-block"
-              id="change-block"
-              type="button"
-              onclick="changeTask()"
-            >
-              Change
-            </button>
+            <div class="button-container-change">
+              <button
+                class="button button-change-block"
+                id="change-block"
+                type="button"
+                onclick="changeTask()"
+              >
+                Change
+              </button>
+
+              <button
+                class="button button-change-back"
+                id="button-back-change"
+                type="button"
+              >
+                Back
+              </button>
+            </div>
           </div>
 
           <div class="button-container" id="buttons">
@@ -113,6 +133,9 @@
 
       <section class="section section-list">
         <p class="paragraph">Tasks</p>
+        <p class="paragraph-notation">
+          Priority here refers to original state of list(how it looked at first)
+        </p>
 
         <div class="sort-container container">
           <label class="label label-sort" for="sort-select">Sort by </label>

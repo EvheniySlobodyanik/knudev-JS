@@ -151,7 +151,9 @@
         margin-top: 1rem;
       }
 
-      .button-container {
+      .button-container,
+      .button-container-change,
+      .button-container-delete {
         display: flex;
         justify-content: space-between;
         gap: 0.5rem;
@@ -172,6 +174,12 @@
     .paragraph {
       text-align: center;
       font-size: 1.75em;
+    }
+
+    .paragraph-notation {
+      font-size: 1.25em;
+      text-align: center;
+      padding: 0.25rem;
     }
 
     .sort-container {

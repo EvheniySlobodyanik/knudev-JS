@@ -23,6 +23,8 @@ const changeDate = document.getElementById("change-date");
 const buttonContainer = document.getElementById("buttons");
 const buttonChange = document.getElementById("button-change");
 const buttonDelete = document.getElementById("button-delete");
+const buttonDeleteBack = document.getElementById("button-back-delete");
+const buttonChangeBack = document.getElementById("button-back-change");
 
 //to check date in inputs
 const today = new Date();
@@ -278,6 +280,17 @@ attachEvent(buttonDelete, "click", () => {
   buttons.style.display = "none";
 });
 
+//go back to original state of manage container
+attachEvent(buttonChangeBack, "click", () => {
+  containerHidden.style.display = "none";
+  buttons.style.display = "flex";
+});
+attachEvent(buttonDeleteBack, "click", () => {
+  deleteContainer.style.display = "none";
+  buttons.style.display = "flex";
+});
+
+//perform sorting on certain option
 attachEvent(buttonSort, "click", () => {
   selectSorting();
 });
