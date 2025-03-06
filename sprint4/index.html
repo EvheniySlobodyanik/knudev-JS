@@ -114,6 +114,17 @@
       <section class="section section-list">
         <p class="paragraph">Tasks</p>
 
+        <div class="sort-container container">
+          <label class="label label-sort" for="sort-select">Sort by </label>
+          <select class="select select-sort" id="sort-select">
+            <option class="select-option" value="dueDate">DueDate</option>
+            <option class="select-option" value="priority">Priority</option>
+          </select>
+          <button class="button button-sort" id="sort-button" type="button">
+            Sort
+          </button>
+        </div>
+
         <ul class="list" id="tasks-list"></ul>
       </section>
     </main>

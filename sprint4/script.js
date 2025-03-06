@@ -24,6 +24,14 @@ const buttonContainer = document.getElementById("buttons");
 const buttonChange = document.getElementById("button-change");
 const buttonDelete = document.getElementById("button-delete");
 
+//to check date in inputs
+const today = new Date();
+
+//variables for sorting
+const buttonSort = document.getElementById("sort-button");
+const selectSort = document.getElementById("sort-select");
+let originalOrder = [];
+
 //Save a page visited count
 let visitCount = parseInt(localStorage.getItem("visitCount")) || 0;
 visitCount++;
@@ -35,6 +43,7 @@ paraVisit.textContent = `You visited this page ${visitCount} times!`;
 
 window.onload = function () {
   loadTaskFromLocalStorage();
+  saveOriginalOrder();
 };
 
 //persist tasks
@@ -113,15 +122,35 @@ function createTask({ name, description, status, dueDate }) {
   list.appendChild(block);
 }
 
+function createError(text) {
+  const message = document.createElement("p");
+  message.textContent = text;
+  message.classList.add("error-message");
+  formCreate.appendChild(message);
+}
+
 //manage form
 attachEvent(formCreate, "submit", (event) => {
   event.preventDefault();
+
+  //remove any existing error messages
+  document.querySelectorAll(".error-message").forEach((msg) => msg.remove());
+
+  //for date checking
+  const dateValue = new Date(taskDate.value);
+  const todayDateOnly = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+  const isTodayOrGreater = dateValue >= todayDateOnly;
 
   if (
     taskName.value !== "" &&
     taskDescription.value !== "" &&
     taskStatus.value !== "" &&
-    taskDate.value !== ""
+    taskDate.value !== "" &&
+    isTodayOrGreater
   ) {
     //using destructuring to pass variables to function better
     const taskData = {
@@ -137,10 +166,11 @@ attachEvent(formCreate, "submit", (event) => {
     formCreate.reset();
   } else {
     if (!document.querySelector(".error-message")) {
-      const message = document.createElement("p");
-      message.textContent = "All fields MUST contain value!";
-      message.classList.add("error-message");
-      formCreate.appendChild(message);
+      if (!isTodayOrGreater) {
+        createError("Date must be equal or greater than today!");
+      } else {
+        createError("All fields MUST contain VALUE!");
+      }
     }
   }
 });
@@ -180,6 +210,50 @@ function changeTask() {
   }
 }
 
+//for sorting by priority(how it looked originally)
+function saveOriginalOrder() {
+  const listItems = Array.from(document.querySelectorAll("li"));
+  originalOrder = listItems.map((item) => item); //save reference to original elements
+}
+
+//getting selected option for sorting
+function selectSorting() {
+  if (selectSort.value === "dueDate") {
+    sortTasks("dueDate");
+  } else {
+    sortTasks("priority");
+  }
+}
+
+//sorting tasks by selected options above
+function sortTasks(type) {
+  if (type === "dueDate") {
+    const listItems = Array.from(document.querySelectorAll("li"));
+
+    //extracting dueDates and associating them with list items
+    const tasksWithDates = listItems.map((item) => {
+      const dueDateParagraph = Array.from(item.querySelectorAll("p")).find(
+        (p) => p.textContent.includes("DueDate:")
+      );
+
+      //extract date or use a placeholder for missing dates
+      const dueDate = dueDateParagraph
+        ? dueDateParagraph.textContent.split("DueDate: ")[1]
+        : "9999-12-31";
+
+      return { item, dueDate };
+    });
+
+    //sort items by dueDate (ascending order)
+    tasksWithDates.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+    //reorder DOM elements based on sorted order
+    tasksWithDates.forEach(({ item }) => list.appendChild(item));
+  } else {
+    originalOrder.forEach((item) => list.appendChild(item));
+  }
+}
+
 //delete any task completely
 function deleteTask() {
   const items = list.querySelectorAll("li");
@@ -202,4 +276,8 @@ attachEvent(buttonChange, "click", () => {
 attachEvent(buttonDelete, "click", () => {
   deleteContainer.style.display = "flex";
   buttons.style.display = "none";
+});
+
+attachEvent(buttonSort, "click", () => {
+  selectSorting();
 });
