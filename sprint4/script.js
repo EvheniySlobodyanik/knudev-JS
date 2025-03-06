@@ -60,7 +60,7 @@ function loadTaskFromLocalStorage() {
       <p>Status: ${task.status}</p>
       <p>DueDate: ${task.dueDate}</p>
     `;
-    block.classList.add("list-item");
+    block.classList.add("list-item", "fade-slide-in");
     list.appendChild(block);
 
     createOptions(task.name);
@@ -164,6 +164,7 @@ attachEvent(formCreate, "submit", (event) => {
 
     createTask(taskData);
     createOptions(taskData.name);
+    refreshOptions();
 
     formCreate.reset();
   } else {
@@ -176,6 +177,17 @@ attachEvent(formCreate, "submit", (event) => {
     }
   }
 });
+
+//refresh options using local storage in real time
+function refreshOptions() {
+  selectChangeBlock.innerHTML = "";
+  selectDeleteBlock.innerHTML = "";
+
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.forEach((task) => {
+    createOptions(task.name);
+  });
+}
 
 //create option for two selects based on name from task
 function createOptions(nameValue) {
@@ -208,6 +220,8 @@ function changeTask() {
         status: changeStatus.value,
         dueDate: changeDate.value,
       });
+
+      refreshOptions();
     }
   }
 }
@@ -262,8 +276,14 @@ function deleteTask() {
 
   for (let i = items.length - 1; i >= 0; i--) {
     if (items[i].textContent.includes(selectDeleteBlock.value)) {
-      deleteTaskFromLocalStorage(selectDeleteBlock.value); //remove from localStorage
-      list.removeChild(items[i]); //remove from UI
+      items[i].classList.add("fade-slide-out");
+
+      //after the animation ends, remove the task
+      setTimeout(() => {
+        deleteTaskFromLocalStorage(selectDeleteBlock.value); //remove from localStorage
+        list.removeChild(items[i]); //remove from UI
+        refreshOptions();
+      }, 400);
     }
   }
 }

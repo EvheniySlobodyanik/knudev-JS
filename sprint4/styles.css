@@ -214,6 +214,44 @@
       padding: 1rem;
     }
 
+    .fade-slide-in {
+      animation: fadeIn 2s ease-in-out; /* Longer duration, smooth easing */
+    }
+
+    .fade-slide-out {
+      animation: fadeOut 2s ease-in-out; /* Same duration for slide-out */
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(100%); /* Start from below */
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateY(-20%); /* Lift slightly during the animation */
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0); /* End at normal position */
+      }
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+        transform: translateY(0); /* Start at normal position */
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateY(-20%); /* Lift slightly during the animation */
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100%); /* Move to below */
+      }
+    }
+
     .list-item {
       background-color: #dda15e;
       padding: 1rem;
