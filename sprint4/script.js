@@ -1,32 +1,50 @@
 //references to section that contains all tasks blocks
 const list = document.getElementById("tasks-list");
 
-//references to all elements of section 'Create'
+///references to all elements of section 'Create'
+
+//reference to form and button to manage form and create task
 const formCreate = document.getElementById("form-create");
+const buttonCreate = document.getElementById("button-create");
+
+//for getting user input values
 const taskName = document.getElementById("task-name");
 const taskDescription = document.getElementById("task-description");
 const taskStatus = document.getElementById("task-status");
 const taskDate = document.getElementById("task-date");
-const buttonCreate = document.getElementById("button-create");
+///
 
-//references to all elements of section 'Manage'
+///references to all elements of section 'Manage'
+
+//container for change and delete task
 const containerHidden = document.getElementById("container-hidden");
 const deleteContainer = document.getElementById("delete-container");
+
+//select for change and delete task
 const selectChangeBlock = document.getElementById("select-change");
 const selectDeleteBlock = document.getElementById("select-delete");
+
+//button for change and delete task
 const deleteBlock = document.getElementById("delete-block");
 const changeBlock = document.getElementById("change-block");
+
+//changed user input values for task
 const changeName = document.getElementById("change-name");
 const changeDescription = document.getElementById("change-description");
 const changeStatus = document.getElementById("change-status");
 const changeDate = document.getElementById("change-date");
+
+//two buttons and their container that u see when page loads in section 'Manage'
 const buttonContainer = document.getElementById("buttons");
 const buttonChange = document.getElementById("button-change");
 const buttonDelete = document.getElementById("button-delete");
+
+//references to back button when u press change or delete (there are two different 'back' buttons)
 const buttonDeleteBack = document.getElementById("button-back-delete");
 const buttonChangeBack = document.getElementById("button-back-change");
+///
 
-//to check date in inputs
+//to check date in inputs (form + 'Manage' container)
 const today = new Date();
 
 //variables for sorting
@@ -43,15 +61,23 @@ localStorage.setItem("visitCount", visitCount);
 const paraVisit = document.getElementById("para-visit");
 paraVisit.textContent = `You visited this page ${visitCount} times!`;
 
+//loading tasks from storage to screen + saving their order to use sort by priority
 window.onload = function () {
   loadTaskFromLocalStorage();
   saveOriginalOrder();
 };
 
+//for sorting by priority(how it looked originally)
+function saveOriginalOrder() {
+  const listItems = Array.from(document.querySelectorAll("li"));
+  originalOrder = listItems.map((item) => item); //save reference to original elements
+}
+
 //persist tasks
 function loadTaskFromLocalStorage() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+  //creating tasks -> adding class to it, adding it to list -> create options for select in 'Manage'
   tasks.forEach((task) => {
     const block = document.createElement("li");
     block.innerHTML = `
@@ -82,6 +108,7 @@ function deleteTaskFromLocalStorage(taskName) {
 function updateTaskInLocalStorage(oldName, newTaskData) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+  //manage array: update containment or leave it if no updates
   tasks = tasks.map((task) =>
     task.name === oldName ? { ...task, ...newTaskData } : task
   );
@@ -94,12 +121,53 @@ function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(event, handler, options);
 }
 
+//create error message using passed text, used for date(>today) and empty form
+function createError(text) {
+  const message = document.createElement("p");
+  message.textContent = text;
+  message.classList.add("error-message");
+  formCreate.appendChild(message);
+}
+
+//create option for two selects in section 'Manage' based on name from task
+function createOptions(nameValue) {
+  const option = document.createElement("option");
+  option.value = nameValue;
+  option.innerHTML = nameValue;
+  selectChangeBlock.appendChild(option.cloneNode(true));
+  selectDeleteBlock.appendChild(option.cloneNode(true));
+}
+
+//refresh options using local storage in real time
+function refreshOptions() {
+  selectChangeBlock.innerHTML = "";
+  selectDeleteBlock.innerHTML = "";
+
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.forEach((task) => {
+    createOptions(task.name);
+  });
+}
+
 //create object
 function Task(name, description, status, dueDate) {
   this.name = name;
   this.description = description;
   this.status = status;
   this.dueDate = dueDate;
+}
+
+//create list object(task), give it class and add it to the list ul
+function createTaskItem(name, description, status, dueDate) {
+  const block = document.createElement("li");
+  block.innerHTML = `
+    <p>Name: ${name}</p>
+    <p>Description: ${description}</p>
+    <p>Status: ${status}</p>
+    <p>DueDate: ${dueDate}</p>
+  `;
+  block.classList.add("list-item");
+  list.appendChild(block); // Assuming your list has an id="list"
 }
 
 //create task on screen
@@ -113,22 +181,66 @@ function createTask({ name, description, status, dueDate }) {
   tasks.push(task);
   localStorage.setItem(`tasks`, JSON.stringify(tasks));
 
-  const block = document.createElement("li");
-  block.innerHTML = `
-  <p>Name: ${name}</p>
-  <p>Description: ${description}</p>
-  <p>Status: ${status}</p>
-  <p>DueDate: ${dueDate}</p>
-  `;
-  block.classList.add("list-item");
-  list.appendChild(block);
+  createTaskItem(name, description, status, dueDate);
+
+  // const block = document.createElement("li");
+  // block.innerHTML = `
+  // <p>Name: ${name}</p>
+  // <p>Description: ${description}</p>
+  // <p>Status: ${status}</p>
+  // <p>DueDate: ${dueDate}</p>
+  // `;
+  // block.classList.add("list-item");
+  // list.appendChild(block);
 }
 
-function createError(text) {
-  const message = document.createElement("p");
-  message.textContent = text;
-  message.classList.add("error-message");
-  formCreate.appendChild(message);
+//change anything in task and save changes permanently
+function changeTask() {
+  const selectedTaskName = selectChangeBlock.value;
+  const items = list.querySelectorAll("li");
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    if (items[i].textContent.includes(selectedTaskName)) {
+      list.removeChild(items[i]);
+
+      //update the UI
+      createTaskItem(
+        changeName.value,
+        changeDescription.value,
+        changeStatus.value,
+        changeDate.value
+      );
+
+      //update localStorage
+      updateTaskInLocalStorage(selectedTaskName, {
+        name: changeName.value,
+        description: changeDescription.value,
+        status: changeStatus.value,
+        dueDate: changeDate.value,
+      });
+
+      refreshOptions();
+    }
+  }
+}
+
+//delete any task completely
+function deleteTask() {
+  const items = list.querySelectorAll("li");
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    if (items[i].textContent.includes(selectDeleteBlock.value)) {
+      //added class for deleting animation
+      items[i].classList.add("fade-slide-out");
+
+      //after the animation ends, remove the task
+      setTimeout(() => {
+        deleteTaskFromLocalStorage(selectDeleteBlock.value); //remove from localStorage
+        list.removeChild(items[i]); //remove from UI
+        refreshOptions();
+      }, 400);
+    }
+  }
 }
 
 //manage form
@@ -178,59 +290,27 @@ attachEvent(formCreate, "submit", (event) => {
   }
 });
 
-//refresh options using local storage in real time
-function refreshOptions() {
-  selectChangeBlock.innerHTML = "";
-  selectDeleteBlock.innerHTML = "";
+//show UI for deleting task(block)
+attachEvent(buttonChange, "click", () => {
+  containerHidden.style.display = "flex";
+  buttons.style.display = "none";
+});
 
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach((task) => {
-    createOptions(task.name);
-  });
-}
+//show UI for changing task(block)
+attachEvent(buttonDelete, "click", () => {
+  deleteContainer.style.display = "flex";
+  buttons.style.display = "none";
+});
 
-//create option for two selects based on name from task
-function createOptions(nameValue) {
-  const option = document.createElement("option");
-  option.value = nameValue;
-  option.innerHTML = nameValue;
-  selectChangeBlock.appendChild(option.cloneNode(true));
-  selectDeleteBlock.appendChild(option.cloneNode(true));
-}
-
-//change anything in task and save changes permanently
-function changeTask() {
-  const selectedTaskName = selectChangeBlock.value;
-  const items = list.querySelectorAll("li");
-
-  for (let i = items.length - 1; i >= 0; i--) {
-    if (items[i].textContent.includes(selectedTaskName)) {
-      //update the UI
-      items[i].innerHTML = `
-        <p>Name: ${changeName.value}</p>
-        <p>Description: ${changeDescription.value}</p>
-        <p>Status: ${changeStatus.value}</p>
-        <p>DueDate: ${changeDate.value}</p>
-      `;
-
-      //update localStorage
-      updateTaskInLocalStorage(selectedTaskName, {
-        name: changeName.value,
-        description: changeDescription.value,
-        status: changeStatus.value,
-        dueDate: changeDate.value,
-      });
-
-      refreshOptions();
-    }
-  }
-}
-
-//for sorting by priority(how it looked originally)
-function saveOriginalOrder() {
-  const listItems = Array.from(document.querySelectorAll("li"));
-  originalOrder = listItems.map((item) => item); //save reference to original elements
-}
+//go back to original state of manage container
+attachEvent(buttonChangeBack, "click", () => {
+  containerHidden.style.display = "none";
+  buttons.style.display = "flex";
+});
+attachEvent(buttonDeleteBack, "click", () => {
+  deleteContainer.style.display = "none";
+  buttons.style.display = "flex";
+});
 
 //getting selected option for sorting
 function selectSorting() {
@@ -269,46 +349,6 @@ function sortTasks(type) {
     originalOrder.forEach((item) => list.appendChild(item));
   }
 }
-
-//delete any task completely
-function deleteTask() {
-  const items = list.querySelectorAll("li");
-
-  for (let i = items.length - 1; i >= 0; i--) {
-    if (items[i].textContent.includes(selectDeleteBlock.value)) {
-      items[i].classList.add("fade-slide-out");
-
-      //after the animation ends, remove the task
-      setTimeout(() => {
-        deleteTaskFromLocalStorage(selectDeleteBlock.value); //remove from localStorage
-        list.removeChild(items[i]); //remove from UI
-        refreshOptions();
-      }, 400);
-    }
-  }
-}
-
-//show UI for deleting task(block)
-attachEvent(buttonChange, "click", () => {
-  containerHidden.style.display = "flex";
-  buttons.style.display = "none";
-});
-
-//show UI for changing task(block)
-attachEvent(buttonDelete, "click", () => {
-  deleteContainer.style.display = "flex";
-  buttons.style.display = "none";
-});
-
-//go back to original state of manage container
-attachEvent(buttonChangeBack, "click", () => {
-  containerHidden.style.display = "none";
-  buttons.style.display = "flex";
-});
-attachEvent(buttonDeleteBack, "click", () => {
-  deleteContainer.style.display = "none";
-  buttons.style.display = "flex";
-});
 
 //perform sorting on certain option
 attachEvent(buttonSort, "click", () => {
