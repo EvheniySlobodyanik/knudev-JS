@@ -62,7 +62,12 @@ function enlargeImage(img) {
 function toggleAdditionalInformation(infoContainer) {
   if (activeInfo && activeInfo !== infoContainer) {
     activeInfo.style.display = "none";
+    activeInfo.classList.remove("show");
   }
+
+  //for advanced animation
+  infoContainer.classList.toggle("show");
+  activeInfo = infoContainer.classList.contains("show") ? infoContainer : null;
 
   //toggle visibility
   if (infoContainer.style.display === "none" || !infoContainer.style.display) {
