@@ -19,17 +19,102 @@
   padding: 2rem;
 
   .title {
-    font-size: 2em;
+    font-size: 2.5em;
   }
 
   .paragraph {
+    font-size: 1.25em;
     width: 30rem;
     text-align: center;
+  }
+
+  .paragraph-note {
+    font-size: 1.25em;
   }
 }
 
 .main {
   padding: 0rem 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  .section-filter {
+    background-color: #1b263b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0rem;
+    color: #e0e1dd;
+
+    .title {
+      font-size: 2em;
+    }
+
+    .filters-container {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+      max-width: 600px;
+      gap: 1rem;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background-color: #2a3b5f;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      width: 50%;
+    }
+
+    .label {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .select,
+    .button {
+      background-color: white;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .select {
+      height: 2rem;
+      min-width: 180px;
+      border-radius: 5px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 8px;
+      width: 6rem;
+      height: 2rem;
+      font-weight: bold;
+    }
+
+    .select:hover,
+    .button:hover {
+      background-color: #d1e0f0;
+      border-color: #5a7dab;
+    }
+
+    .select:focus,
+    .button:focus {
+      outline: 3px solid blue;
+    }
+  }
+
+  .paragraph {
+    text-align: center;
+    font-size: 1.5em;
+  }
 
   .section-gallery {
     background-color: #1b263b;
@@ -55,13 +140,13 @@
       height: 20rem;
       object-fit: cover;
       cursor: pointer;
-      transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
     }
 
     .image:hover,
     .image:focus {
       box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
       outline: 3px solid blue;
+      transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
     }
 
     .image-enlarge {
@@ -79,6 +164,16 @@
       display: block;
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .container-diet {
+      color: #778da9;
+      padding: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .container-activity {
+      margin-bottom: 0.33rem;
     }
   }
 }

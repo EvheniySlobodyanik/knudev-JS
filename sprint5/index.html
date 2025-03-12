@@ -19,6 +19,53 @@
     </header>
 
     <main class="main">
+      <section class="section section-filter" id="filter">
+        <h2 class="title">Filter by:</h2>
+
+        <div class="filters-container">
+          <div class="container container-diet">
+            <label class="label" for="select-diet">Diet: </label>
+            <select class="select" id="select-diet">
+              <option class="select-option" value="Carnivore">
+                Carnivores(Predators, meat)
+              </option>
+              <option class="select-option" value="Omnivore">
+                Omnivores(Meats and plants)
+              </option>
+              <option class="select-option" value="Herbivore">
+                Herbivores(Leaves, fruits, etc)
+              </option>
+            </select>
+            <button type="button" class="button" id="button-diet">
+              Filter
+            </button>
+          </div>
+
+          <div class="container container-activity">
+            <label class="label" for="select-activity">Activity: </label>
+            <select class="select" id="select-activity">
+              <option class="select-option" value="Daytime">
+                Daytime(Diurnal)
+              </option>
+              <option class="select-option" value="Nighttime">
+                Nighttime (Nocturnal)
+              </option>
+              <option class="select-option" value="Twilight">
+                Twilight (Crepuscular)
+              </option>
+            </select>
+            <button type="button" class="button" id="button-activity">
+              Filter
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <p class="paragraph">
+        Section below includes such animal info: name, diet, activity,
+        description
+      </p>
+
       <section class="section section-gallery" id="gallery"></section>
     </main>
 

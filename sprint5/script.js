@@ -3,38 +3,56 @@ const images = [
   {
     src: "cheetah",
     alt: "a lightly built, spotted cat characterised by a small rounded head, a short snout, black tear-like facial streaks, a deep chest, long thin legs and a long tail",
+    diet: "Carnivore / Predator",
+    activity: "Daytime (Diurnal)",
   },
   {
     src: "chimpanzee",
     alt: "great ape covered in coarse black hair but has a bare face, fingers, toes, palms of the hands, and soles of the feet",
+    diet: "Omnivore",
+    activity: "Daytime (Diurnal)",
   },
   {
     src: "fox",
-    alt: "dog-like appearance; reddish or greyish goat with lighter under fur; pointed ears and a snout with a black nose; long, bushy tail.",
+    alt: "dog-like appearance; reddish or greyish coat with lighter under fur; pointed ears and a snout with a black nose; long, bushy tail.",
+    diet: "Omnivore / Predator",
+    activity: "Nighttime (Nocturnal) & Twilight (Crepuscular)",
   },
   {
     src: "giraffe",
     alt: "the tallest of all mammals. It reaches an overall height of 18 ft (5.5 m) or more. The legs and neck are extremely long. The giraffe has a short body, a tufted tail, a short mane, and short skin-covered horns.",
+    diet: "Herbivore",
+    activity: "Daytime (Diurnal)",
   },
   {
     src: "lemur",
     alt: "generally small in size, and their face somewhat resembles a mouse's face in smaller species or a fox's face in larger species",
+    diet: "Herbivore / Omnivore",
+    activity: "Nighttime (Nocturnal) & Twilight (Crepuscular)",
   },
   {
     src: "lion",
     alt: "strong, compact bodies and powerful forelegs, teeth and jaws for pulling down and killing prey. Their coats are yellow-gold, and adult males have shaggy manes that range in color from blond to reddish-brown to black.",
+    diet: "Carnivore / Apex Predator",
+    activity: "Twilight (Crepuscular) & Nighttime (Nocturnal)",
   },
   {
     src: "penguin",
     alt: "Their body shape is fusiform (tapered at both ends) and streamlined, allowing them to be expert swimmers. They have a large head, short neck, and elongated body. Their tails are short, stiff, and wedge-shaped. Their legs and webbed feet are set far back on the body, which gives penguins their upright posture on land.",
+    diet: "Carnivore (Fish, squid, krill)",
+    activity: "Daytime (Diurnal)",
   },
   {
     src: "rhino",
     alt: "massive bodies, stumpy legs and either one or two dermal horns. In some species, the horns may be short or not obvious. They are renowned for having poor eyesight, but their senses of smell and hearing are well developed.",
+    diet: "Herbivore",
+    activity: "Daytime (Diurnal) & Twilight (Crepuscular)",
   },
   {
     src: "wolf",
     alt: "high body, long legs, broad skull tapering to a narrow muzzle. The tail is bushy and coat has a thick, dense underfur. Colors vary from light to dark gray with black and white interspersed, to some individuals being solid black and solid white.",
+    diet: "Carnivore / Predator",
+    activity: "Nighttime (Nocturnal) & Twilight (Crepuscular)",
   },
 ];
 
@@ -43,6 +61,14 @@ const gallery = document.getElementById("gallery");
 
 //currently displayed container info
 let activeInfo = null;
+
+//filter for diet container
+const dietButton = document.getElementById("button-diet");
+const dietSelect = document.getElementById("select-diet");
+
+//filter for activity container
+const activityButton = document.getElementById("button-activity");
+const activitySelect = document.getElementById("select-activity");
 
 //handles all events
 function attachEvent(element, event, handler, options = {}) {
@@ -80,7 +106,7 @@ function toggleAdditionalInformation(infoContainer) {
 }
 
 //creates a container for the image and its info
-function createContainer(img, title, description) {
+function createContainer(img, title, description, diet, activity) {
   const container = document.createElement("div");
   container.classList.add("container-block");
 
@@ -95,7 +121,17 @@ function createContainer(img, title, description) {
   const _description = document.createElement("p");
   _description.textContent = description;
 
+  const _diet = document.createElement("p");
+  _diet.textContent = diet;
+  _diet.classList.add("container-diet");
+
+  const _activity = document.createElement("p");
+  _activity.textContent = activity;
+  _activity.classList.add("container-activity");
+
   infoContainer.appendChild(_title);
+  infoContainer.appendChild(_diet);
+  infoContainer.appendChild(_activity);
   infoContainer.appendChild(_description);
 
   container.appendChild(img);
@@ -116,16 +152,40 @@ function createContainer(img, title, description) {
 }
 
 //creates imgs and catches some events based on it
-function createImg(name, description) {
+function createImg(name, description, diet, activity) {
   const img = document.createElement("img");
   img.src = `images/${name}.jpg`;
   img.alt = description;
   img.tabIndex = 0;
   img.classList.add("image");
-  createContainer(img, name, description);
+  createContainer(img, name, description, diet, activity);
 }
 
 //dynamically adds images to screen using function
-images.forEach(({ src, alt }) => {
-  createImg(src, alt);
+images.forEach(({ src, alt, diet, activity }) => {
+  createImg(src, alt, diet, activity);
+});
+
+function filterImages(value) {
+  const divs = gallery.querySelectorAll(".container-block");
+  [...divs].forEach((div) => {
+    const paragraphs = div.querySelectorAll("p");
+    const match = [...paragraphs].some((p) => p.textContent.includes(value));
+
+    if (match) {
+      div.style.display = "block";
+    } else {
+      div.style.display = "none";
+    }
+  });
+}
+
+attachEvent(dietButton, "click", () => {
+  selectValue = dietSelect.value;
+  filterImages(selectValue);
+});
+
+attachEvent(activityButton, "click", () => {
+  selectValue = activitySelect.value;
+  filterImages(selectValue);
 });
