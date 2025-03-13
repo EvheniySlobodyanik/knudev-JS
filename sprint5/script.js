@@ -1,3 +1,6 @@
+const gallery = document.getElementById("gallery");
+let activeInfo = null;
+
 const images = [
   {
     src: "cheetah",
@@ -55,6 +58,14 @@ const images = [
   },
 ];
 
+images.forEach(({ src, alt, diet, activity }) => {
+  createImg(src, alt, diet, activity);
+});
+
+images.forEach((image) => {
+  image.comments = [];
+});
+
 const filterElements = {
   diet: {
     button: document.getElementById("button-diet"),
@@ -65,9 +76,6 @@ const filterElements = {
     select: document.getElementById("select-activity"),
   },
 };
-
-const gallery = document.getElementById("gallery");
-let activeInfo = null;
 
 function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(`${event}`, handler, options);
@@ -102,13 +110,37 @@ function createModal(img, title, description, diet, activity) {
   const modalBody = document.createElement("div");
   modalBody.classList.add("modal-body");
 
+  const modalFooter = document.createElement("div");
+  modalFooter.classList.add("modal-footer");
+
+  const commentSection = document.createElement("div");
+  commentSection.classList.add("comment-section");
+
+  const buttonInputContainer = document.createElement("div");
+  buttonInputContainer.classList.add("button-input-container");
+
+  const commentInput = document.createElement("input");
+  commentInput.type = "text";
+  commentInput.classList.add("comment-input");
+
+  const commentButton = document.createElement("button");
+  commentButton.type = "button";
+  commentButton.textContent = "Send";
+  commentButton.classList.add("comment-button");
+
+  buttonInputContainer.appendChild(commentInput);
+  buttonInputContainer.appendChild(commentButton);
+
   modalHeader.appendChild(closeBtn);
   modalHeader.appendChild(_title);
   modalBody.appendChild(_diet);
   modalBody.appendChild(_activity);
   modalBody.appendChild(_description);
+  modalFooter.appendChild(commentSection);
+  modalFooter.appendChild(buttonInputContainer);
   modalContent.appendChild(modalHeader);
   modalContent.appendChild(modalBody);
+  modalContent.appendChild(modalFooter);
 
   modal.appendChild(modalContent);
 
@@ -117,6 +149,24 @@ function createModal(img, title, description, diet, activity) {
 
   return modal;
 }
+
+function addComment() {
+  const comment = document.createElement("p");
+  const input = document.querySelector(".comment-input");
+  comment.textContent = input.value;
+  comment.classList.add("comment");
+
+  attachEvent(comment, "click", () => {
+    comment.remove();
+  });
+
+  document.querySelector(".comment-section").appendChild(comment);
+  input.value = "";
+}
+
+attachEvent(document.querySelector(".comment-button"), "click", () => {
+  addComment();
+});
 
 function removeEnlarge() {
   document
@@ -190,10 +240,6 @@ function createImg(name, description, diet, activity) {
 
   createContainer(img, name, description, diet, activity);
 }
-
-images.forEach(({ src, alt, diet, activity }) => {
-  createImg(src, alt, diet, activity);
-});
 
 function filterImages(value) {
   const containers = gallery.querySelectorAll(".container");
