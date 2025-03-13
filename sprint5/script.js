@@ -1,6 +1,17 @@
 const gallery = document.getElementById("gallery");
 let activeInfo = null;
 
+const filterElements = {
+  diet: {
+    button: document.getElementById("button-diet"),
+    select: document.getElementById("select-diet"),
+  },
+  activity: {
+    button: document.getElementById("button-activity"),
+    select: document.getElementById("select-activity"),
+  },
+};
+
 const images = [
   {
     src: "cheetah",
@@ -65,17 +76,6 @@ images.forEach((image) => {
 images.forEach(({ src, alt, diet, activity }) => {
   createImg(src, alt, diet, activity);
 });
-
-const filterElements = {
-  diet: {
-    button: document.getElementById("button-diet"),
-    select: document.getElementById("select-diet"),
-  },
-  activity: {
-    button: document.getElementById("button-activity"),
-    select: document.getElementById("select-activity"),
-  },
-};
 
 function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(`${event}`, handler, options);
@@ -345,6 +345,15 @@ attachEvent(filterElements.activity.button, "click", () => {
   filterImages(filterElements.activity.select.value);
 });
 
+function getTime() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 function logInteractions(text) {
   const interactionsContainer = document.getElementById(
     "interactions-container"
@@ -353,14 +362,9 @@ function logInteractions(text) {
   interaction.classList.add("interaction");
   interaction.textContent = text;
 
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-  const seconds = String(now.getSeconds()).padStart(2, "0");
-
   const time = document.createElement("p");
   time.classList.add("time");
-  time.textContent = `${hours}:${minutes}:${seconds}`;
+  time.textContent = getTime();
 
   const block = document.createElement("div");
   block.classList.add("block-interactions");
