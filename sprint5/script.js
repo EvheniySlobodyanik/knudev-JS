@@ -1,4 +1,3 @@
-//array filled with object src(also title) and description to images
 const images = [
   {
     src: "cheetah",
@@ -56,136 +55,164 @@ const images = [
   },
 ];
 
-//contains all images
-const gallery = document.getElementById("gallery");
+const filterElements = {
+  diet: {
+    button: document.getElementById("button-diet"),
+    select: document.getElementById("select-diet"),
+  },
+  activity: {
+    button: document.getElementById("button-activity"),
+    select: document.getElementById("select-activity"),
+  },
+};
 
-//currently displayed container info
+const gallery = document.getElementById("gallery");
 let activeInfo = null;
 
-//filter for diet container
-const dietButton = document.getElementById("button-diet");
-const dietSelect = document.getElementById("select-diet");
-
-//filter for activity container
-const activityButton = document.getElementById("button-activity");
-const activitySelect = document.getElementById("select-activity");
-
-//handles all events
 function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(`${event}`, handler, options);
 }
 
-//deletes 'transform' property from previous img and enlarges next one
-function enlargeImage(img) {
-  document
-    .querySelectorAll("img")
-    .forEach((el) => el.classList.remove("image-enlarge"));
+function createModal(img, title, description, diet, activity) {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
 
-  img.classList.add("image-enlarge");
-}
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
 
-//shows or hides info inside the existing container
-function toggleAdditionalInformation(infoContainer) {
-  if (activeInfo && activeInfo !== infoContainer) {
-    activeInfo.style.display = "none";
-    activeInfo.classList.remove("show");
-  }
+  const modalHeader = document.createElement("div");
+  modalHeader.classList.add("modal-header");
 
-  //for advanced animation
-  infoContainer.classList.toggle("show");
-  activeInfo = infoContainer.classList.contains("show") ? infoContainer : null;
-
-  //toggle visibility
-  if (infoContainer.style.display === "none" || !infoContainer.style.display) {
-    infoContainer.style.display = "block";
-    activeInfo = infoContainer;
-  } else {
-    infoContainer.style.display = "none";
-    activeInfo = null;
-  }
-}
-
-//creates a container for the image and its info
-function createContainer(img, title, description, diet, activity) {
-  const container = document.createElement("div");
-  container.classList.add("container-block");
-
-  const infoContainer = document.createElement("div");
-  infoContainer.classList.add("info-container");
-  infoContainer.style.display = "none";
+  const closeBtn = document.createElement("span");
+  closeBtn.classList.add("close");
+  closeBtn.innerHTML = "&times;";
 
   const _title = document.createElement("h2");
   _title.textContent = title;
-  _title.classList.add("container-title");
 
   const _description = document.createElement("p");
   _description.textContent = description;
 
   const _diet = document.createElement("p");
   _diet.textContent = diet;
-  _diet.classList.add("container-diet");
 
   const _activity = document.createElement("p");
   _activity.textContent = activity;
-  _activity.classList.add("container-activity");
 
-  infoContainer.appendChild(_title);
-  infoContainer.appendChild(_diet);
-  infoContainer.appendChild(_activity);
-  infoContainer.appendChild(_description);
+  const modalBody = document.createElement("div");
+  modalBody.classList.add("modal-body");
 
-  container.appendChild(img);
-  container.appendChild(infoContainer);
-  gallery.appendChild(container);
+  modalHeader.appendChild(closeBtn);
+  modalHeader.appendChild(_title);
+  modalBody.appendChild(_diet);
+  modalBody.appendChild(_activity);
+  modalBody.appendChild(_description);
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(modalBody);
 
+  modal.appendChild(modalContent);
+
+  toggleClose(modal, closeBtn);
+  toggleImage(img, modal);
+
+  return modal;
+}
+
+function removeEnlarge() {
+  document
+    .querySelectorAll("img")
+    .forEach((el) => el.classList.remove("image-enlarge"));
+}
+
+function enlargeImage(img) {
+  removeEnlarge();
+
+  img.classList.add("image-enlarge");
+}
+
+function toggleImage(img, modal) {
   attachEvent(img, "click", () => {
     enlargeImage(img);
-    toggleAdditionalInformation(infoContainer);
+    toggleModal(modal);
   });
-
-  attachEvent(img, "keydown", (event) => {
-    if (event.key === "Enter") {
+  attachEvent(img, "keydown", (e) => {
+    if (e.key === "Enter") {
       enlargeImage(img);
-      toggleAdditionalInformation(infoContainer);
+      toggleModal(modal);
     }
   });
 }
 
-//creates imgs and catches some events based on it
+function toggleModal(modal) {
+  if (activeInfo && activeInfo !== modal) {
+    activeInfo.style.display = "none";
+  }
+
+  if (modal.style.display === "none" || !modal.style.display) {
+    modal.style.display = "block";
+    activeInfo = modal;
+  } else {
+    modal.style.display = "none";
+    activeInfo = null;
+  }
+}
+
+function toggleClose(modal, closeBtn) {
+  attachEvent(closeBtn, "click", () => {
+    modal.style.display = "none";
+    removeEnlarge();
+  });
+
+  attachEvent(window, "click", (event) => {
+    if (event.target == modal) {
+      modal.style.display = "none";
+      removeEnlarge();
+    }
+  });
+}
+
+function createContainer(img, title, description, diet, activity) {
+  const container = document.createElement("div");
+  container.classList.add("container");
+
+  const modal = createModal(img, title, description, diet, activity);
+  container.appendChild(img);
+  container.appendChild(modal);
+  gallery.appendChild(container);
+}
+
 function createImg(name, description, diet, activity) {
   const img = document.createElement("img");
   img.src = `images/${name}.jpg`;
   img.alt = description;
   img.tabIndex = 0;
   img.classList.add("image");
+
   createContainer(img, name, description, diet, activity);
 }
 
-//dynamically adds images to screen using function
 images.forEach(({ src, alt, diet, activity }) => {
   createImg(src, alt, diet, activity);
 });
 
 function filterImages(value) {
-  const divs = gallery.querySelectorAll(".container-block");
-  [...divs].forEach((div) => {
-    const paragraphs = div.querySelectorAll("p");
+  const containers = gallery.querySelectorAll(".container");
+  [...containers].forEach((container) => {
+    const paragraphs = container.querySelectorAll("p");
     const match = [...paragraphs].some((p) => p.textContent.includes(value));
 
     if (match) {
-      div.style.display = "block";
+      container.style.display = "block";
     } else {
-      div.style.display = "none";
+      container.style.display = "none";
     }
   });
 }
 
-attachEvent(dietButton, "click", () => {
-  selectValue = dietSelect.value;
-  filterImages(selectValue);
+attachEvent(filterElements.diet.button, "click", () => {
+  filterImages(filterElements.diet.select.value);
 });
 
-attachEvent(activityButton, "click", () => {
-  selectValue = activitySelect.value;
-  filterImages(selectValue);
+attachEvent(filterElements.activity.button, "click", () => {
+  filterImages(filterElements.activity.select.value);
 });
