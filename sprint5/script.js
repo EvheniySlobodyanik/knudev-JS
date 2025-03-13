@@ -58,12 +58,12 @@ const images = [
   },
 ];
 
-images.forEach(({ src, alt, diet, activity }) => {
-  createImg(src, alt, diet, activity);
-});
-
 images.forEach((image) => {
   image.comments = [];
+});
+
+images.forEach(({ src, alt, diet, activity }) => {
+  createImg(src, alt, diet, activity);
 });
 
 const filterElements = {
@@ -81,7 +81,7 @@ function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(`${event}`, handler, options);
 }
 
-function createModal(img, title, description, diet, activity) {
+function createModal(img, title, description, diet, activity, image) {
   const modal = document.createElement("div");
   modal.classList.add("modal");
 
@@ -95,7 +95,7 @@ function createModal(img, title, description, diet, activity) {
   closeBtn.classList.add("close");
   closeBtn.innerHTML = "&times;";
 
-  const _title = document.createElement("h2");
+  const _title = document.createElement("h3");
   _title.textContent = title;
 
   const _description = document.createElement("p");
@@ -116,6 +116,18 @@ function createModal(img, title, description, diet, activity) {
   const commentSection = document.createElement("div");
   commentSection.classList.add("comment-section");
 
+  image.comments.forEach((commentText) => {
+    const comment = document.createElement("p");
+    comment.textContent = commentText;
+    comment.classList.add("comment");
+    attachEvent(comment, "click", () => {
+      comment.remove();
+      logInteractions("Comment was deleted!");
+      image.comments = image.comments.filter((c) => c !== commentText);
+    });
+    commentSection.appendChild(comment);
+  });
+
   const buttonInputContainer = document.createElement("div");
   buttonInputContainer.classList.add("button-input-container");
 
@@ -127,6 +139,11 @@ function createModal(img, title, description, diet, activity) {
   commentButton.type = "button";
   commentButton.textContent = "Send";
   commentButton.classList.add("comment-button");
+
+  attachEvent(commentButton, "click", () => {
+    addComment(modal, image);
+    logInteractions("Button 'Sent' at comment section was clicked!");
+  });
 
   buttonInputContainer.appendChild(commentInput);
   buttonInputContainer.appendChild(commentButton);
@@ -150,23 +167,26 @@ function createModal(img, title, description, diet, activity) {
   return modal;
 }
 
-function addComment() {
+function addComment(modal, image) {
+  const input = modal.querySelector(".comment-input");
+  const commentText = input.value.trim();
+
+  if (!commentText) return;
+
   const comment = document.createElement("p");
-  const input = document.querySelector(".comment-input");
-  comment.textContent = input.value;
+  comment.textContent = commentText;
   comment.classList.add("comment");
 
   attachEvent(comment, "click", () => {
     comment.remove();
+    logInteractions("Comment was deleted!");
+    image.comments = image.comments.filter((c) => c !== commentText);
   });
 
-  document.querySelector(".comment-section").appendChild(comment);
+  modal.querySelector(".comment-section").appendChild(comment);
+  image.comments.push(commentText);
   input.value = "";
 }
-
-attachEvent(document.querySelector(".comment-button"), "click", () => {
-  addComment();
-});
 
 function removeEnlarge() {
   document
@@ -184,11 +204,13 @@ function toggleImage(img, modal) {
   attachEvent(img, "click", () => {
     enlargeImage(img);
     toggleModal(modal);
+    logInteractions("Image at gallery was clicked!");
   });
   attachEvent(img, "keydown", (e) => {
     if (e.key === "Enter") {
       enlargeImage(img);
       toggleModal(modal);
+      logInteractions("Image at gallery was interacted with 'Enter'!");
     }
   });
 }
@@ -211,21 +233,23 @@ function toggleClose(modal, closeBtn) {
   attachEvent(closeBtn, "click", () => {
     modal.style.display = "none";
     removeEnlarge();
+    logInteractions("Close button at modular box was clicked!");
   });
 
   attachEvent(window, "click", (event) => {
     if (event.target == modal) {
       modal.style.display = "none";
       removeEnlarge();
+      logInteractions("Modular box window was closed with click anywhere!");
     }
   });
 }
 
-function createContainer(img, title, description, diet, activity) {
+function createContainer(img, title, description, diet, activity, image) {
   const container = document.createElement("div");
   container.classList.add("container");
 
-  const modal = createModal(img, title, description, diet, activity);
+  const modal = createModal(img, title, description, diet, activity, image);
   container.appendChild(img);
   container.appendChild(modal);
   gallery.appendChild(container);
@@ -238,7 +262,8 @@ function createImg(name, description, diet, activity) {
   img.tabIndex = 0;
   img.classList.add("image");
 
-  createContainer(img, name, description, diet, activity);
+  const imageObj = images.find((img) => img.src === name);
+  createContainer(img, name, description, diet, activity, imageObj);
 }
 
 function filterImages(value) {
@@ -262,3 +287,29 @@ attachEvent(filterElements.diet.button, "click", () => {
 attachEvent(filterElements.activity.button, "click", () => {
   filterImages(filterElements.activity.select.value);
 });
+
+function logInteractions(text) {
+  const interactionsContainer = document.getElementById(
+    "interactions-container"
+  );
+  const interaction = document.createElement("p");
+  interaction.classList.add("interaction");
+  interaction.textContent = text;
+
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const time = document.createElement("p");
+  time.classList.add("time");
+  time.textContent = `${hours}:${minutes}:${seconds}`;
+
+  const block = document.createElement("div");
+  block.classList.add("block-interactions");
+
+  block.appendChild(interaction);
+  block.appendChild(time);
+
+  interactionsContainer.appendChild(block);
+}

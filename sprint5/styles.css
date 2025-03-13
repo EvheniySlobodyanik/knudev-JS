@@ -282,6 +282,33 @@
       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
     }
   }
+
+  .section-interactions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #1b263b;
+    padding: 2rem;
+
+    .title {
+      padding-bottom: 1rem;
+      font-size: 2em;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .block-interactions {
+      text-align: center;
+      background-color: #0056b3;
+      padding: 0.5rem;
+      border-radius: 10px;
+    }
+  }
 }
 
 .modal-content {
