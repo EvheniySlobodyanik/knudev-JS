@@ -81,13 +81,7 @@ function attachEvent(element, event, handler, options = {}) {
   element.addEventListener(`${event}`, handler, options);
 }
 
-function createModal(img, title, description, diet, activity, image) {
-  const modal = document.createElement("div");
-  modal.classList.add("modal");
-
-  const modalContent = document.createElement("div");
-  modalContent.classList.add("modal-content");
-
+function createHeader(title, modal) {
   const modalHeader = document.createElement("div");
   modalHeader.classList.add("modal-header");
 
@@ -98,8 +92,17 @@ function createModal(img, title, description, diet, activity, image) {
   const _title = document.createElement("h3");
   _title.textContent = title;
 
-  const _description = document.createElement("p");
-  _description.textContent = description;
+  modalHeader.appendChild(closeBtn);
+  modalHeader.appendChild(_title);
+
+  toggleClose(modal, closeBtn);
+
+  return modalHeader;
+}
+
+function createBody(description, diet, activity) {
+  const modalBody = document.createElement("div");
+  modalBody.classList.add("modal-body");
 
   const _diet = document.createElement("p");
   _diet.textContent = diet;
@@ -107,9 +110,17 @@ function createModal(img, title, description, diet, activity, image) {
   const _activity = document.createElement("p");
   _activity.textContent = activity;
 
-  const modalBody = document.createElement("div");
-  modalBody.classList.add("modal-body");
+  const _description = document.createElement("p");
+  _description.textContent = description;
 
+  modalBody.appendChild(_diet);
+  modalBody.appendChild(_activity);
+  modalBody.appendChild(_description);
+
+  return modalBody;
+}
+
+function createFooter(image, modal) {
   const modalFooter = document.createElement("div");
   modalFooter.classList.add("modal-footer");
 
@@ -150,20 +161,35 @@ function createModal(img, title, description, diet, activity, image) {
   buttonInputContainer.appendChild(commentInput);
   buttonInputContainer.appendChild(commentButton);
 
-  modalHeader.appendChild(closeBtn);
-  modalHeader.appendChild(_title);
-  modalBody.appendChild(_diet);
-  modalBody.appendChild(_activity);
-  modalBody.appendChild(_description);
   modalFooter.appendChild(commentSection);
   modalFooter.appendChild(buttonInputContainer);
-  modalContent.appendChild(modalHeader);
-  modalContent.appendChild(modalBody);
-  modalContent.appendChild(modalFooter);
 
-  modal.appendChild(modalContent);
+  return modalFooter;
+}
 
-  toggleClose(modal, closeBtn);
+function createContent(header, body, footer) {
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+
+  modalContent.appendChild(header);
+  modalContent.appendChild(body);
+  modalContent.appendChild(footer);
+
+  return modalContent;
+}
+
+function createModal(img, title, description, diet, activity, image) {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  const header = createHeader(title, modal);
+  const body = createBody(description, diet, activity);
+  const footer = createFooter(image, modal);
+
+  const content = createContent(header, body, footer);
+
+  modal.appendChild(content);
+
   toggleImage(img, modal);
 
   return modal;
@@ -184,26 +210,38 @@ images.forEach((image) => {
   loadCommentsFromLocalStorage(image);
 });
 
+function createCommentElement(commentText, image) {
+  const comment = document.createElement("p");
+  comment.textContent = commentText;
+  comment.classList.add("comment");
+
+  attachEvent(comment, "click", () => {
+    removeComment(comment, commentText, image);
+  });
+
+  return comment;
+}
+
+function removeComment(comment, commentText, image) {
+  comment.remove();
+  logInteractions("Comment was deleted!");
+  image.comments = image.comments.filter((c) => c !== commentText);
+  saveCommentsToLocalStorage(image);
+}
+
 function addComment(modal, image) {
   const input = modal.querySelector(".comment-input");
   const commentText = input.value.trim();
 
   if (!commentText) return;
 
-  const comment = document.createElement("p");
-  comment.textContent = commentText;
-  comment.classList.add("comment");
+  const commentSection = modal.querySelector(".comment-section");
+  const comment = createCommentElement(commentText, image);
 
-  attachEvent(comment, "click", () => {
-    comment.remove();
-    logInteractions("Comment was deleted!");
-    image.comments = image.comments.filter((c) => c !== commentText);
-    saveCommentsToLocalStorage(image);
-  });
-
-  modal.querySelector(".comment-section").appendChild(comment);
+  commentSection.appendChild(comment);
   image.comments.push(commentText);
   saveCommentsToLocalStorage(image);
+
   input.value = "";
 }
 
