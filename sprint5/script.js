@@ -116,6 +116,7 @@ function createModal(img, title, description, diet, activity, image) {
   const commentSection = document.createElement("div");
   commentSection.classList.add("comment-section");
 
+  loadCommentsFromLocalStorage(image);
   image.comments.forEach((commentText) => {
     const comment = document.createElement("p");
     comment.textContent = commentText;
@@ -124,6 +125,7 @@ function createModal(img, title, description, diet, activity, image) {
       comment.remove();
       logInteractions("Comment was deleted!");
       image.comments = image.comments.filter((c) => c !== commentText);
+      saveCommentsToLocalStorage(image);
     });
     commentSection.appendChild(comment);
   });
@@ -142,7 +144,7 @@ function createModal(img, title, description, diet, activity, image) {
 
   attachEvent(commentButton, "click", () => {
     addComment(modal, image);
-    logInteractions("Button 'Sent' at comment section was clicked!");
+    logInteractions("Button 'Send' at comment section was clicked!");
   });
 
   buttonInputContainer.appendChild(commentInput);
@@ -167,6 +169,21 @@ function createModal(img, title, description, diet, activity, image) {
   return modal;
 }
 
+function saveCommentsToLocalStorage(image) {
+  localStorage.setItem(`comments-${image.src}`, JSON.stringify(image.comments));
+}
+
+function loadCommentsFromLocalStorage(image) {
+  const savedComments = localStorage.getItem(`comments-${image.src}`);
+  if (savedComments) {
+    image.comments = JSON.parse(savedComments);
+  }
+}
+
+images.forEach((image) => {
+  loadCommentsFromLocalStorage(image);
+});
+
 function addComment(modal, image) {
   const input = modal.querySelector(".comment-input");
   const commentText = input.value.trim();
@@ -181,10 +198,12 @@ function addComment(modal, image) {
     comment.remove();
     logInteractions("Comment was deleted!");
     image.comments = image.comments.filter((c) => c !== commentText);
+    saveCommentsToLocalStorage(image);
   });
 
   modal.querySelector(".comment-section").appendChild(comment);
   image.comments.push(commentText);
+  saveCommentsToLocalStorage(image);
   input.value = "";
 }
 
