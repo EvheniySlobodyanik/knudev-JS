@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameQuiz</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="body">
+    <header class="header">
+      <h1 class="title">Welcome to GameQuiz!</h1>
+      <p class="paragraph">In the square block below press 'Start' button</p>
+      <p class="para-note">And then choose one correct answer!</p>
+    </header>
+
+    <main class="main">
+      <section class="section section-quiz">
+        <form class="form">
+          <button class="button button-start" id="start">Start</button>
+
+          <div class="container">
+            <div class="container-quiz" id="quiz-block">
+              <div class="container-timer-question">
+                <p class="paragraph para-timer" id="timer">Timer</p>
+                <h2 class="quiz-question" id="question">Question</h2>
+              </div>
+
+              <div class="container-answers" id="answer-block">
+                <button class="button button-one" type="button" id="answer1">
+                  One
+                </button>
+                <button class="button button-two" type="button" id="answer2">
+                  Two
+                </button>
+                <button class="button button-three" type="button" id="answer3">
+                  Three
+                </button>
+                <button class="button button-four" type="button" id="answer4">
+                  Four
+                </button>
+              </div>
+            </div>
+
+            <img
+              class="quiz-image"
+              id="image"
+              src="images/section-input/zelensky.jpg"
+              alt=""
+            />
+          </div>
+
+          <button class="button button-next" id="next" disabled>Next</button>
+        </form>
+      </section>
+
+      <section class="section section-look">
+        <h3 class="title">Look at your answers</h3>
+
+        <div class="container-choose">
+          <button class="button button-right" id="right">Right answers</button>
+          <button class="button button-wrong" id="wrong">Wrong answers</button>
+        </div>
+      </section>
+
+      <section class="section section-input">
+        <div class="container" id="container-president">
+          <div class="president-text">
+            <p class="paragraph">Current president of Ukraine</p>
+            <p class="para-note">Only english letters</p>
+          </div>
+
+          <div class="input-block">
+            <input type="text" class="input" id="president" />
+            <button type="button" class="button button-president">Check</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>

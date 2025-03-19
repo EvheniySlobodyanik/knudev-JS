@@ -1,0 +1,251 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7e1d7;
+  color: #4a5759;
+}
+
+.button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+  color: black;
+}
+
+.button:hover {
+  background-color: #4caf50;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:focus {
+  outline: 3px solid #26c6da;
+  background-color: #00acc1;
+  color: white;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  .title {
+    font-size: 2.5em;
+  }
+
+  .paragraph {
+    font-size: 1.5em;
+    font-weight: 500;
+  }
+
+  .para-note {
+    font-size: 1.25em;
+    font-weight: 500;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 10rem;
+  gap: 2rem;
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #dedbd2;
+    padding: 2rem;
+    width: 40rem;
+  }
+}
+
+.section-quiz {
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .button-start {
+      display: none;
+    }
+
+    .container {
+      display: inline-flex;
+      gap: 5rem;
+
+      .container-quiz {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .container-timer-question {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .para-timer {
+            font-size: 1.25em;
+            font-weight: 500;
+          }
+
+          .quiz-question {
+            font-size: 1.5em;
+          }
+        }
+
+        .container-answers {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .button {
+            border-radius: 10px;
+            font-size: 1.25em;
+            padding: 0.25rem;
+            width: 15rem;
+          }
+        }
+      }
+
+      .quiz-image {
+        display: flex;
+        height: 16rem;
+      }
+    }
+
+    .button-next {
+      border-radius: 5px;
+      padding: 0.33rem;
+      font-size: 1.25em;
+      border: 2px solid black;
+    }
+
+    .button-next:disabled {
+      cursor: no-drop;
+      transform: none;
+      box-shadow: none;
+      background-color: white;
+      color: black;
+    }
+  }
+}
+
+.section-look {
+  .title {
+    font-size: 1.75em;
+    margin-bottom: 1.5rem;
+  }
+
+  .container-choose {
+    display: flex;
+    gap: 0.5rem;
+
+    .button {
+      padding: 0.5rem;
+      border-radius: 8px;
+      width: 10rem;
+      font-size: 1em;
+    }
+
+    .button-right:hover {
+      background-color: #4caf50;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0px 4px 10px rgba(0, 128, 0, 0.3);
+    }
+
+    .button-right:focus {
+      outline: none;
+      border-color: #4caf50;
+      box-shadow: 0px 0px 8px 3px rgba(76, 175, 80, 0.7);
+      transform: scale(1.05);
+    }
+
+    .button-wrong:hover {
+      background-color: #e53935;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.3);
+    }
+
+    .button-wrong:focus {
+      outline: none;
+      border-color: #e53935;
+      box-shadow: 0px 0px 8px 3px rgba(255, 0, 0, 0.7);
+      transform: scale(1.05);
+    }
+  }
+}
+
+.section-input {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .president-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding-bottom: 1rem;
+
+      .paragraph {
+        font-size: 1.75em;
+        font-weight: 700;
+      }
+
+      .para-note {
+        font-weight: 500;
+        font-size: 1.25em;
+      }
+    }
+
+    .input-block {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+
+      .input,
+      .button {
+        padding: 0.33rem;
+      }
+
+      .input {
+        border-radius: 4px;
+        flex: 7.5;
+        transition: all 0.3s ease-in-out;
+        font-size: 1em;
+      }
+
+      .input:hover {
+        border-color: #4caf50;
+        box-shadow: 0px 2px 8px rgba(76, 175, 80, 0.3);
+      }
+
+      .input:focus {
+        outline: none;
+        border-color: #4caf50;
+        background-color: #f1fff0;
+        box-shadow: 0px 0px 8px 3px rgba(76, 175, 80, 0.7);
+      }
+
+      .button {
+        flex: 2.5;
+        border-radius: 8px;
+        font-size: 1em;
+      }
+    }
+  }
+}
