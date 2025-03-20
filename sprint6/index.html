@@ -15,10 +15,14 @@
 
     <main class="main">
       <section class="section section-quiz">
-        <form class="form">
-          <button class="button button-start" id="start">Start</button>
+        <p class="round-counter" id="rounds"></p>
 
-          <div class="container">
+        <form class="form">
+          <button class="button button-start" id="start" type="button">
+            Start
+          </button>
+
+          <div class="container" id="quiz">
             <div class="container-quiz" id="quiz-block">
               <div class="container-timer-question">
                 <p class="paragraph para-timer" id="timer">Timer</p>
@@ -41,15 +45,12 @@
               </div>
             </div>
 
-            <img
-              class="quiz-image"
-              id="image"
-              src="images/section-input/zelensky.jpg"
-              alt=""
-            />
+            <img class="quiz-image" id="image" src="images/senku.webp" alt="" />
           </div>
 
-          <button class="button button-next" id="next" disabled>Next</button>
+          <button class="button button-next" id="next" type="button" disabled>
+            Next
+          </button>
         </form>
       </section>
 
@@ -57,8 +58,12 @@
         <h3 class="title">Look at your answers</h3>
 
         <div class="container-choose">
-          <button class="button button-right" id="right">Right answers</button>
-          <button class="button button-wrong" id="wrong">Wrong answers</button>
+          <button class="button button-right" id="right" type="button">
+            Right answers
+          </button>
+          <button class="button button-wrong" id="wrong" type="button">
+            Wrong answers
+          </button>
         </div>
       </section>
 
