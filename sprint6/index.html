@@ -14,10 +14,13 @@
     </header>
 
     <main class="main">
-      <section class="section section-quiz">
-        <p class="round-counter" id="rounds"></p>
+      <section class="section section-quiz" id="quiz-section">
+        <div class="overall-container" id="container-counter">
+          <p class="round-counter" id="rounds"></p>
+          <p class="score-counter" id="score">Your score: 0</p>
+        </div>
 
-        <form class="form">
+        <form class="form" id="quiz-form">
           <button class="button button-start" id="start" type="button">
             Start
           </button>
@@ -45,7 +48,12 @@
               </div>
             </div>
 
-            <img class="quiz-image" id="image" src="images/senku.webp" alt="" />
+            <img
+              class="quiz-image"
+              id="displayed-image"
+              src="images/senku.webp"
+              alt=""
+            />
           </div>
 
           <button class="button button-next" id="next" type="button" disabled>

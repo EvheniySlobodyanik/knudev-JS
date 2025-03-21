@@ -62,19 +62,19 @@ const buttons = [
 
 const images = [
   {
-    src: "zelda",
-    alt: "A heroic warrior in a green tunic explores a vast, magical land with a sword and shield.",
+    src: "huryle",
+    alt: "A vast, mythical kingdom with rolling green fields, towering mountains, and ancient ruins, home to legendary warriors and magical creatures.",
   },
   {
-    src: "monopoly",
-    alt: "A colorful board game with properties, houses, and a banker managing play money.",
+    src: "board-game",
+    alt: "A tabletop scene featuring colorful game pieces, dice, and a board with pathways leading to victory, where players strategize and compete.",
   },
   {
     src: "minecraft",
     alt: "A blocky, pixelated landscape featuring a player-built house and roaming animals.",
   },
   {
-    src: "poker",
+    src: "twenty-one",
     alt: "A deck of cards on a table with chips stacked beside them, ready for a hand.",
   },
   {
@@ -88,10 +88,19 @@ let timer;
 
 const startBtn = document.getElementById("start");
 const nextBtn = document.getElementById("next");
+
+const quizSection = document.getElementById("quiz-section");
+const quizForm = document.getElementById("quiz-form");
 const quizContainer = document.getElementById("quiz");
+const overallContainer = document.getElementById("container-counter");
+
+const displayedImage = document.getElementById("displayed-image");
+
 const roundsPara = document.getElementById("rounds");
+const scorePara = document.getElementById("score");
 
 let roundCount = 0;
+let scoreCount = 0;
 
 function startTimer() {
   clearInterval(timer);
@@ -105,6 +114,16 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       console.log("Time's up!");
+
+      roundCount++;
+
+      if (roundCount === 5) {
+        endGame();
+      }
+
+      manageQuizContainment();
+      showCurrentRound();
+      resetTimer();
     }
   }, 1000);
 }
@@ -126,6 +145,10 @@ function getCurrentRound() {
   return rounds[roundCount];
 }
 
+function getCurrentImage() {
+  return images[roundCount];
+}
+
 function updateQuestion(question) {
   document.getElementById("question").textContent = question;
 }
@@ -137,30 +160,86 @@ function updateAnswers(answers) {
   });
 }
 
+function updateImage(src, alt) {
+  displayedImage.src = `images/section-quiz/${src}.jpg`;
+  displayedImage.alt = alt;
+}
+
 function manageQuizContainment() {
   const currentRound = getCurrentRound();
+  const currentImage = getCurrentImage();
+
   updateQuestion(currentRound.question);
   updateAnswers(currentRound.answers);
+  updateImage(currentImage.src, currentImage.alt);
+}
+
+function clearStylesButtons() {
+  buttons.forEach((btnObj) => {
+    btnObj.button.disabled = false;
+    btnObj.button.style.backgroundColor = "white";
+    btnObj.button.style.color = "black";
+    btnObj.button.classList.add("button-updated");
+    document.getElementById("next").disabled = true;
+  });
 }
 
 function handleStartOfQuiz() {
   startBtn.style.display = "none";
   nextBtn.style.display = "block";
   quizContainer.style.display = "inline-flex";
-  roundsPara.style.display = "flex";
+
+  roundsPara.style.display = "block";
+  scorePara.style.display = "block";
 }
 
 function showCurrentRound() {
   roundsPara.textContent = `Round ${roundCount + 1}/5`;
 }
 
+export function updateScore() {
+  scoreCount++;
+  scorePara.textContent = `Your score: ${scoreCount}`;
+}
+
 export function startNextRound(checkNext) {
   if (checkNext) {
     roundCount++;
+
+    if (roundCount === 5) {
+      endGame();
+    }
+
     manageQuizContainment();
+    clearStylesButtons();
     showCurrentRound();
     resetTimer();
   }
+}
+
+function addEndGameMessages() {
+  const container = document.createElement("div");
+  container.classList.add("container-end");
+
+  const paraEndMessage = document.createElement("p");
+  const paraEndScore = document.createElement("p");
+
+  paraEndMessage.textContent = "You have completed the quiz!";
+  paraEndMessage.classList.add("para-end-message");
+
+  paraEndScore.textContent = `Your end score: ${scoreCount}`;
+  paraEndScore.classList.add("para-end-score");
+
+  container.appendChild(paraEndMessage);
+  container.appendChild(paraEndScore);
+
+  quizSection.appendChild(container);
+}
+
+function endGame() {
+  quizForm.style.display = "none";
+  overallContainer.style.display = "none";
+  addEndGameMessages();
 }
 
 export function handleQuiz() {

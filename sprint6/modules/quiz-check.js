@@ -1,10 +1,15 @@
 import { stopTimer } from "./dom-manipulation.js";
+import { updateScore } from "./dom-manipulation.js";
 
 export function checkButtons(buttons) {
   buttons.forEach((btnObj) => {
     btnObj.button.addEventListener("click", (event) => {
       checkAnswers(event, buttons);
       stopTimer();
+
+      if (btnObj.button.dataset.correct === "true") {
+        updateScore();
+      }
     });
   });
 }
