@@ -1,4 +1,4 @@
-import { checkButtons } from "./answers-check.js";
+import { checkButtons } from "./quiz-check.js";
 
 const rounds = [
   {
@@ -118,6 +118,10 @@ function resetTimer() {
   startTimer();
 }
 
+export function stopTimer() {
+  clearInterval(timer);
+}
+
 function getCurrentRound() {
   return rounds[roundCount];
 }
@@ -155,6 +159,7 @@ export function startNextRound(checkNext) {
     roundCount++;
     manageQuizContainment();
     showCurrentRound();
+    resetTimer();
   }
 }
 

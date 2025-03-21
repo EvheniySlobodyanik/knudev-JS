@@ -1,8 +1,11 @@
+import { stopTimer } from "./dom-manipulation.js";
+
 export function checkButtons(buttons) {
   buttons.forEach((btnObj) => {
-    btnObj.button.addEventListener("click", (event) =>
-      checkAnswers(event, buttons)
-    );
+    btnObj.button.addEventListener("click", (event) => {
+      checkAnswers(event, buttons);
+      stopTimer();
+    });
   });
 }
 
