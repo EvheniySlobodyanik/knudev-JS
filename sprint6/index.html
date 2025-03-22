@@ -48,12 +48,7 @@
               </div>
             </div>
 
-            <img
-              class="quiz-image"
-              id="displayed-image"
-              src="images/senku.webp"
-              alt=""
-            />
+            <img class="quiz-image" id="displayed-image" src="" alt="" />
           </div>
 
           <button class="button button-next" id="next" type="button" disabled>
@@ -75,16 +70,22 @@
         </div>
       </section>
 
-      <section class="section section-input">
+      <section class="section section-input" id="input-section">
         <div class="container" id="container-president">
           <div class="president-text">
             <p class="paragraph">Current president of Ukraine</p>
             <p class="para-note">Only english letters</p>
           </div>
 
-          <div class="input-block">
-            <input type="text" class="input" id="president" />
-            <button type="button" class="button button-president">Check</button>
+          <div class="input-block" id="president-block">
+            <input type="text" class="input" id="check-input" />
+            <button
+              type="button"
+              class="button button-president"
+              id="check-button"
+            >
+              Check
+            </button>
           </div>
         </div>
       </section>

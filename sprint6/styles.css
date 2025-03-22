@@ -328,3 +328,48 @@
   animation: pulse 1s infinite ease-in-out;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.president-message {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-size: 1.25em;
+  font-weight: 500;
+  background-color: #ffebee;
+  color: #d32f2f;
+  border-left: 4px solid #d32f2f;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px gold;
+  }
+  50% {
+    box-shadow: 0 0 15px orange, 0 0 25px gold;
+  }
+  100% {
+    box-shadow: 0 0 5px gold;
+  }
+}
+
+@keyframes burn {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.zelensky-portrait {
+  margin-top: 1rem;
+  width: 23.5rem;
+  height: 30rem;
+}
+
+.burning-image {
+  animation: glow 1s infinite alternate, burn 1.5s infinite alternate;
+  transition: all 0.3s ease-in-out;
+}

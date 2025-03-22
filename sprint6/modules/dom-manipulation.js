@@ -1,4 +1,6 @@
-import { checkButtons } from "./quiz-check.js";
+import { checkButtons } from "./validation.js";
+import { checkInput } from "./validation.js";
+import { checkPresidentSection } from "./validation.js";
 
 const rounds = [
   {
@@ -102,6 +104,10 @@ const scorePara = document.getElementById("score");
 let roundCount = 0;
 let scoreCount = 0;
 
+const inputSection = document.getElementById("input-section");
+const checkInp = document.getElementById("check-input");
+const checkBtn = document.getElementById("check-button");
+
 function startTimer() {
   clearInterval(timer);
   timeLeft = 30;
@@ -177,15 +183,17 @@ function manageQuizContainment() {
 function clearStylesButtons() {
   buttons.forEach((btnObj) => {
     btnObj.button.disabled = false;
+    document.getElementById("next").disabled = true;
+
     btnObj.button.classList.remove("correct");
     btnObj.button.classList.remove("incorrect");
-    document.getElementById("next").disabled = true;
   });
 }
 
 function handleStartOfQuiz() {
   startBtn.style.display = "none";
   nextBtn.style.display = "block";
+
   quizContainer.style.display = "inline-flex";
 
   roundsPara.style.display = "block";
@@ -240,6 +248,7 @@ function addEndGameMessages() {
 function endGame() {
   quizForm.style.display = "none";
   overallContainer.style.display = "none";
+
   addEndGameMessages();
 }
 
@@ -249,4 +258,47 @@ export function handleQuiz() {
   manageQuizContainment();
   showCurrentRound();
   checkButtons(buttons);
+}
+
+function createImage(src, alt) {
+  checkPresidentSection("portrait");
+
+  const img = document.createElement("img");
+
+  img.src = src;
+  img.alt = alt;
+
+  img.classList.add("zelensky-portrait");
+  img.classList.add("burning-image");
+
+  inputSection.appendChild(img);
+}
+
+function createMessage(message) {
+  checkPresidentSection();
+
+  const msg = document.createElement("p");
+  msg.textContent = message;
+  msg.classList.add("president-message");
+  inputSection.appendChild(msg);
+}
+
+export function handleInput() {
+  let result = checkInput(checkInp);
+
+  if (result) {
+    checkInp.value = "";
+    checkInp.disabled = true;
+    checkInp.style.cursor = "no-drop";
+    checkBtn.disabled = true;
+
+    createImage(
+      "images/section-input/zelensky.jpg",
+      "A determined and resolute leader standing with confidence. His sharp gaze and strong posture reflect unwavering resilience and dedication. A symbol of courage and leadership in challenging times."
+    );
+  } else {
+    createMessage(
+      "Incorrect! Your social respect points are decreased by 500!"
+    );
+  }
 }

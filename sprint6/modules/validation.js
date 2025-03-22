@@ -25,3 +25,27 @@ function checkAnswers(event, buttons) {
     document.getElementById("next").classList.add("pulsing");
   });
 }
+
+export function checkInput(checkInp) {
+  return checkInp.value.trim().toLowerCase() === "zelensky";
+}
+
+function checkForImage() {
+  checkForMessage();
+
+  const existingImg = document.querySelector(".zelensky-portrait");
+  if (existingImg) {
+    existingImg.remove();
+  }
+}
+
+function checkForMessage() {
+  const existingMsg = document.querySelector(".president-message");
+  if (existingMsg) {
+    existingMsg.remove();
+  }
+}
+
+export function checkPresidentSection(containment) {
+  containment === "portrait" ? checkForImage() : checkForMessage();
+}
