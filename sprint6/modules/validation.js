@@ -1,6 +1,8 @@
 import { stopTimer } from "./dom-manipulation.js";
 import { updateScore } from "./dom-manipulation.js";
 
+import { catchWrongAnswer } from "./wrong-answers.js";
+
 export function checkButtons(buttons) {
   buttons.forEach((btnObj) => {
     btnObj.button.addEventListener("click", (event) => {
@@ -12,6 +14,8 @@ export function checkButtons(buttons) {
       }
     });
   });
+
+  catchWrongAnswer(buttons);
 }
 
 function checkAnswers(event, buttons) {

@@ -57,10 +57,10 @@ const rounds = [
 ];
 
 const buttons = [
-  { button: document.getElementById("answer1"), text: "" },
-  { button: document.getElementById("answer2"), text: "" },
-  { button: document.getElementById("answer3"), text: "" },
-  { button: document.getElementById("answer4"), text: "" },
+  { button: document.getElementById("answer1") },
+  { button: document.getElementById("answer2") },
+  { button: document.getElementById("answer3") },
+  { button: document.getElementById("answer4") },
 ];
 
 const images = [
@@ -148,7 +148,7 @@ export function stopTimer() {
   clearInterval(timer);
 }
 
-function getCurrentRound() {
+export function getCurrentRound() {
   return rounds[roundCount];
 }
 
@@ -173,6 +173,10 @@ function updateImage(src, alt) {
 }
 
 function manageQuizContainment() {
+  if (roundCount === 5) {
+    return;
+  }
+
   const currentRound = getCurrentRound();
   const currentImage = getCurrentImage();
 
@@ -237,9 +241,7 @@ function animationAtTheEnd(removedOne, addedOne) {
   quizAnimation.classList.add(`${addedOne}`);
 }
 
-function addEndGameMessages(endMessage, endScore) {
-  animationAtTheEnd("quiz-round", "whirlpool");
-
+function addEndGameMessages(endMessage, endScore, endContainer) {
   const container = document.createElement("div");
   container.classList.add("container-end");
 
@@ -255,14 +257,21 @@ function addEndGameMessages(endMessage, endScore) {
   container.appendChild(paraEndMessage);
   container.appendChild(paraEndScore);
 
-  quizSection.appendChild(container);
+  endContainer.appendChild(container);
 }
 
 function endGame() {
   quizForm.style.display = "none";
   overallContainer.style.display = "none";
+  document.getElementById("section-wrong-answers").style.display = "flex";
 
-  addEndGameMessages("You have completed the quiz!", "Your end score:");
+  addEndGameMessages(
+    "You have completed the quiz!",
+    "Your end score:",
+    quizSection
+  );
+
+  animationAtTheEnd("quiz-round", "whirlpool");
 }
 
 export function handleQuiz() {

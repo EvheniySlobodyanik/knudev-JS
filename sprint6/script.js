@@ -2,6 +2,8 @@ import { handleQuiz } from "./modules/dom-manipulation.js";
 import { startNextRound } from "./modules/dom-manipulation.js";
 import { handleInput } from "./modules/dom-manipulation.js";
 
+import { handleWrongAnswers } from "./modules/wrong-answers.js";
+
 export function handleEvent(element, event, handler, options = {}) {
   element.addEventListener(event, handler, options);
 }
@@ -16,4 +18,8 @@ handleEvent(document.getElementById("next"), "click", () => {
 
 handleEvent(document.getElementById("check-button"), "click", () => {
   handleInput();
+});
+
+handleEvent(document.getElementById("wrong"), "click", () => {
+  handleWrongAnswers();
 });
