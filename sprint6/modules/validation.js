@@ -49,3 +49,15 @@ function checkForMessage() {
 export function checkPresidentSection(containment) {
   containment === "portrait" ? checkForImage() : checkForMessage();
 }
+
+export function checkQuizAnimation() {
+  const quizAnimation = document.querySelector(".quiz-round");
+
+  if (quizAnimation) {
+    quizAnimation.classList.remove("quiz-round");
+
+    void quizAnimation.offsetWidth;
+
+    quizAnimation.classList.add("quiz-round");
+  }
+}

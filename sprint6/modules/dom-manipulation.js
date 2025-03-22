@@ -1,6 +1,7 @@
 import { checkButtons } from "./validation.js";
 import { checkInput } from "./validation.js";
 import { checkPresidentSection } from "./validation.js";
+import { checkQuizAnimation } from "./validation.js";
 
 const rounds = [
   {
@@ -194,6 +195,8 @@ function handleStartOfQuiz() {
   startBtn.style.display = "none";
   nextBtn.style.display = "block";
 
+  quizSection.classList.add("quiz-round");
+
   quizContainer.style.display = "inline-flex";
 
   roundsPara.style.display = "block";
@@ -211,6 +214,7 @@ export function updateScore() {
 
 export function startNextRound(checkNext) {
   nextBtn.classList.remove("pulsing");
+  checkQuizAnimation();
 
   if (checkNext) {
     roundCount++;
@@ -226,7 +230,16 @@ export function startNextRound(checkNext) {
   }
 }
 
+function animationAtTheEnd() {
+  const quizAnimation = document.querySelector(".quiz-round");
+  quizAnimation.classList.remove("quiz-round");
+
+  quizAnimation.classList.add("whirlpool");
+}
+
 function addEndGameMessages() {
+  animationAtTheEnd();
+
   const container = document.createElement("div");
   container.classList.add("container-end");
 
