@@ -177,9 +177,8 @@ function manageQuizContainment() {
 function clearStylesButtons() {
   buttons.forEach((btnObj) => {
     btnObj.button.disabled = false;
-    btnObj.button.style.backgroundColor = "white";
-    btnObj.button.style.color = "black";
-    btnObj.button.classList.add("button-updated");
+    btnObj.button.classList.remove("correct");
+    btnObj.button.classList.remove("incorrect");
     document.getElementById("next").disabled = true;
   });
 }
@@ -203,6 +202,8 @@ export function updateScore() {
 }
 
 export function startNextRound(checkNext) {
+  nextBtn.classList.remove("pulsing");
+
   if (checkNext) {
     roundCount++;
 

@@ -17,8 +17,11 @@ export function checkButtons(buttons) {
 function checkAnswers(event, buttons) {
   buttons.forEach((btnObj) => {
     const isCorrect = btnObj.button.dataset.correct === "true";
-    btnObj.button.style.backgroundColor = isCorrect ? "green" : "red";
+
+    btnObj.button.classList.add(isCorrect ? "correct" : "incorrect");
     btnObj.button.disabled = true;
+
     document.getElementById("next").disabled = false;
+    document.getElementById("next").classList.add("pulsing");
   });
 }
