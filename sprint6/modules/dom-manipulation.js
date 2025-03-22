@@ -237,7 +237,7 @@ function animationAtTheEnd() {
   quizAnimation.classList.add("whirlpool");
 }
 
-function addEndGameMessages() {
+function addEndGameMessages(endMessage, endScore) {
   animationAtTheEnd();
 
   const container = document.createElement("div");
@@ -246,10 +246,10 @@ function addEndGameMessages() {
   const paraEndMessage = document.createElement("p");
   const paraEndScore = document.createElement("p");
 
-  paraEndMessage.textContent = "You have completed the quiz!";
+  paraEndMessage.textContent = `${endMessage}`;
   paraEndMessage.classList.add("para-end-message");
 
-  paraEndScore.textContent = `Your end score: ${scoreCount}`;
+  paraEndScore.textContent = `${endScore} ${scoreCount}`;
   paraEndScore.classList.add("para-end-score");
 
   container.appendChild(paraEndMessage);
@@ -262,7 +262,7 @@ function endGame() {
   quizForm.style.display = "none";
   overallContainer.style.display = "none";
 
-  addEndGameMessages();
+  addEndGameMessages("You have completed the quiz!", "Your end score:");
 }
 
 export function handleQuiz() {
