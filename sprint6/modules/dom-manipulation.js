@@ -241,17 +241,17 @@ function animationAtTheEnd(removedOne, addedOne) {
   quizAnimation.classList.add(`${addedOne}`);
 }
 
-function addEndGameMessages(endMessage, endScore, endContainer) {
+export function addMessages(endMessage, endScore, endContainer) {
   const container = document.createElement("div");
   container.classList.add("container-end");
 
   const paraEndMessage = document.createElement("p");
   const paraEndScore = document.createElement("p");
 
-  paraEndMessage.textContent = `${endMessage}`;
+  paraEndMessage.textContent = endMessage;
   paraEndMessage.classList.add("para-end-message");
 
-  paraEndScore.textContent = `${endScore} ${scoreCount}`;
+  paraEndScore.textContent = endScore;
   paraEndScore.classList.add("para-end-score");
 
   container.appendChild(paraEndMessage);
@@ -265,9 +265,9 @@ function endGame() {
   overallContainer.style.display = "none";
   document.getElementById("section-wrong-answers").style.display = "flex";
 
-  addEndGameMessages(
+  addMessages(
     "You have completed the quiz!",
-    "Your end score:",
+    `Your end score: ${scoreCount}`,
     quizSection
   );
 
