@@ -214,7 +214,7 @@ export function updateScore() {
 
 export function startNextRound(checkNext) {
   nextBtn.classList.remove("pulsing");
-  checkQuizAnimation();
+  checkQuizAnimation("quiz-round");
 
   if (checkNext) {
     roundCount++;
@@ -230,15 +230,15 @@ export function startNextRound(checkNext) {
   }
 }
 
-function animationAtTheEnd() {
-  const quizAnimation = document.querySelector(".quiz-round");
-  quizAnimation.classList.remove("quiz-round");
+function animationAtTheEnd(removedOne, addedOne) {
+  const quizAnimation = document.querySelector(`.${removedOne}`);
+  quizAnimation.classList.remove(`${removedOne}`);
 
-  quizAnimation.classList.add("whirlpool");
+  quizAnimation.classList.add(`${addedOne}`);
 }
 
 function addEndGameMessages(endMessage, endScore) {
-  animationAtTheEnd();
+  animationAtTheEnd("quiz-round", "whirlpool");
 
   const container = document.createElement("div");
   container.classList.add("container-end");
@@ -274,7 +274,7 @@ export function handleQuiz() {
 }
 
 function createImage(src, alt) {
-  checkPresidentSection("portrait");
+  checkPresidentSection("portrait", "zelensky-portrait");
 
   const img = document.createElement("img");
 
@@ -288,7 +288,7 @@ function createImage(src, alt) {
 }
 
 function createMessage(message) {
-  checkPresidentSection();
+  checkPresidentSection("", "president-message");
 
   const msg = document.createElement("p");
   msg.textContent = message;

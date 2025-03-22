@@ -30,34 +30,37 @@ export function checkInput(checkInp) {
   return checkInp.value.trim().toLowerCase() === "zelensky";
 }
 
-function checkForImage() {
-  checkForMessage();
+function checkForImage(checkingImage) {
+  //row below can be upgraded
+  checkForMessage("president-message");
 
-  const existingImg = document.querySelector(".zelensky-portrait");
+  const existingImg = document.querySelector(`.${checkingImage}`);
   if (existingImg) {
     existingImg.remove();
   }
 }
 
-function checkForMessage() {
-  const existingMsg = document.querySelector(".president-message");
+function checkForMessage(checkingMessage) {
+  const existingMsg = document.querySelector(`.${checkingMessage}`);
   if (existingMsg) {
     existingMsg.remove();
   }
 }
 
-export function checkPresidentSection(containment) {
-  containment === "portrait" ? checkForImage() : checkForMessage();
+export function checkPresidentSection(containment, checking) {
+  containment === "portrait"
+    ? checkForImage(checking)
+    : checkForMessage(checking);
 }
 
-export function checkQuizAnimation() {
-  const quizAnimation = document.querySelector(".quiz-round");
+export function checkQuizAnimation(checkingAnimation) {
+  const quizAnimation = document.querySelector(`.${checkingAnimation}`);
 
   if (quizAnimation) {
-    quizAnimation.classList.remove("quiz-round");
+    quizAnimation.classList.remove(`${checkingAnimation}`);
 
     void quizAnimation.offsetWidth;
 
-    quizAnimation.classList.add("quiz-round");
+    quizAnimation.classList.add(`${checkingAnimation}`);
   }
 }
