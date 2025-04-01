@@ -36,6 +36,8 @@ async function getWeather() {
       }
 
       handleWeatherData(data);
+    } else {
+      createErrorMessage(`Error: {data.message}`);
     }
   } catch (error) {
     console.error("Error fetching data:", error);
