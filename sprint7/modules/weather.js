@@ -3,6 +3,7 @@ import { createErrorMessage } from "./dom-manipulation.js";
 import { handleWeatherData } from "./dom-manipulation.js";
 
 import { checkError } from "./validation.js";
+import { checkErrorType } from "./validation.js";
 
 const cityInput = document.getElementById("city-input");
 const cityButton = document.getElementById("search");
@@ -30,9 +31,12 @@ async function getWeather(city) {
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=${currentLang}`
     );
     const data = await response.json();
+    console.log(data);
 
     if (!response.ok || data.error) {
-      createErrorMessage("City with this name doesn't exist!");
+      // createErrorMessage("City with this name doesn't exist!");
+      console.log(data.cod);
+      checkErrorType(data.cod);
       return;
     }
 

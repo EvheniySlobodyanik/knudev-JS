@@ -209,10 +209,65 @@
 }
 
 .weather-block {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
   background-color: #fdd8ba;
   border-radius: 10px;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
+  gap: 1rem;
+}
+
+.error-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 10rem;
+  color: black;
+
+  .error-img {
+    width: 14rem;
+    height: 14rem;
+  }
+
+  .message-title {
+    font-size: 5em;
+  }
+
+  .message-description {
+    font-size: 1.5em;
+    margin-bottom: 1rem;
+    color: gray;
+  }
+
+  .message-note {
+    width: 25rem;
+    text-align: center;
+  }
+
+  .error-button {
+    padding: 0.5rem;
+    width: 10rem;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    transition: all 0.3 ease;
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .error-button:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .error-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.8);
+    transform: scale(1.1);
+  }
 }
