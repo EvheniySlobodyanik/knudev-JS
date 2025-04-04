@@ -124,3 +124,11 @@ export function createClientServerError(
 
   body.appendChild(container);
 }
+
+body.addEventListener("click", (event) => {
+  if (event.target.classList.contains("error-button")) {
+    main.style.display = "flex";
+    const errorBlock = document.querySelector(".error-display");
+    if (errorBlock) errorBlock.remove();
+  }
+});
