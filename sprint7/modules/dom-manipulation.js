@@ -3,6 +3,8 @@ const header = document.getElementById("warning-header");
 const sectionCity = document.getElementById("weather-section");
 const containerCity = document.getElementById("container-city");
 
+const forecastSection = document.getElementById("forecast-section");
+
 const body = document.querySelector(".body");
 const main = document.querySelector(".main");
 
@@ -98,8 +100,62 @@ function displayWeather(data) {
   weatherImageContainer.appendChild(img);
 }
 
-export function handleWeatherData(data) {
-  displayWeather(data);
+function loopThroughForecast(groupedByDate) {
+  for (const date in groupedByDate) {
+    if (groupedByDate.hasOwnProperty(date)) {
+      const entries = groupedByDate[date];
+
+      const temps = entries.map((e) => e.main.temp);
+      const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(
+        1
+      );
+      const description = entries[0].weather[0].description;
+
+      const div = createBlock("forecast-day", forecastSection);
+      createPara("day-time", `Date: ${date}`, div);
+      createPara("day-temp", `Average temperature: ${avgTemp}°C`, div);
+      createPara("day-description", `Condition: ${description}`, div);
+
+      console.log(
+        `${date}: Avg Temp = ${avgTemp}°C, Condition = ${description}`
+      );
+    }
+  }
+}
+
+function displayFiveDayForecast(groupedByDate) {
+  const forecasts = document.querySelectorAll(".forecast-day");
+
+  forecasts.forEach((forecast) => forecast.remove());
+
+  loopThroughForecast(groupedByDate);
+}
+
+function GetForecastForFiveDays(data) {
+  if (!data.list || !Array.isArray(data.list)) {
+    console.error("Invalid forecast data:", data);
+    return;
+  }
+
+  let groupedByDate = {};
+  const today = new Date().toISOString().split("T")[0];
+
+  data.list.forEach((item) => {
+    const date = item.dt_txt.split(" ")[0];
+
+    if (date === today) return;
+
+    if (!groupedByDate[date]) {
+      groupedByDate[date] = [];
+    }
+    groupedByDate[date].push(item);
+  });
+  displayFiveDayForecast(groupedByDate);
+}
+
+export function handleWeatherData(data1, data2) {
+  displayWeather(data1);
+  GetForecastForFiveDays(data2);
 }
 
 export function createClientServerError(

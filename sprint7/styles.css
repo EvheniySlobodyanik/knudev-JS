@@ -271,3 +271,15 @@
     transform: scale(1.1);
   }
 }
+
+.section-forecast {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.5rem;
+  gap: 1rem;
+  .forecast-day {
+    background-color: #fdd8ba;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+}

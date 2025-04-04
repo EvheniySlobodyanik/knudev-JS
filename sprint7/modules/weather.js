@@ -27,27 +27,46 @@ async function getWeather(city) {
     const currentLang =
       selectLanguage.options[selectLanguage.selectedIndex]?.value || "en";
 
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=${currentLang}`
-    );
-    const data = await response.json();
-    console.log(data);
+    const [response1, response2] = await Promise.all([
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=${currentLang}`
+      ),
+      fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}&lang=${currentLang}`
+      ),
+    ]);
 
-    if (!response.ok || data.error) {
-      // createErrorMessage("City with this name doesn't exist!");
-      console.log(data.cod);
-      checkErrorType(data.cod);
+    const [data1, data2] = await Promise.all([
+      response1.json(),
+      response2.json(),
+    ]);
+
+    console.log("📅 5-Day Forecast:", data2);
+
+    if (!response1.ok || data1.error) {
+      console.log(data1.cod);
+      checkErrorType(data1.cod);
       return;
     }
 
-    if (data.cod === 200) {
+    if (!response2.ok || data2.cod !== "200") {
+      console.error("Forecast data fetch error:", data2);
+      checkErrorType(data2.cod);
+      return;
+    }
+
+    if (data1.cod === 200) {
       const weatherBlock = document.querySelector(".weather-block");
 
       if (weatherBlock) {
         weatherBlock.remove();
       }
 
-      handleWeatherData(data);
+      if (data2.list) {
+        handleWeatherData(data1, data2);
+      } else {
+        console.error("Invalid forecast data:", data2);
+      }
     }
   } catch (error) {
     console.error("Error fetching data:", error);
