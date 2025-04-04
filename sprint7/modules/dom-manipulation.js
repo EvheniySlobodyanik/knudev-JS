@@ -20,6 +20,7 @@ function createBlock(blockName, parent) {
   container.classList.add(blockName);
 
   parent.appendChild(container);
+  return container;
 }
 
 function createPara(className, text, parent) {
@@ -31,7 +32,7 @@ function createPara(className, text, parent) {
 }
 
 function displayWeather(data) {
-  const weatherBlock = document.querySelector(".weather-block");
+  const weatherBlock = createBlock("weather-block", sectionCity);
 
   const cityName = data.name;
   createPara("city-name", `City name: ${cityName}`, weatherBlock);
@@ -44,6 +45,5 @@ function displayWeather(data) {
 }
 
 export function handleWeatherData(data) {
-  createBlock("weather-block", sectionCity);
   displayWeather(data);
 }
