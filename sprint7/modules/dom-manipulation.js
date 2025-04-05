@@ -1,12 +1,16 @@
 const header = document.getElementById("warning-header");
 
-const sectionCity = document.getElementById("weather-section");
+const todayWeatherSection = document.getElementById("weather-today");
 const containerCity = document.getElementById("container-city");
 
 const forecastSection = document.getElementById("forecast-section");
+const forecastTodayTitle = document.getElementById("fore-today");
+const forecastTitle = document.getElementById("fore-title");
 
 const body = document.querySelector(".body");
 const main = document.querySelector(".main");
+
+const refreshBtn = document.getElementById("refresh");
 
 export function handleStart() {
   header.style.display = "none";
@@ -52,7 +56,9 @@ function createButton(buttonText, className, parent) {
 }
 
 function displayWeather(data) {
-  const weatherBlock = createBlock("weather-block", sectionCity);
+  forecastTodayTitle.style.display = "flex";
+
+  const weatherBlock = createBlock("weather-block", todayWeatherSection);
 
   const weatherDescriptionContainer = createBlock(
     "weather-description-container",
@@ -101,6 +107,8 @@ function displayWeather(data) {
 }
 
 function loopThroughForecast(groupedByDate) {
+  forecastTitle.style.display = "flex";
+  const fiveDayForecastBlock = createBlock("five-forecast", forecastSection);
   for (const date in groupedByDate) {
     if (groupedByDate.hasOwnProperty(date)) {
       const entries = groupedByDate[date];
@@ -111,7 +119,7 @@ function loopThroughForecast(groupedByDate) {
       );
       const description = entries[0].weather[0].description;
 
-      const div = createBlock("forecast-day", forecastSection);
+      const div = createBlock("forecast-day", fiveDayForecastBlock);
       createPara("day-time", `Date: ${date}`, div);
       createPara("day-temp", `Average temperature: ${avgTemp}°C`, div);
       createPara("day-description", `Condition: ${description}`, div);
@@ -156,6 +164,7 @@ function GetForecastForFiveDays(data) {
 export function handleWeatherData(data1, data2) {
   displayWeather(data1);
   GetForecastForFiveDays(data2);
+  refreshBtn.style.display = "block";
 }
 
 export function createClientServerError(
@@ -166,6 +175,7 @@ export function createClientServerError(
   imgAlt
 ) {
   main.style.display = "none";
+  refreshBtn.style.display = "none";
 
   const container = document.createElement("div");
   container.classList.add("error-display");
@@ -188,3 +198,15 @@ body.addEventListener("click", (event) => {
     if (errorBlock) errorBlock.remove();
   }
 });
+
+export function removeExpiredWeatherBlocks() {
+  refreshBtn.style.display = "none";
+  forecastTodayTitle.style.display = "none";
+  forecastTitle.style.display = "none";
+
+  const weatherBlock = document.querySelector(".weather-block");
+  const fiveDayForecastBlock = document.querySelector(".five-forecast");
+
+  if (weatherBlock) weatherBlock.remove();
+  if (fiveDayForecastBlock) fiveDayForecastBlock.remove();
+}

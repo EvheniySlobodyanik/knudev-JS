@@ -1,14 +1,43 @@
 import { handleStart } from "./dom-manipulation.js";
 import { createErrorMessage } from "./dom-manipulation.js";
 import { handleWeatherData } from "./dom-manipulation.js";
+import { removeExpiredWeatherBlocks } from "./dom-manipulation.js";
 
 import { checkError } from "./validation.js";
 import { checkErrorType } from "./validation.js";
+
+import {
+  setLocalStorage,
+  getLocalStorage,
+  removeLocalStorage,
+} from "./local-storage.js";
 
 const cityInput = document.getElementById("city-input");
 const cityButton = document.getElementById("search");
 
 const selectLanguage = document.getElementById("language");
+
+const refreshButton = document.getElementById("refresh");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedData = getLocalStorage("weather-data");
+
+  if (savedData) {
+    removeExpiredWeatherBlocks();
+    handleWeatherData(savedData.current, savedData.forecast);
+  }
+});
+
+refreshButton.addEventListener("click", () => {
+  removeLocalStorage("weather-data");
+  removeExpiredWeatherBlocks();
+  console.log("🔄 Refresh pressed! Cache reset to 600 seconds.");
+
+  const city = cityInput.value || "Kyiv";
+  if (city) {
+    getWeather(city);
+  }
+});
 
 cityButton.addEventListener("click", async () => {
   const city = cityInput.value;
@@ -22,6 +51,11 @@ cityButton.addEventListener("click", async () => {
 
 async function getWeather(city) {
   checkError();
+  const cachedData = getLocalStorage("weather-data");
+  if (cachedData && cachedData.current && cachedData.forecast) {
+    handleWeatherData(cachedData.current, cachedData.forecast);
+    return;
+  }
   try {
     const apiKey = "8b0d848ff37487448ccb91aa531c1ab8";
     const currentLang =
@@ -64,6 +98,7 @@ async function getWeather(city) {
 
       if (data2.list) {
         handleWeatherData(data1, data2);
+        setLocalStorage("weather-data", { current: data1, forecast: data2 });
       } else {
         console.error("Invalid forecast data:", data2);
       }
