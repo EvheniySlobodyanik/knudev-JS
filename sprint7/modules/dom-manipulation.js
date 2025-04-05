@@ -12,6 +12,8 @@ const main = document.querySelector(".main");
 
 const refreshBtn = document.getElementById("refresh");
 
+const paraTimer = document.getElementById("timer");
+
 export function handleStart() {
   header.style.display = "none";
 }
@@ -57,6 +59,9 @@ function createButton(buttonText, className, parent) {
 
 function displayWeather(data) {
   forecastTodayTitle.style.display = "flex";
+
+  let existingBlock = document.querySelector(".weather-block");
+  if (existingBlock) existingBlock.remove();
 
   const weatherBlock = createBlock("weather-block", todayWeatherSection);
 
@@ -162,6 +167,8 @@ function GetForecastForFiveDays(data) {
 }
 
 export function handleWeatherData(data1, data2) {
+  removeExpiredWeatherBlocks();
+
   displayWeather(data1);
   GetForecastForFiveDays(data2);
   refreshBtn.style.display = "block";

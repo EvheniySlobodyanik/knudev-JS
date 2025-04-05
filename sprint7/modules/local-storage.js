@@ -1,4 +1,4 @@
-let countdownInterval; // Global variable to store the countdown reference
+let countdownInterval = null;
 
 export function setLocalStorage(key, value) {
   const dataWithTimestamp = {
@@ -7,7 +7,7 @@ export function setLocalStorage(key, value) {
   };
   localStorage.setItem(key, JSON.stringify(dataWithTimestamp));
 
-  startExpirationCountdown(key); // Start countdown (or reset if already running)
+  startExpirationCountdown();
 }
 
 export function getLocalStorage(key) {
@@ -18,7 +18,6 @@ export function getLocalStorage(key) {
   const currentTime = Date.now();
 
   if (currentTime - parsedData.timestamp > 600000) {
-    // 600 sec (10 min)
     removeLocalStorage(key);
     removeExpiredWeatherBlocks();
     console.log("⏳ Cached data expired! Removing weather blocks...");
@@ -30,26 +29,47 @@ export function getLocalStorage(key) {
 
 export function removeLocalStorage(key) {
   localStorage.removeItem(key);
-  clearInterval(countdownInterval); // Stop countdown when cache is removed
+  clearInterval(countdownInterval);
+  countdownInterval = null;
 }
 
-function startExpirationCountdown(key) {
-  let remainingTime = 600; // Set to 600 seconds (10 min)
+export function startExpirationCountdown() {
+  const rawData = localStorage.getItem("weather-data");
+  const timer = document.getElementById("timer");
 
-  // Clear any existing interval before starting a new one
+  if (!rawData || !timer) return;
+
+  const parsedData = JSON.parse(rawData);
+  const expirationTime = parsedData.timestamp + 600000;
+  let remainingTime = Math.max(
+    Math.floor((expirationTime - Date.now()) / 1000),
+    0
+  );
+
   if (countdownInterval) {
     clearInterval(countdownInterval);
   }
 
+  if (remainingTime === 0) {
+    removeLocalStorage("weather-data");
+    removeExpiredWeatherBlocks();
+    timer.textContent = "Cache expired!";
+    return;
+  }
+
+  timer.textContent = `Cache expires in ${remainingTime} seconds`;
+
   countdownInterval = setInterval(() => {
-    console.log(`⏳ Cache expires in ${remainingTime} seconds`);
     remainingTime--;
 
-    if (remainingTime < 0) {
+    if (remainingTime <= 0) {
       clearInterval(countdownInterval);
-      removeLocalStorage(key);
+      removeLocalStorage("weather-data");
       removeExpiredWeatherBlocks();
-      console.log("🚮 Cache expired! Weather blocks removed.");
+      timer.textContent = "Cache expired!";
+      return;
     }
+
+    timer.textContent = `Cache expires in ${remainingTime} seconds`;
   }, 1000);
 }

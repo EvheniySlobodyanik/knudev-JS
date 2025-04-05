@@ -333,3 +333,11 @@
     background-color: #039be5;
   }
 }
+
+.timer-container {
+  position: absolute;
+  background-color: #e86f61;
+  padding: 1rem;
+  color: #fff;
+  border-radius: 0px 10px 0px 0px;
+}

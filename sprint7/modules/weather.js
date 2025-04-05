@@ -10,6 +10,7 @@ import {
   setLocalStorage,
   getLocalStorage,
   removeLocalStorage,
+  startExpirationCountdown,
 } from "./local-storage.js";
 
 const cityInput = document.getElementById("city-input");
@@ -25,6 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedData) {
     removeExpiredWeatherBlocks();
     handleWeatherData(savedData.current, savedData.forecast);
+
+    startExpirationCountdown();
+  }
+});
+
+cityButton.addEventListener("click", async () => {
+  const city = cityInput.value;
+  if (city) {
+    cityInput.value = "";
+
+    removeExpiredWeatherBlocks();
+    getWeather(city);
+
+    startExpirationCountdown();
+  } else {
+    createErrorMessage("Please enter a city!");
   }
 });
 
@@ -39,23 +56,11 @@ refreshButton.addEventListener("click", () => {
   }
 });
 
-cityButton.addEventListener("click", async () => {
-  const city = cityInput.value;
-  if (city) {
-    cityInput.value = "";
-    getWeather(city);
-  } else {
-    createErrorMessage("Please enter a city!");
-  }
-});
-
 async function getWeather(city) {
   checkError();
-  const cachedData = getLocalStorage("weather-data");
-  if (cachedData && cachedData.current && cachedData.forecast) {
-    handleWeatherData(cachedData.current, cachedData.forecast);
-    return;
-  }
+
+  removeLocalStorage("weather-data");
+
   try {
     const apiKey = "8b0d848ff37487448ccb91aa531c1ab8";
     const currentLang =
@@ -90,15 +95,11 @@ async function getWeather(city) {
     }
 
     if (data1.cod === 200) {
-      const weatherBlock = document.querySelector(".weather-block");
-
-      if (weatherBlock) {
-        weatherBlock.remove();
-      }
-
       if (data2.list) {
         handleWeatherData(data1, data2);
+
         setLocalStorage("weather-data", { current: data1, forecast: data2 });
+        startExpirationCountdown();
       } else {
         console.error("Invalid forecast data:", data2);
       }
