@@ -91,25 +91,26 @@ function displayWeather(data) {
     `City name: ${cityName}`,
     weatherDescriptionContainer
   );
-  const temperature = data.main.temp;
+  const temperature = data.main?.temp ?? "N/A";
+
   createPara(
     "city-temperature",
     `Temperature: ${temperature}°C`,
     weatherDescriptionContainer
   );
-  const wind = data.wind.speed;
+  const wind = data.wind?.speed ?? "N/A";
   createPara(
     "city-wind",
     `Wind speed: ${wind} m/s`,
     weatherDescriptionContainer
   );
-  const humidity = data.main.humidity;
+  const humidity = data.main?.humidity ?? "N/A";
   createPara(
     "city-humidity",
     `Humidity: ${humidity}%`,
     weatherDescriptionContainer
   );
-  const conditions = data.weather[0].description;
+  const conditions = data.weather?.[0]?.description ?? "Unknown";
   createPara(
     "city-conditions",
     `Condition: ${conditions}`,
@@ -133,7 +134,7 @@ function loopThroughForecast(groupedByDate) {
       const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(
         1
       );
-      const description = entries[0].weather[0].description;
+      const description = entries?.[0]?.weather?.[0]?.description ?? "No Data";
 
       const div = createBlock("forecast-day", fiveDayForecastBlock);
       createPara("day-time", `Date: ${date}`, div);
