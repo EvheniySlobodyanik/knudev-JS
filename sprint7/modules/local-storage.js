@@ -1,3 +1,5 @@
+import { removeExpiredWeatherBlocks } from "./dom-manipulation.js";
+
 let countdownInterval = null;
 
 export function setLocalStorage(key, value) {
@@ -50,26 +52,20 @@ export function startExpirationCountdown() {
     clearInterval(countdownInterval);
   }
 
-  if (remainingTime === 0) {
-    removeLocalStorage("weather-data");
-    removeExpiredWeatherBlocks();
-    timer.textContent = "Cache expired!";
-    return;
-  }
-
-  timer.textContent = `Cache expires in ${remainingTime} seconds`;
-
-  countdownInterval = setInterval(() => {
-    remainingTime--;
-
+  function updateTimer() {
     if (remainingTime <= 0) {
       clearInterval(countdownInterval);
       removeLocalStorage("weather-data");
       removeExpiredWeatherBlocks();
       timer.textContent = "Cache expired!";
+      console.log("🚮 Cache expired! Weather blocks removed.");
       return;
     }
 
     timer.textContent = `Cache expires in ${remainingTime} seconds`;
-  }, 1000);
+    remainingTime--;
+  }
+
+  updateTimer();
+  countdownInterval = setInterval(updateTimer, 1000);
 }

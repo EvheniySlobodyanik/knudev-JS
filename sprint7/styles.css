@@ -9,8 +9,10 @@
   color: #045d7a;
 }
 
-.button {
+.button,
+.select {
   cursor: pointer;
+  font-size: 1em;
 }
 
 .header {
@@ -248,7 +250,8 @@
   right: 1rem;
 
   .para-note {
-    font-size: 1.1em;
+    font-size: 1.25em;
+    font-weight: 600;
     padding: 0.25rem;
     margin-bottom: 0.5rem;
   }
@@ -335,9 +338,83 @@
 }
 
 .timer-container {
-  position: absolute;
+  display: none;
+  position: fixed;
   background-color: #e86f61;
   padding: 1rem;
   color: #fff;
   border-radius: 0px 10px 0px 0px;
+  bottom: 0;
+}
+
+.section-favorite-cities {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  gap: 0.5rem;
+  top: 1rem;
+  left: 1rem;
+  background-color: #fdd8ba;
+  padding: 0.75rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 20rem;
+  height: 10.5rem;
+
+  .title {
+    margin-bottom: 0.5rem;
+    font-size: 1.25em;
+  }
+
+  .select {
+    padding: 0.25rem;
+    border-radius: 5px;
+    border: 2px solid #1e90ff;
+    background-color: #ffffff;
+    color: #1e90ff;
+    box-shadow: 2px 2px 8px rgba(30, 144, 255, 0.3);
+    transition: all 0.3 ease;
+  }
+
+  .select:hover,
+  .select:focus {
+    background-color: #f0f8ff;
+    border-color: #00bfff;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .button {
+    border-radius: 10px;
+    padding: 0.5rem;
+    transition: all 0.3 ease;
+    background-color: #ff6f61;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover,
+  .button:focus {
+    background-color: #e85c50;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .button-delete-favorite {
+    background-color: #ff4d4f; /* more intense red */
+    color: white;
+    border: 2px solid #cc0000;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+
+  .button-delete-favorite:hover {
+    background-color: #e60000;
+    cursor: pointer;
+  }
 }

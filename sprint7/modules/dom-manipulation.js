@@ -12,7 +12,7 @@ const main = document.querySelector(".main");
 
 const refreshBtn = document.getElementById("refresh");
 
-const paraTimer = document.getElementById("timer");
+const containerTimer = document.getElementById("container-timer");
 
 export function handleStart() {
   header.style.display = "none";
@@ -24,6 +24,16 @@ export function createErrorMessage(message) {
   para.classList.add("error-message");
 
   containerCity.appendChild(para);
+}
+
+export function addOptionToSelect(array, className, parent) {
+  array.forEach((item) => {
+    const option = document.createElement("option");
+    option.classList.add(className);
+    option.textContent = item;
+    option.value = item;
+    parent.appendChild(option);
+  });
 }
 
 function createBlock(blockName, parent) {
@@ -59,6 +69,7 @@ function createButton(buttonText, className, parent) {
 
 function displayWeather(data) {
   forecastTodayTitle.style.display = "flex";
+  containerTimer.style.display = "block";
 
   let existingBlock = document.querySelector(".weather-block");
   if (existingBlock) existingBlock.remove();
@@ -210,6 +221,7 @@ export function removeExpiredWeatherBlocks() {
   refreshBtn.style.display = "none";
   forecastTodayTitle.style.display = "none";
   forecastTitle.style.display = "none";
+  containerTimer.style.display = "none";
 
   const weatherBlock = document.querySelector(".weather-block");
   const fiveDayForecastBlock = document.querySelector(".five-forecast");

@@ -2,6 +2,7 @@ import { handleStart } from "./dom-manipulation.js";
 import { createErrorMessage } from "./dom-manipulation.js";
 import { handleWeatherData } from "./dom-manipulation.js";
 import { removeExpiredWeatherBlocks } from "./dom-manipulation.js";
+import { addOptionToSelect } from "./dom-manipulation.js";
 
 import { checkError } from "./validation.js";
 import { checkErrorType } from "./validation.js";
@@ -16,6 +17,11 @@ import {
 const cityInput = document.getElementById("city-input");
 const cityButton = document.getElementById("search");
 
+const selectFavorite = document.getElementById("select-favorite");
+const favoriteButton = document.getElementById("add-favorite");
+const chooseButton = document.getElementById("choose-favorite");
+const deleteButton = document.getElementById("delete-favorite");
+
 const selectLanguage = document.getElementById("language");
 
 const refreshButton = document.getElementById("refresh");
@@ -28,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     handleWeatherData(savedData.current, savedData.forecast);
 
     startExpirationCountdown();
+  }
+
+  let favoriteCities = getLocalStorage("select-option") ?? [];
+  if (favoriteCities) {
+    addOptionToSelect(favoriteCities, "select-option", selectFavorite);
   }
 });
 
@@ -42,6 +53,47 @@ cityButton.addEventListener("click", async () => {
     startExpirationCountdown();
   } else {
     createErrorMessage("Please enter a city!");
+  }
+});
+
+favoriteButton.addEventListener("click", () => {
+  const city = cityInput.value.trim();
+  if (!city) return;
+
+  let favoriteCities = getLocalStorage("select-option") ?? [];
+
+  if (!favoriteCities.includes(city)) {
+    favoriteCities.push(city);
+    setLocalStorage("select-option", favoriteCities);
+
+    addOptionToSelect([city], "select-option", selectFavorite);
+  }
+
+  cityInput.value = "";
+});
+
+chooseButton.addEventListener("click", () => {
+  const selectValue = selectFavorite.value;
+  if (selectValue) {
+    getWeather(selectValue);
+    startExpirationCountdown();
+  }
+});
+
+deleteButton.addEventListener("click", () => {
+  const selectedCity = selectFavorite.value;
+
+  let favoriteCities = getLocalStorage("select-option") ?? [];
+
+  const updatedCities = favoriteCities.filter((city) => city !== selectedCity);
+
+  setLocalStorage("select-option", updatedCities);
+
+  const selectedOption = selectFavorite.querySelector(
+    `option[value="${selectedCity}"]`
+  );
+  if (selectedOption) {
+    selectedOption.remove();
   }
 });
 
