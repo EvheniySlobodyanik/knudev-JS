@@ -28,11 +28,14 @@ const refreshButton = document.getElementById("refresh");
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedData = getLocalStorage("weather-data");
+  const cacheExpiration = getLocalStorage("cache-expiration");
 
   if (savedData) {
     removeExpiredWeatherBlocks();
     handleWeatherData(savedData.current, savedData.forecast);
+  }
 
+  if (cacheExpiration) {
     startExpirationCountdown();
   }
 
@@ -42,15 +45,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+window.addEventListener("offline", () => {
+  showWarning("Offline mode: using cached data.");
+});
+
+const showWarning = (msg) => {
+  const el = document.getElementById("warning-container");
+  el.textContent = msg;
+  el.style.display = "block";
+};
+
 cityButton.addEventListener("click", async () => {
   const city = cityInput.value;
   if (city) {
     cityInput.value = "";
 
     removeExpiredWeatherBlocks();
-    getWeather(city);
+    removeLocalStorage("weather-data");
+    removeLocalStorage("cache-expiration");
 
-    startExpirationCountdown();
+    setLocalStorage("cache-expiration", Date.now() + 600000);
+
+    startWeatherPolling(city);
   } else {
     createErrorMessage("Please enter a city!");
   }
@@ -75,8 +91,7 @@ favoriteButton.addEventListener("click", () => {
 chooseButton.addEventListener("click", () => {
   const selectValue = selectFavorite.value;
   if (selectValue) {
-    getWeather(selectValue);
-    startExpirationCountdown();
+    startWeatherPolling(selectValue);
   }
 });
 
@@ -99,17 +114,46 @@ deleteButton.addEventListener("click", () => {
 
 refreshButton.addEventListener("click", () => {
   removeLocalStorage("weather-data");
+  removeLocalStorage("cache-expiration");
+
   removeExpiredWeatherBlocks();
-  console.log("🔄 Refresh pressed! Cache reset to 600 seconds.");
+
+  setLocalStorage("cache-expiration", Date.now() + 600000);
 
   const city = cityInput.value || "Kyiv";
   if (city) {
-    getWeather(city);
+    startWeatherPolling(city);
   }
 });
 
+let weatherPollingIntervalId = null;
+
+function startWeatherPolling(city) {
+  if (weatherPollingIntervalId) {
+    clearInterval(weatherPollingIntervalId);
+  }
+
+  getWeather(city);
+
+  weatherPollingIntervalId = setInterval(() => {
+    getWeather(city);
+  }, 60 * 1000);
+}
+
 async function getWeather(city) {
   checkError();
+
+  if (!navigator.onLine) {
+    showWarning("You are offline. Using cached weather data.");
+    const cachedWeather = getLocalStorage("weather-data");
+    if (cachedWeather) {
+      handleWeatherData(cachedWeather.current, cachedWeather.forecast);
+      return;
+    } else {
+      createErrorMessage("No cached data available. Check your connection.");
+      return;
+    }
+  }
 
   removeLocalStorage("weather-data");
 
@@ -151,7 +195,11 @@ async function getWeather(city) {
         handleWeatherData(data1, data2);
 
         setLocalStorage("weather-data", { current: data1, forecast: data2 });
-        startExpirationCountdown();
+
+        if (!getLocalStorage("cache-expiration")) {
+          setLocalStorage("cache-expiration", Date.now() + 600000);
+          startExpirationCountdown();
+        }
       } else {
         console.error("Invalid forecast data:", data2);
       }

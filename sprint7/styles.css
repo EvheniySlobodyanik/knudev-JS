@@ -16,7 +16,7 @@
 }
 
 .header {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -91,7 +91,7 @@
 }
 
 .main {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -307,7 +307,7 @@
 }
 
 .button-container {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -443,4 +443,16 @@
     padding: 0.5rem;
     border-radius: 20px;
   }
+}
+
+.warning-container {
+  display: none;
+  font-size: 1.5em;
+  background-color: #fdd8ba;
+  padding: 0.5rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
 }

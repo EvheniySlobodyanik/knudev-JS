@@ -18,7 +18,7 @@ export function checkErrorType(type) {
 
 function handleClientSideErrors(clientError) {
   switch (clientError) {
-    case "404":
+    case 404:
       createClientServerError(
         "404",
         "City not found",
@@ -28,7 +28,7 @@ function handleClientSideErrors(clientError) {
       );
       break;
     //free API from OpenWeatherMap is limited to 60 request per minute, 1 request in second, idk if it possible, but yea
-    case "429":
+    case 429:
       createClientServerError(
         "429",
         "Too many requests!",
@@ -42,7 +42,7 @@ function handleClientSideErrors(clientError) {
 
 function handleServerSideErrors(serverError) {
   switch (serverError) {
-    case "500":
+    case 500:
       createClientServerError(
         "500",
         "Internal Server Error",
@@ -50,7 +50,8 @@ function handleServerSideErrors(serverError) {
         "images/500.png",
         "robot on wheel"
       );
-    case "502":
+      break;
+    case 502:
       createClientServerError(
         "502",
         "Bad Gateway",
@@ -58,7 +59,8 @@ function handleServerSideErrors(serverError) {
         "images/502.png",
         "notepad with pencil"
       );
-    case "503":
+      break;
+    case 503:
       createClientServerError(
         "503",
         "Service Unavailable",
@@ -66,5 +68,6 @@ function handleServerSideErrors(serverError) {
         "images/503.png",
         "hour glass"
       );
+      break;
   }
 }

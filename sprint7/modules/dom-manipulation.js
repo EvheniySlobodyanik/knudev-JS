@@ -14,12 +14,15 @@ const hourlyForecastSection = document.getElementById("hourly-forecast");
 const body = document.querySelector(".body");
 const main = document.querySelector(".main");
 
+const containerRefresh = document.getElementById("container-button-refresh");
 const refreshBtn = document.getElementById("refresh");
 
 const containerTimer = document.getElementById("container-timer");
 
 export function handleStart() {
   header.style.display = "none";
+  main.style.display = "flex";
+  containerRefresh.style.display = "flex";
 }
 
 export function createErrorMessage(message) {

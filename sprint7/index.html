@@ -15,13 +15,21 @@
 
       <ul class="list">
         <li class="list-item">Weather for your city for today</li>
+        <li class="list-item">Hourly forecast for today</li>
         <li class="list-item">Forecast of weather for 5 days</li>
         <li class="list-item">Selecting language for weather descriptions</li>
         <li class="list-item">
           Marking cities as 'favorite' to use it without search
         </li>
         <li class="list-item">Data will refresh every 10 minutes</li>
-        <li class="list-item">Or u can refresh it by</li>
+        <li class="list-item">Data will update every 60 seconds</li>
+        <li class="list-item">
+          Or u can refresh it by pressing 'Refresh' button
+        </li>
+        <li class="list-item">
+          Timer is bugged so after refresh or search it can stop but will go on
+          background
+        </li>
       </ul>
 
       <p class="paragraph-note">
@@ -155,7 +163,7 @@
       <section class="section section-forecast" id="forecast-section"></section>
     </main>
 
-    <div class="container button-container">
+    <div class="container button-container" id="container-button-refresh">
       <button class="button button-refresh" id="refresh" type="button">
         Refresh
       </button>
@@ -163,6 +171,10 @@
 
     <div class="timer-container" id="container-timer">
       <p class="para-timer" id="timer"></p>
+    </div>
+
+    <div class="warning-container" id="warning-container">
+      <p id="warning"></p>
     </div>
 
     <script src="script.js" type="module"></script>

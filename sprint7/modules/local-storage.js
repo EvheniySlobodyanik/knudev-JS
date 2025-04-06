@@ -9,7 +9,10 @@ export function setLocalStorage(key, value) {
   };
   localStorage.setItem(key, JSON.stringify(dataWithTimestamp));
 
-  startExpirationCountdown();
+  if (key === "weather-data" && !getLocalStorage("cache-expiration")) {
+    setLocalStorage("cache-expiration", Date.now() + 600000);
+    startExpirationCountdown();
+  }
 }
 
 export function getLocalStorage(key) {
@@ -22,7 +25,7 @@ export function getLocalStorage(key) {
   if (currentTime - parsedData.timestamp > 600000) {
     removeLocalStorage(key);
     removeExpiredWeatherBlocks();
-    console.log("⏳ Cached data expired! Removing weather blocks...");
+    console.log("Cached data expired! Removing weather blocks...");
     return null;
   }
 
@@ -36,29 +39,36 @@ export function removeLocalStorage(key) {
 }
 
 export function startExpirationCountdown() {
-  const rawData = localStorage.getItem("weather-data");
   const timer = document.getElementById("timer");
+  if (!timer) {
+    console.error("Timer missing in DOM!");
+    return;
+  }
 
-  if (!rawData || !timer) return;
+  let expirationData = localStorage.getItem("cache-expiration");
+  let expirationTime = expirationData
+    ? parseInt(expirationData)
+    : Date.now() + 600000;
 
-  const parsedData = JSON.parse(rawData);
-  const expirationTime = parsedData.timestamp + 600000;
+  if (!expirationData || isNaN(expirationTime)) {
+    expirationTime = Date.now() + 600000;
+    setLocalStorage("cache-expiration", expirationTime);
+  }
+
   let remainingTime = Math.max(
     Math.floor((expirationTime - Date.now()) / 1000),
     0
   );
 
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-  }
+  clearInterval(countdownInterval);
 
   function updateTimer() {
     if (remainingTime <= 0) {
       clearInterval(countdownInterval);
       removeLocalStorage("weather-data");
+      removeLocalStorage("cache-expiration");
       removeExpiredWeatherBlocks();
       timer.textContent = "Cache expired!";
-      console.log("🚮 Cache expired! Weather blocks removed.");
       return;
     }
 
@@ -66,6 +76,6 @@ export function startExpirationCountdown() {
     remainingTime--;
   }
 
-  updateTimer();
   countdownInterval = setInterval(updateTimer, 1000);
+  updateTimer();
 }
