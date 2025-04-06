@@ -7,6 +7,10 @@ const forecastSection = document.getElementById("forecast-section");
 const forecastTodayTitle = document.getElementById("fore-today");
 const forecastTitle = document.getElementById("fore-title");
 
+const hourlyTitle = document.getElementById("hourly-title");
+const hourlyContainer = document.getElementById("container-hourly");
+const hourlyForecastSection = document.getElementById("hourly-forecast");
+
 const body = document.querySelector(".body");
 const main = document.querySelector(".main");
 
@@ -156,6 +160,43 @@ function displayFiveDayForecast(groupedByDate) {
   loopThroughForecast(groupedByDate);
 }
 
+function handleHourlyForecast(data) {
+  const today = new Date().toISOString().split("T")[0];
+
+  const todayForecast = data.list.filter((item) =>
+    item.dt_txt.startsWith(today)
+  );
+
+  hourlyTitle.style.display = "flex";
+  hourlyForecastSection.style.display = "flex";
+
+  const previousEntries = hourlyContainer.querySelectorAll(".hourly-entry");
+  previousEntries.forEach((entry) => entry.remove());
+
+  todayForecast.forEach((entry) => {
+    const time = entry.dt_txt.split(" ")[1];
+    const temperature = entry.main?.temp ?? "N/A";
+    const wind = entry.wind?.speed ?? "N/A";
+    const humidity = entry.main?.humidity ?? "N/A";
+    const iconCode = entry.weather?.[0]?.icon ?? "default";
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+    const forecastContainer = createBlock("hourly-entry", hourlyContainer);
+
+    createPara("hourly-time", `Time: ${time}`, forecastContainer);
+    createPara("hourly-temp", `Temp: ${temperature}°C`, forecastContainer);
+    createPara("hourly-wind", `Wind: ${wind} m/s`, forecastContainer);
+    createPara("hourly-humidity", `Humidity: ${humidity} %`, forecastContainer);
+    forecastContainer.appendChild(
+      createImage(
+        iconUrl,
+        entry.weather?.[0]?.description ?? "Weather",
+        "hourly-image"
+      )
+    );
+  });
+}
+
 function GetForecastForFiveDays(data) {
   if (!data.list || !Array.isArray(data.list)) {
     console.error("Invalid forecast data:", data);
@@ -184,6 +225,8 @@ export function handleWeatherData(data1, data2) {
   displayWeather(data1);
   GetForecastForFiveDays(data2);
   refreshBtn.style.display = "block";
+
+  handleHourlyForecast(data2);
 }
 
 export function createClientServerError(
@@ -222,6 +265,7 @@ export function removeExpiredWeatherBlocks() {
   refreshBtn.style.display = "none";
   forecastTodayTitle.style.display = "none";
   forecastTitle.style.display = "none";
+  hourlyTitle.style.display = "none";
   containerTimer.style.display = "none";
 
   const weatherBlock = document.querySelector(".weather-block");
@@ -229,4 +273,8 @@ export function removeExpiredWeatherBlocks() {
 
   if (weatherBlock) weatherBlock.remove();
   if (fiveDayForecastBlock) fiveDayForecastBlock.remove();
+  if (hourlyContainer) {
+    const previousEntries = hourlyContainer.querySelectorAll(".hourly-entry");
+    previousEntries.forEach((entry) => entry.remove());
+  }
 }

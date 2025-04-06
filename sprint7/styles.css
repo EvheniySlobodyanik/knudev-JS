@@ -323,6 +323,7 @@
     color: white;
     transition: background-color 0.3s ease, transform 0.2s ease;
     border: none;
+    margin-bottom: 2rem;
   }
 
   .button-refresh:hover {
@@ -416,5 +417,30 @@
   .button-delete-favorite:hover {
     background-color: #e60000;
     cursor: pointer;
+  }
+}
+
+.section-hourly-forecast {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-size: 1.75em;
+    display: none;
+  }
+
+  .container-hourly-forecast {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .hourly-entry {
+    background-color: #fdd8ba;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 20px;
   }
 }
