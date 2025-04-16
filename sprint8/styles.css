@@ -102,28 +102,127 @@
   text-align: center;
   background-color: #3a0ca3;
   height: 20rem;
+}
 
-  .product-image {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),
-      0 0 20px rgba(255, 255, 255, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.product-image {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-image:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 28px rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(0, 255, 255, 0.15);
+}
+
+.product-title {
+  color: #ffff;
+}
+
+.modal-product-title {
+  font-size: 1.75em;
+}
+
+.product-description {
+  color: #333333;
+  font-size: 1.25em;
+}
+
+.product-rating-rate {
+  color: #ff9800;
+  font-size: 1.25em;
+}
+
+.product-rating-count {
+  color: #757575;
+  font-size: 1.25em;
+}
+
+.product-price {
+  color: #ffd700;
+  margin-top: auto;
+  font-size: 1.25em;
+}
+
+/* It`s not GPT comments, it`s from here https://www.w3schools.com/howto/howto_css_modals.asp */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  bottom: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #5cb85c;
+    color: white;
   }
 
-  .product-image:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.25),
-      0 0 30px rgba(0, 255, 255, 0.15);
+  .close {
+    color: #fff;
+    float: right;
+    font-size: 1.75em;
+    font-weight: bold;
   }
 
-  .product-title {
-    color: #ffff;
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
   }
 
-  .product-price {
-    color: #ffd700;
-    margin-top: auto;
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.5rem 1rem;
+    color: #000;
+  }
+
+  .modal-content {
+    position: absolute;
+    background-color: #fefefe;
+    margin: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  .modal-footer {
+    padding: 1rem;
+    background-color: #716f6f;
+    color: white;
+  }
+}
+
+.modal-content {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
   }
 }

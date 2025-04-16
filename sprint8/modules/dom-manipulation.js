@@ -6,6 +6,8 @@ const productsErrorContainer = document.getElementById(
   "product-error-container"
 );
 
+const containerModal = document.getElementById("modal-container");
+
 function createPara(className, text, parent) {
   const para = document.createElement("p");
   para.classList.add(className);
@@ -27,31 +29,76 @@ function createImage(className, src, alt, parent) {
   img.src = src;
   img.alt = alt;
   parent.appendChild(img);
+  return img;
 }
 
-function showSingleProduct(data) {
-  const image = data.image;
-  const title = data.title;
-  const price = data.price;
+// function createAnyElement(element, className, text, parent)
+// {
+//   const el = document.createElement(element);
+//   el.classList.add(className);
+//   el.tex
+// }
 
+function showSingleProduct(data) {
   const container = createBlock("product-block", productsSection);
 
-  createImage("product-image", image, title, container);
-  createPara("product-title", title, container);
-  createPara("product-price", `$${price}`, container);
+  createImage("product-image", data.image, data.title, container);
+  createPara("product-title", data.title, container);
+  createPara("product-price", `$${data.price}`, container);
+
+  container.addEventListener("click", () => {
+    containerModal.style.display = "block";
+    showModalBox(data);
+  });
+}
+
+function showModalBox(data) {
+  const modalHeader = document.querySelector(".modal-header");
+  const modalBody = document.querySelector(".modal-body");
+  const modalFooter = document.querySelector(".modal-footer");
+
+  modalHeader.replaceChildren();
+  modalBody.replaceChildren();
+  modalFooter.replaceChildren();
+
+  const span = document.createElement("span");
+  span.innerHTML = "&times;";
+  span.classList.add("close");
+
+  createPara("modal-product-title", data.title, modalHeader);
+  modalHeader.appendChild(span);
+  createPara("product-description", data.description, modalBody);
+  createPara("product-rating-rate", `Rating: ${data.rating.rate}`, modalBody);
+  createPara(
+    "product-rating-count",
+    `Rating count: ${data.rating.count}`,
+    modalBody
+  );
+  createPara("product-price", `$${data.price}`, modalFooter);
+
+  span.onclick = function () {
+    containerModal.style.display = "none";
+  };
+
+  window.addEventListener("click", (event) => {
+    if (event.target == containerModal) {
+      containerModal.style.display = "none";
+    }
+  });
 }
 
 function showProductsList(data) {
+  productsSection.replaceChildren();
   data.forEach((element) => {
     showSingleProduct(element);
   });
   productsLoaderContainer.remove();
 }
 
-export function createErrorMessage(text, parent) {
-  const errorBlock = document.querySelector("error-message");
+export function createErrorMessage(text) {
+  const errorBlock = document.querySelector(".error-message");
   if (errorBlock) {
-    errorBlock.remove;
+    errorBlock.remove();
   }
 
   const errorMsg = document.createElement("p");
