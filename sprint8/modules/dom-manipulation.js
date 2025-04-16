@@ -1,4 +1,10 @@
 const productsSection = document.getElementById("products");
+const productsLoaderContainer = document.getElementById(
+  "product-loader-container"
+);
+const productsErrorContainer = document.getElementById(
+  "product-error-container"
+);
 
 function createPara(className, text, parent) {
   const para = document.createElement("p");
@@ -37,11 +43,23 @@ function showSingleProduct(data) {
 
 function showProductsList(data) {
   data.forEach((element) => {
-    console.log("We`re here!");
     showSingleProduct(element);
   });
+  productsLoaderContainer.remove();
 }
 
-export function StartChangingDOM(data) {
+export function createErrorMessage(text, parent) {
+  const errorBlock = document.querySelector("error-message");
+  if (errorBlock) {
+    errorBlock.remove;
+  }
+
+  const errorMsg = document.createElement("p");
+  errorMsg.classList.add("error-message");
+  errorMsg.textContent = text;
+  productsErrorContainer.appendChild(errorMsg);
+}
+
+export function startChangingDOM(data) {
   showProductsList(data);
 }

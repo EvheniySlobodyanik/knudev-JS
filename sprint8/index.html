@@ -8,18 +8,30 @@
   </head>
   <body class="body">
     <header class="header">
-      <img
-        class="image"
-        src="images/shop.png"
-        alt="average shop image in red and yellow palette"
-      />
-      <h1 class="title">Welcome to Shop Explorer!</h1>
-      <img
-        class="image"
-        src="images/shop.png"
-        alt="average shop image in red and yellow palette"
-      />
+      <div class="container-head">
+        <img
+          class="image"
+          src="images/shop.png"
+          alt="average shop image in red and yellow palette"
+        />
+        <h1 class="title">Welcome to Shop Explorer!</h1>
+        <img
+          class="image"
+          src="images/shop.png"
+          alt="average shop image in red and yellow palette"
+        />
+      </div>
+
+      <div class="container-para">
+        <p class="paragraph">Click on the product to see detailed info</p>
+      </div>
     </header>
+
+    <div class="loader-container" id="product-loader-container">
+      <div class="products-loader" id="loader-pr"></div>
+    </div>
+
+    <div class="error-container" id="product-error-container"></div>
 
     <main class="main">
       <section class="section section-products" id="products"></section>
