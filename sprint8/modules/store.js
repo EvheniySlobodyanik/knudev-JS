@@ -63,7 +63,7 @@ export async function processPostRequest(dataProduct) {
       return;
     }
 
-    console.log("Fetched products:", data);
+    console.log("Fetched products(Created):", data);
     addOptionToSelect([data], "select-option", selectManage);
     return data;
   } catch (error) {
@@ -97,12 +97,44 @@ export async function processPutRequest(dataProduct, productId) {
       return;
     }
 
-    console.log("Fetched products:", data);
+    console.log("Fetched products(Updated):", data);
+    startChangingDOM(data);
     return data;
   } catch (error) {
     console.error("Fetch error:", error);
     createErrorMessage(
       `Something went wrong updating existing product: ${error.message}`,
+      productsErrorContainer
+    );
+  }
+}
+
+export async function processDeleteRequest(productId) {
+  try {
+    const response = await fetch(
+      `https://fakestoreapi.com/products/${productId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
+      createErrorMessage("Error deleting the product!", productsErrorContainer);
+      return;
+    }
+
+    console.log("Fetched products(Deleted):", data);
+    return data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    createErrorMessage(
+      `Something went wrong deleting the product: ${error.message}`,
       productsErrorContainer
     );
   }

@@ -43,8 +43,18 @@
   }
 
   .container-para {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+
     .paragraph {
-      font-size: 1.5em;
+      font-size: 1.75em;
+    }
+
+    .para-note {
+      font-size: 1.52em;
+      font-weight: 600;
     }
   }
 
@@ -318,6 +328,26 @@
 
 .form-change-delete {
   display: none;
+
+  .button-manage-delete {
+    display: none;
+    padding: 0.66rem;
+    font-size: 1em;
+    border-radius: 12px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .button-manage-delete:hover {
+    background-color: #d61c6c;
+    transform: scale(1.05);
+  }
+
+  .button-manage-delete:focus {
+    outline: 2px solid #ffb3d9;
+    box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.3);
+  }
 }
 
 .section-products {

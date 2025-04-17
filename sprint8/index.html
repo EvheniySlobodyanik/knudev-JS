@@ -24,6 +24,7 @@
 
       <div class="container-para">
         <p class="paragraph">Click on the product to see detailed info</p>
+        <p class="para-note">(When request fails - changes rollback)</p>
       </div>
     </header>
 
@@ -105,7 +106,7 @@
             <select class="select" id="select-products"></select>
           </fieldset>
 
-          <fieldset class="fieldset">
+          <fieldset class="fieldset" id="fieldset-change-image">
             <legend class="legend">Image</legend>
 
             <label class="label" for="input-change-image">Product image:</label>
@@ -116,7 +117,7 @@
             />
           </fieldset>
 
-          <fieldset class="fieldset">
+          <fieldset class="fieldset" id="fieldset-change-details">
             <legend class="legend">Details</legend>
 
             <label class="label" for="input-change-title">Name:</label>
@@ -160,6 +161,14 @@
 
           <button type="submit" class="button button-submit" id="button-manage">
             Manage
+          </button>
+
+          <button
+            type="submit"
+            class="button button-manage-delete"
+            id="manage-delete"
+          >
+            Delete
           </button>
         </form>
       </section>

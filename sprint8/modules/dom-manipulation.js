@@ -1,6 +1,8 @@
 import { checkForParameter } from "./validation.js";
+
 import { processPostRequest } from "./store.js";
 import { processPutRequest } from "./store.js";
+import { processDeleteRequest } from "./store.js";
 
 const buttonAdd = document.getElementById("add-product");
 
@@ -22,6 +24,12 @@ const textareaDescription = document.getElementById("textarea-description");
 const inputRate = document.getElementById("input-rate");
 const inputRateCount = document.getElementById("input-rate-count");
 const inputPrice = document.getElementById("input-price");
+
+const fieldsetChangeImage = document.getElementById("fieldset-change-image");
+const fieldsetChangeDetails = document.getElementById(
+  "fieldset-change-details"
+);
+const buttonManageDelete = document.getElementById("manage-delete");
 
 const selectManage = document.getElementById("select-products");
 const inputChangeImage = document.getElementById("input-change-image");
@@ -67,6 +75,14 @@ function createImage(className, src, alt, parent) {
   return img;
 }
 
+// function createButton(className, text, parent) {
+//   const btn = document.createElement("button");
+//   btn.classList.add(className);
+//   btn.textContent = text;
+//   parent.appendChild(btn);
+//   return btn;
+// }
+
 export function addOptionToSelect(array, className, parent) {
   array.forEach((item) => {
     const option = document.createElement("option");
@@ -74,6 +90,15 @@ export function addOptionToSelect(array, className, parent) {
     option.textContent = item.title;
     option.value = item.id;
     parent.appendChild(option);
+  });
+}
+
+export function removeOptionFromSelect(selectedId, parent) {
+  const options = parent.querySelectorAll("option");
+  options.forEach((option) => {
+    if (option.value === selectedId) {
+      parent.removeChild(option);
+    }
   });
 }
 
@@ -206,6 +231,13 @@ function fillSelectedProduct(data, selectedId) {
   });
 }
 
+function removeSelectedProduct(selectedId) {
+  const product = document.getElementById(selectedId);
+  if (!product) return;
+
+  product.remove();
+}
+
 buttonAdd.addEventListener("click", () => {
   buttonAdd.style.display = "none";
   buttonsContainer.style.display = "none";
@@ -213,7 +245,27 @@ buttonAdd.addEventListener("click", () => {
 });
 
 buttonChange.addEventListener("click", () => {
+  buttonSubmitManage.style.display = "block";
   buttonSubmitManage.textContent = "Change";
+
+  buttonManageDelete.style.display = "none";
+
+  fieldsetChangeDetails.style.display = "flex";
+  fieldsetChangeImage.style.display = "flex";
+
+  formManage.style.display = "flex";
+  buttonAdd.style.display = "none";
+  buttonsContainer.style.display = "none";
+});
+
+buttonDelete.addEventListener("click", () => {
+  buttonSubmitManage.style.display = "none";
+
+  buttonManageDelete.style.display = "block";
+
+  fieldsetChangeDetails.style.display = "none";
+  fieldsetChangeImage.style.display = "none";
+
   formManage.style.display = "flex";
   buttonAdd.style.display = "none";
   buttonsContainer.style.display = "none";
@@ -333,5 +385,52 @@ buttonSubmitManage.addEventListener("click", async (event) => {
       "All fields must contain value! + (0<Rate<5)",
       formManage
     );
+  }
+});
+
+buttonManageDelete.addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  if (checkForParameter(selectManage, "value")) {
+    const selectedId = selectManage.value;
+    const productElement = document.getElementById(selectedId);
+
+    if (!productElement) return;
+
+    const title = productElement.querySelector(".product-title")?.textContent;
+    const priceText =
+      productElement.querySelector(".product-price")?.textContent;
+    const price = parseFloat(priceText.replace("$", ""));
+    const imageSrc = productElement.querySelector(".product-image")?.src;
+
+    const backupProduct = {
+      id: selectedId,
+      title,
+      price,
+      image: imageSrc,
+      description: textareaChangeDescription.value,
+      rating: {
+        rate: parseFloat(inputChangeRate.value),
+        count: parseInt(inputChangeRateCount.value),
+      },
+    };
+
+    removeSelectedProduct(selectedId);
+    buttonAdd.style.display = "block";
+    formManage.style.display = "none";
+    buttonsContainer.style.display = "flex";
+
+    try {
+      await processDeleteRequest(selectedId);
+      removeOptionFromSelect(selectedId, selectManage);
+    } catch (error) {
+      setTimeout(() => {
+        addProductManually(backupProduct);
+        createErrorMessage(
+          "Something went wrong deleting the product...",
+          productErrorContainer
+        );
+      }, 1000);
+    }
   }
 });
