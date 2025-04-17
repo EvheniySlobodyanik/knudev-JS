@@ -39,7 +39,16 @@
           Add product
         </button>
 
-        <form class="form" id="form-add">
+        <div class="container container-buttons" id="buttons-container">
+          <button class="button button-change" type="button" id="change">
+            Change
+          </button>
+          <button class="button button-delete" type="button" id="delete">
+            Delete
+          </button>
+        </div>
+
+        <form class="form form-add" id="form-add">
           <span class="span close" id="close-form">&times;</span>
 
           <fieldset class="fieldset fieldset-image">
@@ -83,6 +92,74 @@
 
           <button type="submit" class="button button-submit" id="submit-form">
             Submit
+          </button>
+        </form>
+
+        <form class="form form-change-delete">
+          <fieldset class="fieldset">
+            <legend class="legend">Existing products</legend>
+
+            <span class="close" id="close-form-manage">&times;</span>
+
+            <label class="label" for="select-products">Choose product:</label>
+            <select class="select" id="select-products"></select>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Image</legend>
+
+            <label class="label" for="input-change-image">Product image:</label>
+            <input
+              type="file"
+              class="input input-file"
+              id="input-change-image"
+            />
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Details</legend>
+
+            <label class="label" for="input-change-title">Name:</label>
+            <input
+              type="text"
+              class="input input-text"
+              id="input-change-title"
+            />
+
+            <label class="label" for="textarea-change-description"
+              >Description:</label
+            >
+            <textarea
+              class="textarea"
+              id="textarea-change-description"
+            ></textarea>
+
+            <label class="label" for="input-change-rate">Rate:</label>
+            <input
+              type="number"
+              class="input input-number"
+              id="input-change-rate"
+            />
+
+            <label class="label" for="input-change-rate-count"
+              >Rate count:</label
+            >
+            <input
+              type="number "
+              class="input input-number"
+              id="input-change-rate-count"
+            />
+
+            <label class="label" for="input-change-price">Price:</label>
+            <input
+              type="number"
+              class="input input-number"
+              id="input-change-price"
+            />
+          </fieldset>
+
+          <button type="submit" class="button button-submit" id="button-manage">
+            Manage
           </button>
         </form>
       </section>

@@ -98,6 +98,7 @@
   font-size: 1.5em;
   font-weight: bold;
   margin-top: 1rem;
+  width: 22rem;
 }
 
 .main {
@@ -129,6 +130,43 @@
   }
 
   .button-add:focus {
+    outline: 2px solid #ffb3d9;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.4);
+  }
+}
+
+.container-buttons {
+  display: none;
+  align-items: center;
+  width: 10rem;
+  gap: 0.5rem;
+
+  .button-change,
+  .button-delete {
+    padding: 0.66rem;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: all 0.3 ease;
+  }
+
+  .button-change {
+    flex: 5;
+  }
+
+  .button-delete {
+    flex: 5;
+  }
+
+  .button-change:hover,
+  .button-delete:hover {
+    transform: scale(1.05);
+    background-color: #d61c6c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .button-change:focus,
+  .button-delete:focus {
     outline: 2px solid #ffb3d9;
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.4);
@@ -209,6 +247,7 @@
 
   .textarea {
     resize: none;
+    height: 10rem;
   }
 
   .input-text:hover,
@@ -247,6 +286,38 @@
     outline: 2px solid #ffb3d9;
     box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.3);
   }
+
+  .select {
+    padding: 0.33rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    width: 22rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .select:hover {
+    border-color: #888;
+    background-color: #f9f9f9;
+  }
+
+  .select:focus {
+    border-color: #4caf50;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  }
+}
+
+.form-change-delete {
+  display: none;
 }
 
 .section-products {
