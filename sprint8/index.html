@@ -34,6 +34,59 @@
     <div class="error-container" id="product-error-container"></div>
 
     <main class="main">
+      <section class="section section-manage">
+        <button type="button" class="button button-add" id="add-product">
+          Add product
+        </button>
+
+        <form class="form" id="form-add">
+          <span class="span close" id="close-form">&times;</span>
+
+          <fieldset class="fieldset fieldset-image">
+            <legend class="legend">Image</legend>
+
+            <label class="label" for="input-image"
+              >Upload image for product:</label
+            >
+            <input
+              type="file"
+              class="input-file"
+              id="input-image"
+              accept="image/png, image/jpeg"
+            />
+          </fieldset>
+
+          <fieldset class="fieldset fieldset-details">
+            <legend class="legend">Details</legend>
+
+            <label class="label" for="input-title">Enter name:</label>
+            <input type="text" class="input input-text" id="input-title" />
+
+            <label class="label" for="textarea-description"
+              >Enter description:</label
+            >
+            <textarea class="textarea" id="textarea-description"></textarea>
+
+            <label class="label">Enter rate:</label>
+            <input type="number" class="input input-number" id="input-rate" />
+
+            <label class="label">Enter rate count:</label>
+            <input
+              type="number"
+              class="input input-number"
+              id="input-rate-count"
+            />
+
+            <label class="label">Enter price:</label>
+            <input type="number" class="input input-number" id="input-price" />
+          </fieldset>
+
+          <button type="submit" class="button button-submit" id="submit-form">
+            Submit
+          </button>
+        </form>
+      </section>
+
       <section class="section section-products" id="products"></section>
     </main>
 
