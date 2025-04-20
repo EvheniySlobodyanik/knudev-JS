@@ -2,6 +2,9 @@ import { checkForParameter } from "./validation.js";
 
 import { startStore } from "./store.js";
 
+const header = document.querySelector(".header");
+const main = document.querySelector(".main");
+
 const buttonAdd = document.getElementById("add-product");
 
 const buttonsContainer = document.getElementById("buttons-container");
@@ -50,6 +53,8 @@ const productErrorContainer = document.getElementById(
 const containerModal = document.getElementById("modal-container");
 
 let currentProducts = [];
+
+const errorSideContainer = document.getElementById("server-client-error");
 
 function createPara(className, text, parent) {
   const para = document.createElement("p");
@@ -493,3 +498,49 @@ buttonManageDelete.addEventListener("click", async (event) => {
     }
   }
 });
+
+function hideEverything() {
+  header.style.display = "none";
+  buttonAdd.style.display = "none";
+  buttonsContainer.style.display = "none";
+  productsLoaderContainer.style.display = "none";
+  main.style.display = "none";
+}
+
+export function handleErrors(errorName, errorMessage) {
+  errorSideContainer.style.display = "flex";
+  hideEverything();
+
+  let imageSrc = "";
+  let imageAlt = "";
+
+  let title = "";
+  let titleInfo = "";
+  let paragraph = "";
+
+  switch (errorName) {
+    case 500:
+      imageSrc = "images/for-errors/500.png";
+      imageAlt = "dead-computer";
+
+      title = "500";
+      titleInfo = "Internal Server Error";
+      paragraph = "Error occurred on the FakeStoreAPI side. Try again later!";
+
+      break;
+    case "NETWORK_ERROR":
+      imageSrc = "images/for-errors/NETWORK_ERROR.png";
+      imageAlt = "black wi-fi";
+
+      title = "NETWORK_ERROR";
+      titleInfo = errorMessage;
+      paragraph = "Try again later!";
+
+      break;
+  }
+
+  createImage("image", imageSrc, imageAlt, errorSideContainer);
+  createPara("title", title, errorSideContainer);
+  createPara("title-info", titleInfo, errorSideContainer);
+  createPara("paragraph", paragraph, errorSideContainer);
+}

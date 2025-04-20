@@ -476,3 +476,29 @@
     opacity: 1;
   }
 }
+
+.server-client-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+
+  .image {
+    width: 25rem;
+    height: 25rem;
+  }
+  .title {
+    font-size: 4em;
+    font-weight: 900;
+  }
+  .title-info {
+    font-size: 2.5em;
+    font-weight: 700;
+    width: 30rem;
+  }
+  .paragraph {
+    font-size: 2em;
+    width: 30rem;
+  }
+}

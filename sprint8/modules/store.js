@@ -2,6 +2,7 @@ import { startChangingDOM } from "./dom-manipulation.js";
 import { createErrorMessage } from "./dom-manipulation.js";
 import { addOptionToSelect } from "./dom-manipulation.js";
 import { updateProductInDOM } from "./dom-manipulation.js";
+import { handleErrors } from "./dom-manipulation.js";
 
 const productsErrorContainer = document.getElementById(
   "product-error-container"
@@ -52,7 +53,7 @@ export function startStore(method, dataProduct, productId) {
 }
 
 async function workWithStoreAPI(URL, options, method) {
-  // //error simulating
+  // //error simulating for CRUD
   // await new Promise((resolve) => setTimeout(resolve, 500));
   // throw new Error("Simulated network error for testing");
 
@@ -60,6 +61,7 @@ async function workWithStoreAPI(URL, options, method) {
     const response = await fetch(URL, options);
 
     if (!response.ok) {
+      handleErrors(response.status);
       throw new Error("Network response was not ok");
     }
 
@@ -82,6 +84,10 @@ async function workWithStoreAPI(URL, options, method) {
     return data;
   } catch (error) {
     console.error("Fetch error:", error);
+
+    if (error.message === "Failed to fetch" || error instanceof TypeError) {
+      handleErrors("NETWORK_ERROR", error.message);
+    }
 
     let errorMessage = "";
 
