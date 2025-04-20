@@ -5,4 +5,4 @@ let userConfirmed = false;
 while (!userConfirmed) {
   userConfirmed = confirm("Wanna see product catalog?");
 }
-startStore();
+startStore("GET");

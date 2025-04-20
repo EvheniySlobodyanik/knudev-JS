@@ -1,8 +1,6 @@
 import { checkForParameter } from "./validation.js";
 
-import { processPostRequest } from "./store.js";
-import { processPutRequest } from "./store.js";
-import { processDeleteRequest } from "./store.js";
+import { startStore } from "./store.js";
 
 const buttonAdd = document.getElementById("add-product");
 
@@ -50,6 +48,8 @@ const productErrorContainer = document.getElementById(
 );
 
 const containerModal = document.getElementById("modal-container");
+
+let currentProducts = [];
 
 function createPara(className, text, parent) {
   const para = document.createElement("p");
@@ -161,11 +161,20 @@ function showProductsList(data) {
   buttonsContainer.style.display = "flex";
 }
 
-export function createErrorMessage(text, parent) {
+export function removeErrorMessage() {
   const errorBlock = document.querySelector(".error-message");
   if (errorBlock) {
     errorBlock.remove();
   }
+}
+
+export function createErrorMessage(text, parent) {
+  if (!parent) {
+    console.warn("Error message parent element not found.");
+    return;
+  }
+
+  removeErrorMessage();
 
   const errorMsg = document.createElement("p");
   errorMsg.classList.add("error-message");
@@ -174,14 +183,16 @@ export function createErrorMessage(text, parent) {
 }
 
 export function startChangingDOM(data) {
-  showProductsList(data);
+  currentProducts = [...data];
+
+  showProductsList(currentProducts);
 
   selectManage.replaceChildren();
-  addOptionToSelect(data, "option-style", selectManage);
-  fillFormWithInfo(data);
+  addOptionToSelect(currentProducts, "option-style", selectManage);
+  fillFormWithInfo(currentProducts);
 
   selectManage.addEventListener("change", () => {
-    fillFormWithInfo(data);
+    fillFormWithInfo(currentProducts);
   });
 }
 
@@ -229,6 +240,31 @@ function fillSelectedProduct(data, selectedId) {
     containerModal.style.display = "block";
     showModalBox(data);
   });
+}
+
+export function updateProductInDOM(updatedProduct) {
+  const productCard = document.querySelector(
+    `[data-product-id="${updatedProduct.id}"]`
+  );
+
+  //without this leads to error
+  if (!productCard) {
+    console.warn(`Product with ID ${updatedProduct.id} not found in DOM.`);
+    return;
+  }
+
+  productCard.querySelector(".product-title").textContent =
+    updatedProduct.title;
+  productCard.querySelector(
+    ".product-price"
+  ).textContent = `$${updatedProduct.price}`;
+  productCard.querySelector(".product-description").textContent =
+    updatedProduct.description;
+  productCard.querySelector(".product-image").src = updatedProduct.image;
+  productCard.querySelector(".product-rate").textContent =
+    updatedProduct.rating?.rate ?? "";
+  productCard.querySelector(".product-rate-count").textContent =
+    updatedProduct.rating?.count ?? "";
 }
 
 function removeSelectedProduct(selectedId) {
@@ -294,7 +330,10 @@ buttonSubmit.addEventListener("click", async (event) => {
     checkForParameter(inputRateCount, "value") &&
     checkForParameter(inputPrice, "value")
   ) {
+    const id = Date.now();
+
     const data = {
+      id,
       title: inputTitle.value,
       price: parseFloat(inputPrice.value),
       description: textareaDescription.value,
@@ -305,19 +344,27 @@ buttonSubmit.addEventListener("click", async (event) => {
       image: URL.createObjectURL(inputImage.files[0]),
     };
 
+    const productElement = addProductManually(data);
+    productElement.setAttribute("id", id);
+
+    currentProducts.push(data);
+
+    addOptionToSelect([data], "option-style", selectManage);
+    selectManage.value = data.id;
+    fillFormWithInfo(currentProducts);
+
     formAdd.reset();
+    removeErrorMessage();
     formAdd.style.display = "none";
     buttonAdd.style.display = "block";
     buttonsContainer.style.display = "flex";
 
-    const productElement = addProductManually(data);
-
     try {
-      await processPostRequest(data);
+      await startStore("POST", data);
     } catch (error) {
-      //optimistic change will feel more 'realistic' with delay
       setTimeout(() => {
         if (productElement) productElement.remove();
+        removeOptionFromSelect(data.id.toString(), selectManage);
         createErrorMessage(
           "Something went wrong creating the product...",
           productErrorContainer
@@ -365,12 +412,23 @@ buttonSubmitManage.addEventListener("click", async (event) => {
     };
 
     fillSelectedProduct(data, selectedId);
+    removeErrorMessage();
     buttonAdd.style.display = "block";
     formManage.style.display = "none";
     buttonsContainer.style.display = "flex";
 
     try {
-      await processPutRequest(data, selectedId);
+      await startStore("PUT", data, selectedId);
+
+      const index = currentProducts.findIndex((p) => p.id === selectedId);
+      if (index !== -1) {
+        currentProducts[index] = { ...data, id: selectedId };
+      }
+
+      selectManage.replaceChildren();
+      addOptionToSelect(currentProducts, "option-style", selectManage);
+      selectManage.value = selectedId;
+      fillFormWithInfo(currentProducts);
     } catch (error) {
       setTimeout(() => {
         fillSelectedProduct(originalData, selectedId);
@@ -416,12 +474,13 @@ buttonManageDelete.addEventListener("click", async (event) => {
     };
 
     removeSelectedProduct(selectedId);
+    removeErrorMessage();
     buttonAdd.style.display = "block";
     formManage.style.display = "none";
     buttonsContainer.style.display = "flex";
 
     try {
-      await processDeleteRequest(selectedId);
+      await startStore("DELETE", "", selectedId);
       removeOptionFromSelect(selectedId, selectManage);
     } catch (error) {
       setTimeout(() => {

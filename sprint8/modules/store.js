@@ -1,6 +1,7 @@
 import { startChangingDOM } from "./dom-manipulation.js";
 import { createErrorMessage } from "./dom-manipulation.js";
 import { addOptionToSelect } from "./dom-manipulation.js";
+import { updateProductInDOM } from "./dom-manipulation.js";
 
 const productsErrorContainer = document.getElementById(
   "product-error-container"
@@ -8,13 +9,56 @@ const productsErrorContainer = document.getElementById(
 
 const selectManage = document.getElementById("select-products");
 
-export function startStore() {
-  workWithStoreAPI();
+export function startStore(method, dataProduct, productId) {
+  switch (method) {
+    case "GET":
+      workWithStoreAPI(
+        "https://fakestoreapi.com/products",
+        { method: method },
+        method
+      );
+      break;
+    case "POST":
+      workWithStoreAPI(
+        "https://fakestoreapi.com/products",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataProduct),
+        },
+        method
+      );
+      break;
+    case "PUT":
+      workWithStoreAPI(
+        `https://fakestoreapi.com/products/${productId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataProduct),
+        },
+        method
+      );
+      break;
+    case "DELETE":
+      workWithStoreAPI(
+        `https://fakestoreapi.com/products/${productId}`,
+        {
+          method: "DELETE",
+        },
+        method
+      );
+  }
 }
 
-async function workWithStoreAPI() {
+async function workWithStoreAPI(URL, options, method) {
+  // //error simulating
+  // await new Promise((resolve) => setTimeout(resolve, 500));
+  // throw new Error("Simulated network error for testing");
+
   try {
-    const response = await fetch("https://fakestoreapi.com/products");
+    const response = await fetch(URL, options);
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -26,115 +70,41 @@ async function workWithStoreAPI() {
       return;
     }
 
-    console.log("Fetched products:", data);
-    startChangingDOM(data);
-  } catch (error) {
-    console.error("Fetch error:", error);
-    createErrorMessage(
-      `Something went wrong: ${error.message}`,
-      productsErrorContainer
-    );
-  }
-}
+    console.log(`Fetched products(${method}):`, data);
 
-export async function processPostRequest(dataProduct) {
-  // //error simulating
-  // await new Promise((resolve) => setTimeout(resolve, 500));
-  // throw new Error("Simulated network error for testing");
-
-  try {
-    const response = await fetch("https://fakestoreapi.com/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataProduct),
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    if (method === "POST") {
+      addOptionToSelect([data], "select-option", selectManage);
+    } else if (method === "PUT") {
+      updateProductInDOM(data);
+    } else if (method === "GET") {
+      startChangingDOM(data);
     }
-
-    const data = await response.json();
-
-    if (!data || data.length === 0) {
-      createErrorMessage(
-        "Can`t create the EMPTY product!",
-        productsErrorContainer
-      );
-      return;
-    }
-
-    console.log("Fetched products(Created):", data);
-    addOptionToSelect([data], "select-option", selectManage);
     return data;
   } catch (error) {
     console.error("Fetch error:", error);
+
+    let errorMessage = "";
+
+    switch (method) {
+      case "GET":
+        errorMessage = "Something went wrong in process of getting products";
+        break;
+      case "POST":
+        errorMessage =
+          "Something went wrong in process of creating NEW product";
+        break;
+      case "PUT":
+        errorMessage =
+          "Something went wrong in process of updating EXISTING product";
+        break;
+      case "DELETE":
+        errorMessage =
+          "Something went wrong in process of deleting EXISTING product";
+        break;
+    }
+
     createErrorMessage(
-      `Something went wrong creating NEW product: ${error.message}`,
-      productsErrorContainer
-    );
-  }
-}
-
-export async function processPutRequest(dataProduct, productId) {
-  try {
-    const response = await fetch(
-      `https://fakestoreapi.com/products/${productId}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataProduct),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
-
-    if (!data || data.length === 0) {
-      createErrorMessage("Error updating the product!", productsErrorContainer);
-      return;
-    }
-
-    console.log("Fetched products(Updated):", data);
-    startChangingDOM(data);
-    return data;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    createErrorMessage(
-      `Something went wrong updating existing product: ${error.message}`,
-      productsErrorContainer
-    );
-  }
-}
-
-export async function processDeleteRequest(productId) {
-  try {
-    const response = await fetch(
-      `https://fakestoreapi.com/products/${productId}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
-
-    if (!data || data.length === 0) {
-      createErrorMessage("Error deleting the product!", productsErrorContainer);
-      return;
-    }
-
-    console.log("Fetched products(Deleted):", data);
-    return data;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    createErrorMessage(
-      `Something went wrong deleting the product: ${error.message}`,
+      `${errorMessage}: ${error.message}`,
       productsErrorContainer
     );
   }
