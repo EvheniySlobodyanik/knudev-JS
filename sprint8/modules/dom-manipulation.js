@@ -54,7 +54,9 @@ const containerModal = document.getElementById("modal-container");
 
 let currentProducts = [];
 
-const errorSideContainer = document.getElementById("server-client-error");
+const showStatusContainer = document.getElementById("show-status-container");
+const statusLoader = document.getElementById("loader-st");
+const statusContainer = document.getElementById("stat-container");
 
 function createPara(className, text, parent) {
   const para = document.createElement("p");
@@ -109,6 +111,7 @@ export function removeOptionFromSelect(selectedId, parent) {
 
 function showSingleProduct(data) {
   const container = createBlock("product-block", productsSection);
+  container.classList.add("appear-with-pop");
   container.setAttribute("id", data.id);
 
   createImage("product-image", data.image, data.title, container);
@@ -203,6 +206,7 @@ export function startChangingDOM(data) {
 
 function addProductManually(data) {
   const container = createBlock("product-block", productsSection);
+  container.classList.add("appear-with-pop");
   createImage("product-image", data.image, data.title, container);
   createPara("product-title", data.title, container);
   createPara("product-price", `$${data.price}`, container);
@@ -280,12 +284,16 @@ function removeSelectedProduct(selectedId) {
 }
 
 buttonAdd.addEventListener("click", () => {
+  formAdd.classList.remove("dust-away");
+
   buttonAdd.style.display = "none";
   buttonsContainer.style.display = "none";
   formAdd.style.display = "flex";
 });
 
 buttonChange.addEventListener("click", () => {
+  formManage.classList.remove("dust-away");
+
   buttonSubmitManage.style.display = "block";
   buttonSubmitManage.textContent = "Change";
 
@@ -300,6 +308,8 @@ buttonChange.addEventListener("click", () => {
 });
 
 buttonDelete.addEventListener("click", () => {
+  formManage.classList.remove("dust-away");
+
   buttonSubmitManage.style.display = "none";
 
   buttonManageDelete.style.display = "block";
@@ -313,15 +323,23 @@ buttonDelete.addEventListener("click", () => {
 });
 
 closeForm.addEventListener("click", () => {
-  formAdd.style.display = "none";
-  buttonAdd.style.display = "block";
-  buttonsContainer.style.display = "flex";
+  formAdd.classList.add("dust-away");
+
+  setTimeout(() => {
+    formAdd.style.display = "none";
+    buttonAdd.style.display = "block";
+    buttonsContainer.style.display = "flex";
+  }, 1000);
 });
 
 closeFormManage.addEventListener("click", () => {
-  formManage.style.display = "none";
-  buttonAdd.style.display = "block";
-  buttonsContainer.style.display = "flex";
+  formManage.classList.add("dust-away");
+
+  setTimeout(() => {
+    formManage.style.display = "none";
+    buttonAdd.style.display = "block";
+    buttonsContainer.style.display = "flex";
+  }, 1000);
 });
 
 buttonSubmit.addEventListener("click", async (event) => {
@@ -366,6 +384,19 @@ buttonSubmit.addEventListener("click", async (event) => {
 
     try {
       await startStore("POST", data);
+
+      statusLoader.style.display = "none";
+      showStatusContainer.style.display = "flex";
+      statusContainer.replaceChildren();
+
+      showStatusContainer.style.backgroundColor = "#D4EDDA";
+      createImage(
+        "image",
+        "images/for-status/success.png",
+        "success green arrow",
+        statusContainer
+      );
+      createPara("paragraph-good", "Success!", statusContainer);
     } catch (error) {
       setTimeout(() => {
         if (productElement) productElement.remove();
@@ -374,11 +405,24 @@ buttonSubmit.addEventListener("click", async (event) => {
           "Something went wrong creating the product...",
           productErrorContainer
         );
+
+        showStatusContainer.style.backgroundColor = "#F8D7DA";
+        createImage(
+          "image",
+          "images/for-status/failure.png",
+          "success green arrow",
+          statusContainer
+        );
+        createPara("paragraph-bad", "Failure!", statusContainer);
       }, 1000);
     }
   } else {
     createErrorMessage("All fields must contain value! + (0<Rate<5)", formAdd);
   }
+
+  setTimeout(() => {
+    showStatusContainer.style.display = "none";
+  }, 3000);
 });
 
 buttonSubmitManage.addEventListener("click", async (event) => {
@@ -392,6 +436,8 @@ buttonSubmitManage.addEventListener("click", async (event) => {
     checkForParameter(inputChangePrice, "value")
   ) {
     const selectedId = Number(selectManage.value);
+
+    showStatusContainer.style.display = "flex";
 
     const data = {
       title: inputChangeTitle.value,
@@ -425,6 +471,9 @@ buttonSubmitManage.addEventListener("click", async (event) => {
     try {
       await startStore("PUT", data, selectedId);
 
+      const container = document.getElementById(selectedId);
+      container.classList.add("updated-flash");
+
       const index = currentProducts.findIndex((p) => p.id === selectedId);
       if (index !== -1) {
         currentProducts[index] = { ...data, id: selectedId };
@@ -434,6 +483,19 @@ buttonSubmitManage.addEventListener("click", async (event) => {
       addOptionToSelect(currentProducts, "option-style", selectManage);
       selectManage.value = selectedId;
       fillFormWithInfo(currentProducts);
+
+      statusLoader.style.display = "none";
+      showStatusContainer.style.display = "flex";
+      statusContainer.replaceChildren();
+
+      showStatusContainer.style.backgroundColor = "#D4EDDA";
+      createImage(
+        "image",
+        "images/for-status/success.png",
+        "success green arrow",
+        statusContainer
+      );
+      createPara("paragraph-good", "Success!", statusContainer);
     } catch (error) {
       setTimeout(() => {
         fillSelectedProduct(originalData, selectedId);
@@ -441,6 +503,15 @@ buttonSubmitManage.addEventListener("click", async (event) => {
           "Something went wrong updating the product...",
           productErrorContainer
         );
+
+        showStatusContainer.style.backgroundColor = "#F8D7DA";
+        createImage(
+          "image",
+          "images/for-status/failure.png",
+          "success green arrow",
+          statusContainer
+        );
+        createPara("paragraph-bad", "Failure!", statusContainer);
       }, 1000);
     }
   } else {
@@ -449,6 +520,10 @@ buttonSubmitManage.addEventListener("click", async (event) => {
       formManage
     );
   }
+
+  setTimeout(() => {
+    showStatusContainer.style.display = "none";
+  }, 3000);
 });
 
 buttonManageDelete.addEventListener("click", async (event) => {
@@ -485,8 +560,24 @@ buttonManageDelete.addEventListener("click", async (event) => {
     buttonsContainer.style.display = "flex";
 
     try {
+      const container = document.getElementById(selectedId);
+      container.classList.add("dust-away");
+
       await startStore("DELETE", "", selectedId);
       removeOptionFromSelect(selectedId, selectManage);
+
+      statusLoader.style.display = "none";
+      showStatusContainer.style.display = "flex";
+      statusContainer.replaceChildren();
+
+      showStatusContainer.style.backgroundColor = "#D4EDDA";
+      createImage(
+        "image",
+        "images/for-status/success.png",
+        "success green arrow",
+        statusContainer
+      );
+      createPara("paragraph-good", "Success!", statusContainer);
     } catch (error) {
       setTimeout(() => {
         addProductManually(backupProduct);
@@ -494,9 +585,22 @@ buttonManageDelete.addEventListener("click", async (event) => {
           "Something went wrong deleting the product...",
           productErrorContainer
         );
+
+        showStatusContainer.style.backgroundColor = "#F8D7DA";
+        createImage(
+          "image",
+          "images/for-status/failure.png",
+          "success green arrow",
+          statusContainer
+        );
+        createPara("paragraph-bad", "Failure!", statusContainer);
       }, 1000);
     }
   }
+
+  setTimeout(() => {
+    showStatusContainer.style.display = "none";
+  }, 3000);
 });
 
 function hideEverything() {
@@ -505,10 +609,17 @@ function hideEverything() {
   buttonsContainer.style.display = "none";
   productsLoaderContainer.style.display = "none";
   main.style.display = "none";
+  showStatusContainer.style.display = "none";
 }
 
 export function handleErrors(errorName, errorMessage) {
-  errorSideContainer.style.display = "flex";
+  const oldErrorContainer = document.querySelector(".server-client-container");
+  if (oldErrorContainer) {
+    oldErrorContainer.remove();
+  }
+
+  const errorContainer = createBlock("server-client-container", document.body);
+  errorContainer.style.display = "flex";
   hideEverything();
 
   let imageSrc = "";
@@ -539,8 +650,8 @@ export function handleErrors(errorName, errorMessage) {
       break;
   }
 
-  createImage("image", imageSrc, imageAlt, errorSideContainer);
-  createPara("title", title, errorSideContainer);
-  createPara("title-info", titleInfo, errorSideContainer);
-  createPara("paragraph", paragraph, errorSideContainer);
+  createImage("image", imageSrc, imageAlt, errorContainer);
+  createPara("title", title, errorContainer);
+  createPara("title-info", titleInfo, errorContainer);
+  createPara("paragraph", paragraph, errorContainer);
 }

@@ -53,10 +53,6 @@ export function startStore(method, dataProduct, productId) {
 }
 
 async function workWithStoreAPI(URL, options, method) {
-  // //error simulating for CRUD
-  // await new Promise((resolve) => setTimeout(resolve, 500));
-  // throw new Error("Simulated network error for testing");
-
   try {
     const response = await fetch(URL, options);
 

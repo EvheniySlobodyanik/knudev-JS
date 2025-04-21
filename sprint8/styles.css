@@ -93,6 +93,77 @@
   }
 }
 
+.status-showing-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-color: #b1b5b2;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid #c3e6cb;
+  transform: translateY(-20px);
+  animation: fadeInUp 0.5s ease-out forwards;
+
+  .status-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+
+    .image {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .paragraph-good {
+      font-size: 1.5em;
+      color: #155724;
+    }
+
+    .paragraph-bad {
+      font-size: 1.5em;
+      color: #721c24;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-loader {
+  --c: no-repeat linear-gradient(orange 0 0);
+  background: var(--c) 0 0, var(--c) 0 50%, var(--c) 0 100%, var(--c) 50% 0,
+    var(--c) 50% 50%, var(--c) 50% 100%, var(--c) 100% 0, var(--c) 100% 50%,
+    var(--c) 100% 100%;
+  background-size: 16px 16px;
+  animation: l31 0.5s infinite alternate;
+}
+
+@keyframes l31 {
+  0%,
+  20% {
+    width: 45px;
+    height: 45px;
+  }
+  90%,
+  100% {
+    width: 65px;
+    height: 65px;
+  }
+}
+
 .error-container {
   display: flex;
   align-items: center;
@@ -501,4 +572,78 @@
     font-size: 2em;
     width: 30rem;
   }
+}
+
+/* for all blocks */
+.appear-with-pop {
+  animation: popIn 0.5s ease-out;
+}
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* for changed one */
+@keyframes updateMagic {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0px rgba(0, 255, 100, 0.6);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(1.08);
+    box-shadow: 0 0 15px rgba(0, 255, 100, 0.8);
+  }
+  50% {
+    transform: scale(0.96);
+    box-shadow: 0 0 25px rgba(0, 255, 100, 1);
+  }
+  75% {
+    transform: scale(1.04);
+    box-shadow: 0 0 15px rgba(0, 255, 100, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px rgba(0, 255, 100, 0);
+    opacity: 1;
+  }
+}
+.updated-flash {
+  animation: updateMagic 1.4s ease-in-out;
+  z-index: 10;
+  position: relative;
+}
+
+/* for disappearance like form or deleting block */
+@keyframes dustOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.02) rotate(1deg);
+    filter: blur(1px);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translateY(-30px) scale(0.95) rotate(-3deg);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.8) rotate(-5deg);
+    filter: blur(6px);
+  }
+}
+.dust-away {
+  animation: dustOut 0.9s ease-in forwards;
+  pointer-events: none;
 }
