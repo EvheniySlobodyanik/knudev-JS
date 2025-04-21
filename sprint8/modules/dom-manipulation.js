@@ -58,6 +58,9 @@ const showStatusContainer = document.getElementById("show-status-container");
 const statusLoader = document.getElementById("loader-st");
 const statusContainer = document.getElementById("stat-container");
 
+const selectCategory = document.getElementById("select-category");
+const buttonCategory = document.getElementById("button-category");
+
 function createPara(className, text, parent) {
   const para = document.createElement("p");
   para.classList.add(className);
@@ -117,6 +120,7 @@ function showSingleProduct(data) {
   createImage("product-image", data.image, data.title, container);
   createPara("product-title", data.title, container);
   createPara("product-price", `$${data.price}`, container);
+  container.dataset.category = data.category;
 
   container.addEventListener("click", () => {
     containerModal.style.display = "block";
@@ -140,6 +144,7 @@ function showModalBox(data) {
   createPara("modal-product-title", data.title, modalHeader);
   modalHeader.appendChild(span);
   createPara("product-description", data.description, modalBody);
+  createPara("product-category", data.category, modalBody);
   createPara("product-rating-rate", `Rating: ${data.rating.rate}`, modalBody);
   createPara(
     "product-rating-count",
@@ -276,11 +281,9 @@ export function updateProductInDOM(updatedProduct) {
     updatedProduct.rating?.count ?? "";
 }
 
-function removeSelectedProduct(selectedId) {
-  const product = document.getElementById(selectedId);
-  if (!product) return;
-
-  product.remove();
+export function removeProductFromDOM(id) {
+  const card = document.getElementById(id);
+  if (card) card.remove();
 }
 
 buttonAdd.addEventListener("click", () => {
@@ -553,33 +556,33 @@ buttonManageDelete.addEventListener("click", async (event) => {
       },
     };
 
-    removeSelectedProduct(selectedId);
     removeErrorMessage();
     buttonAdd.style.display = "block";
     formManage.style.display = "none";
     buttonsContainer.style.display = "flex";
 
-    try {
-      const container = document.getElementById(selectedId);
-      container.classList.add("dust-away");
+    const container = document.getElementById(selectedId);
+    container.classList.add("dust-away");
 
-      await startStore("DELETE", "", selectedId);
-      removeOptionFromSelect(selectedId, selectManage);
+    setTimeout(async () => {
+      try {
+        await startStore("DELETE", "", selectedId);
+        container.remove(); // now it's safe to remove
+        removeOptionFromSelect(selectedId, selectManage);
 
-      statusLoader.style.display = "none";
-      showStatusContainer.style.display = "flex";
-      statusContainer.replaceChildren();
+        statusLoader.style.display = "none";
+        showStatusContainer.style.display = "flex";
+        statusContainer.replaceChildren();
 
-      showStatusContainer.style.backgroundColor = "#D4EDDA";
-      createImage(
-        "image",
-        "images/for-status/success.png",
-        "success green arrow",
-        statusContainer
-      );
-      createPara("paragraph-good", "Success!", statusContainer);
-    } catch (error) {
-      setTimeout(() => {
+        showStatusContainer.style.backgroundColor = "#D4EDDA";
+        createImage(
+          "image",
+          "images/for-status/success.png",
+          "success green arrow",
+          statusContainer
+        );
+        createPara("paragraph-good", "Success!", statusContainer);
+      } catch (error) {
         addProductManually(backupProduct);
         createErrorMessage(
           "Something went wrong deleting the product...",
@@ -594,13 +597,13 @@ buttonManageDelete.addEventListener("click", async (event) => {
           statusContainer
         );
         createPara("paragraph-bad", "Failure!", statusContainer);
-      }, 1000);
-    }
-  }
+      }
+    }, 1000);
 
-  setTimeout(() => {
-    showStatusContainer.style.display = "none";
-  }, 3000);
+    setTimeout(() => {
+      showStatusContainer.style.display = "none";
+    }, 3000);
+  }
 });
 
 function hideEverything() {
@@ -654,4 +657,37 @@ export function handleErrors(errorName, errorMessage) {
   createPara("title", title, errorContainer);
   createPara("title-info", titleInfo, errorContainer);
   createPara("paragraph", paragraph, errorContainer);
+}
+
+function createFilterSelectOption(array, select) {
+  array.forEach((element) => {
+    const option = document.createElement("option");
+    option.classList.add("option-select");
+    option.textContent = element;
+    option.value = element;
+    select.appendChild(option);
+  });
+}
+
+export function manageCategoryFilter(categoriesArray) {
+  createFilterSelectOption(categoriesArray, selectCategory);
+
+  buttonCategory.addEventListener("click", () => {
+    const selectValue = selectCategory.value;
+    const productBlocks = Array.from(
+      document.querySelectorAll(".product-block")
+    );
+
+    productBlocks.forEach((product) => {
+      product.classList.remove("appear-with-pop");
+      void product.offsetWidth;
+      product.classList.add("appear-with-pop");
+
+      if (product.dataset.category === selectValue) {
+        product.style.display = "flex";
+      } else {
+        product.style.display = "none";
+      }
+    });
+  });
 }

@@ -3,6 +3,8 @@ import { createErrorMessage } from "./dom-manipulation.js";
 import { addOptionToSelect } from "./dom-manipulation.js";
 import { updateProductInDOM } from "./dom-manipulation.js";
 import { handleErrors } from "./dom-manipulation.js";
+import { removeProductFromDOM } from "./dom-manipulation.js";
+import { manageCategoryFilter } from "./dom-manipulation.js";
 
 const productsErrorContainer = document.getElementById(
   "product-error-container"
@@ -46,38 +48,64 @@ export function startStore(method, dataProduct, productId) {
         `https://fakestoreapi.com/products/${productId}`,
         {
           method: "DELETE",
+          headers: { "Content-Type": "application/json" },
         },
-        method
+        method,
+        productId
       );
   }
 }
 
-async function workWithStoreAPI(URL, options, method) {
-  try {
-    const response = await fetch(URL, options);
+async function workWithStoreAPI(URL, options, method, id) {
+  const categoriesURL = "https://fakestoreapi.com/products/categories";
 
-    if (!response.ok) {
-      handleErrors(response.status);
+  try {
+    const [productsRes, categoriesRes] = await Promise.all([
+      fetch(URL, options),
+      fetch(categoriesURL),
+    ]);
+
+    // const response = await fetch(URL, options);
+
+    if (!productsRes.ok) {
+      handleErrors(productsRes.status);
+      throw new Error("Network response was not ok");
+    }
+    if (!categoriesRes.ok) {
+      handleErrors(categoriesRes.status);
       throw new Error("Network response was not ok");
     }
 
-    const data = await response.json();
+    const [productData, categoriesData] = await Promise.all([
+      productsRes.json(),
+      categoriesRes.json(),
+    ]);
 
-    if (!data || data.length === 0) {
+    if (!productData || productData.length === 0) {
       createErrorMessage("No products found.");
+      return;
+    } else if (!categoriesData || categoriesData.length === 0) {
+      createErrorMessage("No categories found.");
       return;
     }
 
-    console.log(`Fetched products(${method}):`, data);
+    const categories = [...new Set(categoriesData)];
+
+    console.log(`Fetched products(${method}):`, productData);
+    console.log(`Fetched product categories: `, categoriesData);
 
     if (method === "POST") {
-      addOptionToSelect([data], "select-option", selectManage);
+      addOptionToSelect([productData], "select-option", selectManage);
     } else if (method === "PUT") {
-      updateProductInDOM(data);
+      updateProductInDOM(productData);
     } else if (method === "GET") {
-      startChangingDOM(data);
+      startChangingDOM(productData);
+    } else if (method === "DELETE") {
+      removeProductFromDOM(id);
     }
-    return data;
+
+    manageCategoryFilter(categories);
+    return productData;
   } catch (error) {
     console.error("Fetch error:", error);
 
