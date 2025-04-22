@@ -483,6 +483,22 @@
   font-size: 1.25em;
 }
 
+.add-to-cart {
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart:hover,
+.add-to-cart:focus {
+  background-color: #000;
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 10px #ffd700;
+  transform: scale(1.05);
+}
+
 /* It`s not GPT comments, it`s from here https://www.w3schools.com/howto/howto_css_modals.asp */
 .modal {
   display: none; /* Hidden by default */
@@ -707,5 +723,228 @@
   .button:focus {
     outline: 3px solid #ffe3f1;
     outline-offset: 2px;
+  }
+}
+
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+
+  .button-cart {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .button-cart:hover {
+    transform: scale(1.05);
+  }
+
+  .button-cart:focus {
+    outline: 3px solid #7209b7;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(114, 9, 183, 0.4);
+  }
+
+  .image {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  display: none;
+}
+
+.cart-modal {
+  background-color: #fff;
+  color: #000;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 50rem;
+  height: 40rem;
+
+  .title {
+    font-size: 2em;
+    padding-bottom: 0.5rem;
+    padding-top: 0.25rem;
+  }
+
+  .cart-modal-containment {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 70vh;
+    overflow: hidden;
+
+    .cart-item {
+      background-color: #155724;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+  }
+
+  .cart-containment-products {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    width: 45rem;
+    padding-right: 0.5rem;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .cart-containment-total {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 50rem;
+    background-color: #4caf50;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.5rem;
+
+    .cart-total-money {
+      font-size: 1.5em;
+      font-weight: 700;
+
+      .total-money-number {
+        color: #ffd700;
+      }
+    }
+
+    .button-buy {
+      padding: 0.5rem;
+      font-size: 1em;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.2s;
+      width: 10rem;
+      background-color: hotpink;
+      color: white;
+    }
+
+    .button-buy:hover,
+    .button-buy:focus {
+      background-color: deeppink;
+      transform: scale(1.05);
+      outline: none;
+    }
+  }
+
+  .cart-close {
+    color: #000;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.75rem;
+    font-size: 1.75em;
+    font-weight: bold;
+  }
+
+  .cart-close:hover,
+  .cart-close:focus {
+    color: blue;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .item-info-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .info-image {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 2px;
+      box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(255, 255, 255, 0.08);
+    }
+
+    .info-title {
+      width: 15rem;
+      text-align: center;
+    }
+
+    .info-price {
+      color: #ffd700;
+    }
+  }
+
+  .item-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .plus-button-image,
+  .minus-button-image,
+  .delete-button-image {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .button-plus:hover,
+  .button-minus:hover,
+  .button-cart-delete:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .button-plus:focus,
+  .button-minus:focus,
+  .button-cart-delete:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+    background-color: #f5f5f5;
+  }
+
+  .delete-button-image {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.25rem;
+  }
+
+  .actions-input-container {
+    display: flex;
+    align-items: center;
+
+    .input-number-count {
+      width: 4rem;
+      height: 2rem;
+      text-align: center;
+      padding: 0.125rem;
+    }
   }
 }

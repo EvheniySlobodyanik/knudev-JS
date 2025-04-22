@@ -2,6 +2,8 @@ import { checkForParameter } from "./validation.js";
 
 import { startStore } from "./store.js";
 
+import { handleCart } from "./cart.js";
+
 const header = document.querySelector(".header");
 const main = document.querySelector(".main");
 
@@ -61,7 +63,11 @@ const statusContainer = document.getElementById("stat-container");
 const selectCategory = document.getElementById("select-category");
 const buttonCategory = document.getElementById("button-category");
 
-function createPara(className, text, parent) {
+const cart = document.getElementById("cart");
+const cartBackdrop = document.getElementById("cart-backdrop");
+const modalCart = document.getElementById("modal-cart");
+
+export function createPara(className, text, parent) {
   const para = document.createElement("p");
   para.classList.add(className);
   para.textContent = text;
@@ -69,14 +75,14 @@ function createPara(className, text, parent) {
   return para;
 }
 
-function createBlock(className, parent) {
+export function createBlock(className, parent) {
   const div = document.createElement("div");
   div.classList.add(className);
   parent.appendChild(div);
   return div;
 }
 
-function createImage(className, src, alt, parent) {
+export function createImage(className, src, alt, parent) {
   const img = document.createElement("img");
   img.classList.add(className);
   img.src = src;
@@ -85,13 +91,13 @@ function createImage(className, src, alt, parent) {
   return img;
 }
 
-// function createButton(className, text, parent) {
-//   const btn = document.createElement("button");
-//   btn.classList.add(className);
-//   btn.textContent = text;
-//   parent.appendChild(btn);
-//   return btn;
-// }
+export function createButton(className, text, parent) {
+  const btn = document.createElement("button");
+  btn.classList.add(className);
+  btn.textContent = text;
+  parent.appendChild(btn);
+  return btn;
+}
 
 export function addOptionToSelect(array, className, parent) {
   array.forEach((item) => {
@@ -120,6 +126,7 @@ function showSingleProduct(data) {
   createImage("product-image", data.image, data.title, container);
   createPara("product-title", data.title, container);
   createPara("product-price", `$${data.price}`, container);
+  createButton("add-to-cart", "Add to Cart", container);
   container.dataset.category = data.category;
 
   container.addEventListener("click", () => {
@@ -691,3 +698,16 @@ export function manageCategoryFilter(categoriesArray) {
     });
   });
 }
+
+cart.addEventListener("click", () => {
+  cartBackdrop.style.display = "flex";
+  modalCart.style.display = "flex";
+  handleCart();
+});
+
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("add-to-cart")) {
+    containerModal.style.display = "none";
+    handleCart();
+  }
+});

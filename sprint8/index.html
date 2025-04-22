@@ -198,6 +198,30 @@
       <button class="button button-select" id="button-category">Select</button>
     </div>
 
+    <div class="cart-container" id="cart">
+      <button class="button button-cart">
+        <img src="images/cart.png" alt="shopping cart" class="image" />
+      </button>
+    </div>
+
+    <div class="modal-backdrop" id="cart-backdrop"></div>
+
+    <div class="cart-modal" id="modal-cart">
+      <h3 class="title">Cart</h3>
+      <span class="cart-close" tabindex="0" id="close-cart">&times;</span>
+
+      <div class="cart-modal-containment">
+        <div class="cart-containment-products" id="cart-products"></div>
+
+        <div class="cart-containment-total" id="cart-total">
+          <p class="cart-total-money" id="cart-money">
+            Total: <span class="total-money-number" id="money-number">0</span>
+          </p>
+          <button class="button button-buy" id="buy">Buy</button>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js" type="module"></script>
   </body>
 </html>
