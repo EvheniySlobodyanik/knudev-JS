@@ -182,6 +182,7 @@ function showProductsList(data) {
     showSingleProduct(element);
   });
   productsLoaderContainer.remove();
+
   buttonAdd.style.display = "block";
   buttonsContainer.style.display = "flex";
   refreshButton.style.display = "block";
@@ -359,6 +360,10 @@ closeFormManage.addEventListener("click", () => {
     buttonsContainer.style.display = "flex";
   }, 1000);
 });
+
+//                                            !!!
+//!!!buttonSubmit, buttonSubmitManage, buttonManageDelete idk if their code breaks DRY principle
+//                                            !!!
 
 buttonSubmit.addEventListener("click", async (event) => {
   event.preventDefault();

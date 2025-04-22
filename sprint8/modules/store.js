@@ -6,15 +6,29 @@ import { handleErrors } from "./dom-manipulation.js";
 import { removeProductFromDOM } from "./dom-manipulation.js";
 import { manageCategoryFilter } from "./dom-manipulation.js";
 
+import { cacheDataWithExpiration, getExpiringData } from "./local-storage.js";
+
 const productsErrorContainer = document.getElementById(
   "product-error-container"
 );
 
 const selectManage = document.getElementById("select-products");
 
+const buttonRefresh = document.getElementById("refresh");
+
 export function startStore(method, dataProduct, productId) {
   switch (method) {
     case "GET":
+      const cachedProducts = getExpiringData("products");
+      const cachedCategories = getExpiringData("categories");
+
+      if (cachedProducts && cachedCategories) {
+        console.log("Using cached data");
+        startChangingDOM(cachedProducts);
+        manageCategoryFilter(cachedCategories);
+        return;
+      }
+
       workWithStoreAPI(
         "https://fakestoreapi.com/products",
         { method: method },
@@ -101,11 +115,17 @@ async function workWithStoreAPI(URL, options, method, id) {
       updateProductInDOM(productData);
     } else if (method === "GET") {
       startChangingDOM(productData);
+      cacheDataWithExpiration("products", productData, 600);
+      cacheDataWithExpiration("categories", categoriesData, 600);
+
+      console.log("CACHED products:", productData);
+      console.log("CACHED categories:", categoriesData);
     } else if (method === "DELETE") {
       removeProductFromDOM(id);
     }
 
     manageCategoryFilter(categories);
+
     return productData;
   } catch (error) {
     console.error("Fetch error:", error);
@@ -164,3 +184,11 @@ const registerServiceWorker = async () => {
 };
 
 registerServiceWorker();
+
+buttonRefresh.addEventListener("click", () => {
+  //if we wanna to reset timer(10 minute validity), optional
+  // localStorage.removeItem("products");
+  // localStorage.removeItem("categories");
+
+  startStore("GET");
+});
