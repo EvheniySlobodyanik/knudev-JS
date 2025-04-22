@@ -28,6 +28,10 @@
       </div>
     </header>
 
+    <div class="offline-container" id="offline-banner">
+      You are offline. Showing cached data.
+    </div>
+
     <div class="server-client-container" id="server-client-error"></div>
 
     <div class="loader-container" id="product-loader-container">
@@ -195,11 +199,13 @@
     <div class="filter-container" id="filter-category-container">
       <h2 class="title">CategoryFilter</h2>
       <select class="select" id="select-category"></select>
-      <button class="button button-select" id="button-category">Select</button>
+      <button class="button button-select" id="button-category" type="button">
+        Select
+      </button>
     </div>
 
     <div class="cart-container" id="cart">
-      <button class="button button-cart">
+      <button class="button button-cart" type="button">
         <img src="images/cart.png" alt="shopping cart" class="image" />
       </button>
     </div>
@@ -217,9 +223,15 @@
           <p class="cart-total-money" id="cart-money">
             Total: <span class="total-money-number" id="money-number">0</span>
           </p>
-          <button class="button button-buy" id="buy">Buy</button>
+          <button type="button" class="button button-buy" id="buy">Buy</button>
         </div>
       </div>
+    </div>
+
+    <div class="container refresh-container" id="container-refresh">
+      <button type="button" class="button button-refresh" id="refresh">
+        Refresh
+      </button>
     </div>
 
     <script src="script.js" type="module"></script>

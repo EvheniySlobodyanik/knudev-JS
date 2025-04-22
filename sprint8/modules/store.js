@@ -56,6 +56,9 @@ export function startStore(method, dataProduct, productId) {
   }
 }
 
+//simulating error
+// handleErrors(500);
+
 async function workWithStoreAPI(URL, options, method, id) {
   const categoriesURL = "https://fakestoreapi.com/products/categories";
 
@@ -64,8 +67,6 @@ async function workWithStoreAPI(URL, options, method, id) {
       fetch(URL, options),
       fetch(categoriesURL),
     ]);
-
-    // const response = await fetch(URL, options);
 
     if (!productsRes.ok) {
       handleErrors(productsRes.status);
@@ -139,3 +140,27 @@ async function workWithStoreAPI(URL, options, method, id) {
     );
   }
 }
+
+const registerServiceWorker = async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "/sprint8/sw.js",
+        {
+          scope: "/sprint8/",
+        }
+      );
+      if (registration.installing) {
+        console.log("Service worker installing");
+      } else if (registration.waiting) {
+        console.log("Service worker installed");
+      } else if (registration.active) {
+        console.log("Service worker active");
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
+registerServiceWorker();

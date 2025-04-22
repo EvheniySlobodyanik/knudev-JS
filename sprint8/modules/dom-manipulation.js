@@ -60,12 +60,17 @@ const showStatusContainer = document.getElementById("show-status-container");
 const statusLoader = document.getElementById("loader-st");
 const statusContainer = document.getElementById("stat-container");
 
+const filterCategoryContainer = document.getElementById(
+  "filter-category-container"
+);
 const selectCategory = document.getElementById("select-category");
 const buttonCategory = document.getElementById("button-category");
 
 const cart = document.getElementById("cart");
 const cartBackdrop = document.getElementById("cart-backdrop");
 const modalCart = document.getElementById("modal-cart");
+
+const refreshButton = document.getElementById("refresh");
 
 export function createPara(className, text, parent) {
   const para = document.createElement("p");
@@ -179,6 +184,7 @@ function showProductsList(data) {
   productsLoaderContainer.remove();
   buttonAdd.style.display = "block";
   buttonsContainer.style.display = "flex";
+  refreshButton.style.display = "block";
 }
 
 export function removeErrorMessage() {
@@ -222,6 +228,7 @@ function addProductManually(data) {
   createImage("product-image", data.image, data.title, container);
   createPara("product-title", data.title, container);
   createPara("product-price", `$${data.price}`, container);
+  createButton("add-to-cart", "Add to Cart", container);
 
   container.addEventListener("click", () => {
     containerModal.style.display = "block";
@@ -256,6 +263,7 @@ function fillSelectedProduct(data, selectedId) {
   createImage("product-image", data.image, inputChangeTitle.value, product);
   createPara("product-title", inputChangeTitle.value, product);
   createPara("product-price", `$${inputChangePrice.value}`, product);
+  createButton("add-to-cart", "Add to Cart", product);
 
   product.addEventListener("click", () => {
     containerModal.style.display = "block";
@@ -574,7 +582,7 @@ buttonManageDelete.addEventListener("click", async (event) => {
     setTimeout(async () => {
       try {
         await startStore("DELETE", "", selectedId);
-        container.remove(); // now it's safe to remove
+        container.remove();
         removeOptionFromSelect(selectedId, selectManage);
 
         statusLoader.style.display = "none";
@@ -620,6 +628,9 @@ function hideEverything() {
   productsLoaderContainer.style.display = "none";
   main.style.display = "none";
   showStatusContainer.style.display = "none";
+  refreshButton.style.display = "none";
+  filterCategoryContainer.style.display = "none";
+  cart.style.display = "none";
 }
 
 export function handleErrors(errorName, errorMessage) {
